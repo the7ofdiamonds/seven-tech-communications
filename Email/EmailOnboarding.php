@@ -4,9 +4,7 @@ namespace SEVEN_TECH\Communications\Email;
 
 use Exception;
 
-use SEVEN_TECH\Communications\Database\DatabaseReceipt;
-use SEVEN_TECH\Communications\API\Stripe\StripeInvoice;
-
+use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class EmailOnboarding
@@ -27,10 +25,8 @@ class EmailOnboarding
     private $from_email;
     private $from_name;
 
-    public function __construct($stripeClient, $mailer)
+    public function __construct(PHPMailer $mailer)
     {
-        $this->database_receipt = new DatabaseReceipt();
-        $this->stripe_invoice = new StripeInvoice($stripeClient);
         $this->email = new Email();
         $this->message = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailOnboardingMessage.php';
         $this->onboarding_link = esc_url(home_url()) . '/services/service/on-boarding/';
@@ -47,16 +43,20 @@ class EmailOnboarding
         $this->from_name = get_option('support_name');
     }
 
-    function onboardingEmailMessage($databaseReceipt, $stripeInvoice, $subject)
+    function onboardingEmailMessage($customer, $receipt, $subject)
     {
-        $swap_var = array(
-            "{YOUR_NAME}" => $databaseReceipt['first_name'] . ' ' . $databaseReceipt['last_name'],
-            "{PAYMENT_AMOUNT}" => $stripeInvoice->amount_paid,
-            "{YOUR_COMPANY_NAME}" => $stripeInvoice->customer_name,
-            "{SUBJECT}" => $subject,
-        );
+        try {
+            $swap_var = array(
+                "{YOUR_NAME}" => $customer->first_name . ' ' . $customer->last_name,
+                "{PAYMENT_AMOUNT}" => $receipt->amount_paid,
+                "{YOUR_COMPANY_NAME}" => $customer->company_name,
+                "{SUBJECT}" => $subject,
+            );
 
-        if (file_exists($this->message)) {
+            if (!file_exists($this->message)) {
+                throw new Exception('Unable to find billing header template.');
+            }
+
             $bodyMessage = file_get_contents($this->message);
 
             foreach (array_keys($swap_var) as $key) {
@@ -68,24 +68,28 @@ class EmailOnboarding
                     }
                 }
             }
-        } else {
-            throw new Exception('Unable to find billing header template.');
-        }
 
-        return $bodyMessage;
+            return $bodyMessage;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
     }
 
-    function onboardingEmailBody($databaseReceipt, $stripeInvoice, $subject, $onboarding_link)
+    function onboardingEmailBody($customer, $receipt, $subject)
     {
-        $swap_var = array(
-            "{YOUR_NAME}" => $databaseReceipt['first_name'] . ' ' . $databaseReceipt['last_name'],
-            "{PAYMENT_AMOUNT}" => $stripeInvoice->amount_paid,
-            "{YOUR_COMPANY_NAME}" => $stripeInvoice->customer_name,
-            "{SUBJECT}" => $subject,
-            "{ONBOARDING_URL}" => $onboarding_link
-        );
+        try {
+            $swap_var = array(
+                "{YOUR_NAME}" => $customer->first_name . ' ' . $customer->last_name,
+                "{PAYMENT_AMOUNT}" => $receipt->amount_paid,
+                "{YOUR_COMPANY_NAME}" => $customer->company_name,
+                "{SUBJECT}" => $subject,
+                "{ONBOARDING_URL}" => $receipt->onboarding_link
+            );
 
-        if (file_exists($this->body)) {
+            if (!file_exists($this->body)) {
+                throw new Exception('Unable to find billing header template.');
+            }
+
             $bodyHeader = file_get_contents($this->body);
 
             foreach (array_keys($swap_var) as $key) {
@@ -97,37 +101,36 @@ class EmailOnboarding
                     }
                 }
             }
-        } else {
-            throw new Exception('Unable to find billing header template.');
+
+            return $bodyHeader;
+        } catch (Exception $e) {
+            throw new Exception($e);
         }
-
-        return $bodyHeader;
     }
 
-    function emailBody($databaseReceipt, $stripeInvoice, $subject, $onboarding_link)
-    {
-        $header = $this->email->emailHeader();
-        $body = $this->onboardingEmailBody($databaseReceipt, $stripeInvoice, $subject, $onboarding_link);
-        $footer = $this->email->emailFooter();
-
-        $fullEmailBody = $header . $body . $footer;
-
-        return $fullEmailBody;
-    }
-
-    function sendOnboardingEmail($stripe_invoice_id, $stripe_customer_id)
+    function emailBody($receipt, $customer, $subject)
     {
         try {
-            $databaseReceipt = $this->database_receipt->getReceipt($stripe_invoice_id, $stripe_customer_id);
-            $stripeInvoice = $this->stripe_invoice->getStripeInvoice($databaseReceipt['stripe_invoice_id']);
+            $header = $this->email->emailHeader();
+            $body = $this->onboardingEmailBody($customer, $receipt, $subject);
+            $footer = $this->email->emailFooter();
 
-            $onboarding_link = $databaseReceipt['onboarding_link'];
+            $fullEmailBody = $header . $body . $footer;
 
-            $to_email = $stripeInvoice->customer_email;
-            $name = $stripeInvoice->customer_name;
+            return $fullEmailBody;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
+    }
+
+    function sendOnboardingEmail($customer, $receipt, $subject)
+    {
+        try {
+            $to_email = $customer->email;
+            $name = $customer->name;
             $to_name = $name;
 
-            $subject = 'Onboarding for Receipt# ' . $databaseReceipt['id'];
+            $subject = 'Onboarding for Receipt# ' . $receipt->id;
 
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
@@ -143,8 +146,8 @@ class EmailOnboarding
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $this->emailBody($databaseReceipt, $stripeInvoice, $subject, $onboarding_link);
-            $this->mailer->AltBody = $this->onboardingEmailMessage($databaseReceipt, $stripeInvoice, $subject);
+            $this->mailer->Body = $this->emailBody($customer, $receipt, $subject);
+            $this->mailer->AltBody = $this->onboardingEmailMessage($customer, $receipt, $subject);
 
             // Make the body the pdf
             // if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
@@ -156,14 +159,17 @@ class EmailOnboarding
             //     $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
             // }
 
-            if ($this->mailer->send()) {
-                return ['message' => 'Message has been sent'];
-            } else {
+            $this->mailer->send();
+
+            if ($this->mailer->ErrorInfo) {
                 throw new PHPMailerException("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
             }
+
+            return 'Message has been sent';
+        } catch (PHPMailerException $e) {
+            throw new PHPMailerException($e);
         } catch (Exception $e) {
-            error_log($e->getMessage());
-            return $e->getMessage();
+            throw new Exception($e);
         }
     }
 }

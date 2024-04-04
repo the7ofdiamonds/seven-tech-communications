@@ -4,17 +4,11 @@ namespace SEVEN_TECH\Communications\Email;
 
 use Exception;
 
-use SEVEN_TECH\Communications\API\Stripe\StripeInvoice;
-use SEVEN_TECH\Communications\API\Stripe\StripeCustomers;
-use SEVEN_TECH\Communications\Database\DatabaseReceipt;
-
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class EmailReceipt
 {
-    private $database_receipt;
-    private $stripe_invoice;
-    private $stripe_customer;
     private $email;
     private $billing;
     private $pdf;
@@ -28,13 +22,10 @@ class EmailReceipt
     private $from_email;
     private $from_name;
 
-    public function __construct($stripeClient, $mailer)
+    public function __construct(PHPMailer $mailer)
     {
-        $this->database_receipt = new DatabaseReceipt();
-        $this->stripe_invoice = new StripeInvoice($stripeClient);
-        $this->stripe_customer = new StripeCustomers($stripeClient);
         $this->email = new Email();
-        $this->billing = new EmailBilling($stripeClient);
+        $this->billing = new EmailBilling();
         $this->mailer = $mailer;
         // $this->pdf = $pdf;
 
@@ -48,26 +39,30 @@ class EmailReceipt
         $this->from_name = get_option('receipt_name');
     }
 
-    function receiptEmailBodyHeader($databaseInvoice, $stripeInvoice)
+    function receiptEmailBodyHeader($invoice, $customer)
     {
-        $swap_var = array(
-            "{BILLING_TYPE}" => 'RECEIPT',
-            "{BILLING_NUMBER}" => 'RE' . $databaseInvoice['id'],
-            "{CUSTOMER_NAME}" => $stripeInvoice->customer_name,
-            "{CUSTOMER_EMAIL}" => $stripeInvoice->customer_email,
-            "{TAX_TYPE}" => $stripeInvoice->customer_tax_ids[0]->type,
-            "{TAX_ID}" => $stripeInvoice->customer_tax_ids[0]->value,
-            "{ADDRESS_LINE_1}" => $stripeInvoice->customer_address->line1,
-            "{ADDRESS_LINE_2}" => $stripeInvoice->customer_address->line2,
-            "{CITY}" => $stripeInvoice->customer_address->city,
-            "{STATE}" => $stripeInvoice->customer_address->state,
-            "{POSTAL_CODE}" => $stripeInvoice->customer_address->postal_code,
-            "{CUSTOMER_PHONE}" => $stripeInvoice->customer_phone,
-            "{DUE_DATE}" => $stripeInvoice->due_date,
-            "{AMOUNT_DUE}" => $stripeInvoice->amount_due,
-        );
+        try {
+            $swap_var = array(
+                "{BILLING_TYPE}" => 'RECEIPT',
+                "{BILLING_NUMBER}" => 'RE' . $invoice->id,
+                "{CUSTOMER_NAME}" => $customer->name,
+                "{CUSTOMER_EMAIL}" => $customer->email,
+                "{TAX_TYPE}" => $customer->tax_ids[0]->type,
+                "{TAX_ID}" => $customer->tax_ids[0]->value,
+                "{ADDRESS_LINE_1}" => $customer->address->line1,
+                "{ADDRESS_LINE_2}" => $customer->address->line2,
+                "{CITY}" => $customer->address->city,
+                "{STATE}" => $customer->address->state,
+                "{POSTAL_CODE}" => $customer->address->postal_code,
+                "{CUSTOMER_PHONE}" => $customer->phone,
+                "{DUE_DATE}" => $invoice->due_date,
+                "{AMOUNT_DUE}" => $invoice->amount_due,
+            );
 
-        if (file_exists($this->billing->header)) {
+            if (!file_exists($this->billing->header)) {
+                throw new Exception('Unable to find billing header template.');
+            }
+
             $bodyHeader = file_get_contents($this->billing->header);
 
             foreach (array_keys($swap_var) as $key) {
@@ -79,35 +74,35 @@ class EmailReceipt
                     }
                 }
             }
-        } else {
-            throw new Exception('Unable to find billing header template.');
+
+            return $bodyHeader;
+        } catch (Exception $e) {
+            throw new Exception($e);
         }
-
-        return $bodyHeader;
     }
 
-    public function receiptEmailBody($databaseReceipt, $stripeInvoice)
+    public function receiptEmailBody($receipt, $customer)
     {
-        $header = $this->email->emailHeader();
-        $bodyHeader = $this->receiptEmailBodyHeader($databaseReceipt, $stripeInvoice);
-        $bodyBody = $this->billing->billingBody($stripeInvoice->lines);
-        $bodyFooter = $this->billing->billingFooter($stripeInvoice);
-        $footer = $this->email->emailFooter();
+        try {
+            $header = $this->email->emailHeader();
+            $bodyHeader = $this->receiptEmailBodyHeader($receipt, $customer);
+            $bodyBody = $this->billing->billingBody($receipt->lines);
+            $bodyFooter = $this->billing->billingFooter($receipt);
+            $footer = $this->email->emailFooter();
 
-        $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
+            $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
 
-        return $fullEmailBody;
+            return $fullEmailBody;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
     }
 
-    public function sendReceiptEmail($stripe_invoice_id)
+    public function sendReceiptEmail($customer, $receipt)
     {
-        $stripeInvoice = $this->stripe_invoice->getStripeInvoice($stripe_invoice_id);
-        $stripeCustomer = $this->stripe_customer->getCustomer($stripeInvoice->customer);
-        $databaseReceipt = $this->database_receipt->getReceipt($stripeInvoice->id,  $stripeCustomer->id);
-
-        $to_email = $stripeCustomer->email;
-        $receipt_number = 'Receipt #' . $databaseReceipt['id'];
-        $name =  $stripeCustomer->name;
+        $to_email = $customer->email;
+        $receipt_number = 'Receipt #' . $receipt['id'];
+        $name =  $customer->name;
         $to_name = $name;
 
         $subject = $receipt_number . ' for ' . $name;
@@ -127,8 +122,8 @@ class EmailReceipt
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $this->receiptEmailBody($databaseReceipt, $stripeInvoice);
-            $this->mailer->AltBody = '<pre>' . $stripeInvoice . '</pre>';
+            $this->mailer->Body = $this->receiptEmailBody($receipt, $customer);
+            $this->mailer->AltBody = '<pre>' . $receipt . '</pre>';
 
             // Make the body the pdf
             // if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
@@ -141,14 +136,17 @@ class EmailReceipt
             //     $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
             // }
 
-            if ($this->mailer->send()) {
-                return ['message' => 'Message has been sent'];
-            } else {
+            $this->mailer->send();
+
+            if ($this->mailer->ErrorInfo) {
                 throw new PHPMailerException("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
             }
+
+            return 'Message has been sent';
+        } catch (PHPMailerException $e) {
+            throw new PHPMailerException($e);
         } catch (Exception $e) {
-            error_log($e->getMessage());
-            return ['error' => $e->getMessage()];
+            throw new Exception($e);
         }
     }
 }

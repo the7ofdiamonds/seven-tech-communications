@@ -1,6 +1,6 @@
 <?php
 
-namespace SEVEN\Communications\API;
+namespace SEVEN_TECH\Communications\API;
 
 use PHPMailer\PHPMailer\PHPMailer;
 

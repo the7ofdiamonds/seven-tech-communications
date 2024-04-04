@@ -41,13 +41,17 @@ class Email
 
     public function emailHeader()
     {
-        $swap_var = array(
-            "{WEB_ADDRESS}" => $this->web_address,
-            "{LOGO_LINK}" => $this->logo_link,
-            "{SITE_NAME}" => $this->site_name,
-        );
+        try {
+            $swap_var = array(
+                "{WEB_ADDRESS}" => $this->web_address,
+                "{LOGO_LINK}" => $this->logo_link,
+                "{SITE_NAME}" => $this->site_name,
+            );
 
-        if (file_exists($this->emailTemplateHeader)) {
+            if (!file_exists($this->emailTemplateHeader)) {
+                throw new Exception('Unable to locate contact email template.');
+            }
+
             $header = file_get_contents($this->emailTemplateHeader);
 
             foreach (array_keys($swap_var) as $key) {
@@ -57,25 +61,29 @@ class Email
             }
 
             return $header;
-        } else {
-            throw new Exception('Unable to locate contact email template.');
+        } catch (Exception $e) {
+            throw new Exception($e);
         }
     }
 
     public function emailFooter()
     {
-        $swap_var = array(
-            "{FACEBOOK}" => $this->facebook,
-            "{TWITTER}" => $this->twitter,
-            "{CONTACT_EMAIL}" => $this->contact_email,
-            "{LINKEDIN}" => $this->linkedin,
-            "{INSTAGRAM}" => $this->instagram,
-            "{YEAR}" => $this->year,
-            "{COMPANY_NAME}" => $this->company_name
-        );
+        try {
+            $swap_var = array(
+                "{FACEBOOK}" => $this->facebook,
+                "{TWITTER}" => $this->twitter,
+                "{CONTACT_EMAIL}" => $this->contact_email,
+                "{LINKEDIN}" => $this->linkedin,
+                "{INSTAGRAM}" => $this->instagram,
+                "{YEAR}" => $this->year,
+                "{COMPANY_NAME}" => $this->company_name
+            );
 
-        if (file_exists( $this->emailTemplateFooter)) {
-            $footer = file_get_contents( $this->emailTemplateFooter);
+            if (file_exists($this->emailTemplateFooter)) {
+                throw new Exception('Unable to locate contact email template.');
+            }
+
+            $footer = file_get_contents($this->emailTemplateFooter);
 
             foreach (array_keys($swap_var) as $key) {
                 if (strlen($key) > 2 && trim($key) != '') {
@@ -84,8 +92,8 @@ class Email
             }
 
             return $footer;
-        } else {
-            throw new Exception('Unable to locate contact email template.');
+        } catch (Exception $e) {
+            throw new Exception($e);
         }
     }
 }

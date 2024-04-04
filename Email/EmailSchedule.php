@@ -2,7 +2,10 @@
 
 namespace SEVEN_TECH\Communications\Email;
 
-use PHPMailer\PHPMailer\Exception;
+use Exception;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class EmailSchedule
 {
@@ -17,7 +20,7 @@ class EmailSchedule
     private $from_email;
     private $from_name;
 
-    public function __construct($mailer)
+    public function __construct(PHPMailer $mailer)
     {
         // $this->email = $email;
         $this->mailer = $mailer;
@@ -34,17 +37,21 @@ class EmailSchedule
 
     public function scheduleEmailBody($first_name, $last_name, $email, $subject, $message)
     {
-        $scheduleEmailBodyTemplate = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailBodySchedule.php';
+        try {
+            $scheduleEmailBodyTemplate = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailBodySchedule.php';
 
-        $swap_var = array(
-            "{EMAIL}" => $email,
-            "{FIRST_NAME}" => $first_name,
-            "{LAST_NAME}" => $last_name,
-            "{SUBJECT}" => $subject,
-            "{MESSAGE}" => $message
-        );
+            $swap_var = array(
+                "{EMAIL}" => $email,
+                "{FIRST_NAME}" => $first_name,
+                "{LAST_NAME}" => $last_name,
+                "{SUBJECT}" => $subject,
+                "{MESSAGE}" => $message
+            );
 
-        if (file_exists($scheduleEmailBodyTemplate)) {
+            if (file_exists($scheduleEmailBodyTemplate)) {
+                throw new Exception('Unable to locate schedule email template.');
+            }
+
             $body = file_get_contents($scheduleEmailBodyTemplate);
 
             foreach (array_keys($swap_var) as $key) {
@@ -59,8 +66,8 @@ class EmailSchedule
             $fullEmailBody = $header . $body . $footer;
 
             return $fullEmailBody;
-        } else {
-            throw new Exception('Unable to locate schedule email template.');
+        } catch (Exception $e) {
+            throw new Exception($e);
         }
     }
 
@@ -85,14 +92,17 @@ class EmailSchedule
             $this->mailer->Body = $this->scheduleEmailBody($first_name, $last_name, $email, $subject, $message);
             $this->mailer->AltBody = $message;
 
-            if ($this->mailer->send()) {
-                return ['message' => 'Message has been sent'];
-            } else {
-                throw new Exception("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
+            $this->mailer->send();
+
+            if ($this->mailer->ErrorInfo) {
+                throw new PHPMailerException("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
             }
+
+            return 'Message has been sent';
+        } catch (PHPMailerException $e) {
+            throw new PHPMailerException($e);
         } catch (Exception $e) {
-            error_log($e->getMessage());
-            return ['error' => $e->getMessage()];
+            throw new Exception($e);
         }
     }
 }

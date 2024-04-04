@@ -4,20 +4,15 @@ namespace SEVEN_TECH\Communications\Email;
 
 use Exception;
 
-use SEVEN_TECH\Communications\Database\DatabaseQuote;
-use SEVEN_TECH\Communications\API\Stripe\StripeQuote;
-
+use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class EmailQuote
 {
-    private $database_quote;
-    private $stripe_quote;
     private $email;
     private $billing;
     private $billingType;
     private $billingNumberPrefix;
-    private $pdf;
     private $mailer;
     private $smtp_host;
     private $smtp_port;
@@ -28,7 +23,7 @@ class EmailQuote
     private $from_email;
     private $from_name;
 
-    public function __construct($stripeClient, $mailer)
+    public function __construct(PHPMailer $mailer)
     {
         $this->smtp_host = get_option('quote_smtp_host');
         $this->smtp_port = get_option('quote_smtp_port');
@@ -39,41 +34,37 @@ class EmailQuote
         $this->from_email = get_option('quote_email');
         $this->from_name = get_option('quote_name');
 
-        $this->database_quote = new DatabaseQuote();
-        $this->stripe_quote = new StripeQuote($stripeClient);
         $this->email = new Email();
-        $this->billing = new EmailBilling($stripeClient);
+        $this->billing = new EmailBilling();
         $this->billingType = 'QUOTE';
         $this->billingNumberPrefix = 'QT';
         $this->mailer = $mailer;
         // $this->pdf = $pdf;
     }
 
-    function quoteEmailBody($stripe_quote_id, $billingNumber)
-    {
-        $databaseQuote = $this->database_quote->getQuote($stripe_quote_id);
-        $stripeQuote = $this->stripe_quote->getStripeQuote($databaseQuote['stripe_quote_id']);
-
-        $header = $this->email->emailHeader();
-        $bodyHeader = $this->billing->billingHeader($this->billingType, $billingNumber, $stripeQuote);
-        $bodyBody = $this->billing->billingBody($stripeQuote->line_items);
-        $bodyFooter = $this->billing->billingFooter($stripeQuote);
-        $footer = $this->email->emailFooter();
-
-        $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
-
-        return $fullEmailBody;
-    }
-
-    function sendQuoteEmail($stripe_quote_id)
+    function quoteEmailBody($billingNumber, $quote, $customer)
     {
         try {
-            $databaseQuote = $this->database_quote->getQuote($stripe_quote_id);
-            $stripeQuote = $this->stripe_quote->getStripeQuote($databaseQuote['stripe_quote_id']);
+            $header = $this->email->emailHeader();
+            $bodyHeader = $this->billing->billingHeader($this->billingType, $billingNumber, $quote, $customer);
+            $bodyBody = $this->billing->billingBody($quote->line_items);
+            $bodyFooter = $this->billing->billingFooter($quote);
+            $footer = $this->email->emailFooter();
 
-            $to_email = $stripeQuote->customer->email;
-            $billingNumber = $this->billingNumberPrefix . $databaseQuote['id'];
-            $name = $stripeQuote->customer->name;
+            $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
+
+            return $fullEmailBody;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
+    }
+
+    function sendQuoteEmail($customer, $quote)
+    {
+        try {
+            $to_email = $customer->email;
+            $billingNumber = $this->billingNumberPrefix . $quote->id;
+            $name = $customer->name;
             $to_name = $name;
 
             $subject = $billingNumber . ' for ' . $name;
@@ -92,8 +83,8 @@ class EmailQuote
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $this->quoteEmailBody($stripe_quote_id, $billingNumber, $stripeQuote);
-            $this->mailer->AltBody = '<pre>' . $stripeQuote . '</pre>';
+            $this->mailer->Body = $this->quoteEmailBody($billingNumber, $quote, $customer);
+            $this->mailer->AltBody = '<pre>' . $quote . '</pre>';
 
             // Make the body the pdf
             // if ($stripeQuote->status === 'paid' || $stripeQuote->status === 'open') {
@@ -105,14 +96,17 @@ class EmailQuote
             //     $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
             // }
 
-            if ($this->mailer->send()) {
-                return ['message' => 'Message has been sent'];
-            } else {
+            $this->mailer->send();
+
+            if ($this->mailer->ErrorInfo) {
                 throw new PHPMailerException("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
             }
+
+            return 'Message has been sent';
+        } catch (PHPMailerException $e) {
+            throw new PHPMailerException($e);
         } catch (Exception $e) {
-            error_log($e->getMessage());
-            return $e->getMessage();
+            throw new Exception($e);
         }
     }
 }

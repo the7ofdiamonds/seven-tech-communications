@@ -4,45 +4,43 @@ namespace SEVEN_TECH\Communications\Email;
 
 use Exception;
 
-use SEVEN_TECH\Communications\API\Stripe\StripeCustomers;
-
 class EmailBilling
 {
-    private $stripe_customer;
     public $header;
     private $body;
     public $footer;
 
-    public function __construct($stripeClient)
+    public function __construct()
     {
-        $this->stripe_customer = new StripeCustomers($stripeClient);
         $this->header = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailBillingHeader.php';
         $this->body = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailBillingBody.php';
         $this->footer = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailBillingFooter.php';
     }
 
-    function billingHeader($billingType, $billingNumber, $billing)
+    function billingHeader($billingType, $billingNumber, $billing, $customer)
     {
-        $customer = $this->stripe_customer->getCustomer($billing->customer->id);
+        try {
+            $swap_var = array(
+                "{BILLING_TYPE}" => $billingType,
+                "{BILLING_NUMBER}" => $billingNumber,
+                "{CUSTOMER_NAME}" => $customer->name,
+                "{CUSTOMER_EMAIL}" => $customer->email,
+                "{CUSTOMER_PHONE}" => $customer->phone,
+                "{TAX_TYPE}" => $customer->tax_ids->data[0]->type,
+                "{TAX_ID}" => $customer->tax_ids->data[0]->value,
+                "{ADDRESS_LINE_1}" => $customer->address->line1,
+                "{ADDRESS_LINE_2}" => $customer->address->line2,
+                "{CITY}" => $customer->address->city,
+                "{STATE}" => $customer->address->state,
+                "{POSTAL_CODE}" => $customer->address->postal_code,
+                "{DUE_DATE}" => (isset($billing->expires_at)) ? $billing->expires_at : $billing->due_date,
+                "{AMOUNT_DUE}" => (isset($billing->amount_due)) ? $billing->amount_due : 0,
+            );
 
-        $swap_var = array(
-            "{BILLING_TYPE}" => $billingType,
-            "{BILLING_NUMBER}" => $billingNumber,
-            "{CUSTOMER_NAME}" => $customer->name,
-            "{CUSTOMER_EMAIL}" => $customer->email,
-            "{CUSTOMER_PHONE}" => $customer->phone,
-            "{TAX_TYPE}" => $customer->tax_ids->data[0]->type,
-            "{TAX_ID}" => $customer->tax_ids->data[0]->value,
-            "{ADDRESS_LINE_1}" => $customer->address->line1,
-            "{ADDRESS_LINE_2}" => $customer->address->line2,
-            "{CITY}" => $customer->address->city,
-            "{STATE}" => $customer->address->state,
-            "{POSTAL_CODE}" => $customer->address->postal_code,
-            "{DUE_DATE}" => (isset($billing->expires_at)) ? $billing->expires_at : $billing->due_date,
-            "{AMOUNT_DUE}" => (isset($billing->amount_due)) ? $billing->amount_due : 0,
-        );
+            if (!file_exists($this->header)) {
+                throw new Exception('Could not find billing header template.');
+            }
 
-        if (file_exists($this->header)) {
             $bodyHeader = file_get_contents($this->header);
 
             foreach (array_keys($swap_var) as $key) {
@@ -54,36 +52,41 @@ class EmailBilling
                     }
                 }
             }
-        } else {
-            throw new Exception('Could not find billing header template.');
+            
+            return $bodyHeader;
+        } catch (Exception $e) {
+            throw new Exception($e);
         }
-
-        return $bodyHeader;
     }
 
     function billingBody($lines)
     {
-        $lineItems = [];
-        foreach ($lines as $line) {
-            $quantity = $line->quantity;
-            $unit_price = $line->price->unit_amount / 100;
+        try {
+            $lineItems = [];
 
-            $lineItem = [
-                "Product" => $line->price->product,
-                "Description" => $line->description,
-                "Quantity" => $quantity,
-                "Unit Price" => $unit_price,
-                "Total" => $quantity * $unit_price,
-            ];
+            foreach ($lines as $line) {
+                $quantity = $line->quantity;
+                $unit_price = $line->price->unit_amount / 100;
 
-            $lineItems[] = $lineItem;
-        }
+                $lineItem = [
+                    "Product" => $line->price->product,
+                    "Description" => $line->description,
+                    "Quantity" => $quantity,
+                    "Unit Price" => $unit_price,
+                    "Total" => $quantity * $unit_price,
+                ];
 
-        $swap_var = array(
-            "{LINES}" => $lineItems,
-        );
+                $lineItems[] = $lineItem;
+            }
 
-        if (file_exists($this->body)) {
+            $swap_var = array(
+                "{LINES}" => $lineItems,
+            );
+
+            if (!file_exists($this->body)) {
+                throw new Exception('Could not find billing body template.');
+            }
+
             $lines = file_get_contents($this->body);
 
             foreach (array_keys($swap_var) as $key) {
@@ -107,20 +110,24 @@ class EmailBilling
             }
 
             return $lines;
-        } else {
-            throw new Exception('Could not find billing body template.');
+        } catch (Exception $e) {
+            throw new Exception($e);
         }
     }
 
     function billingFooter($billing)
     {
-        $swap_var = array(
-            "{SUBTOTAL}" => (isset($billing->amount_subtotal))? $billing->amount_subtotal : $billing->subtotal,
-            "{TAX}" => (isset($billing->tax)) ? $billing->tax : 0,
-            "{TOTAL}" => (isset($billing->amount_total)) ? $billing->amount_total : $billing->total,
-        );
+        try {
+            $swap_var = array(
+                "{SUBTOTAL}" => (isset($billing->amount_subtotal)) ? $billing->amount_subtotal : $billing->subtotal,
+                "{TAX}" => (isset($billing->tax)) ? $billing->tax : 0,
+                "{TOTAL}" => (isset($billing->amount_total)) ? $billing->amount_total : $billing->total,
+            );
 
-        if (file_exists($this->footer)) {
+            if (!file_exists($this->footer)) {
+                throw new Exception('Unable to find billing footer template.');
+            }
+
             $bodyFooter = file_get_contents($this->footer);
 
             foreach (array_keys($swap_var) as $key) {
@@ -132,10 +139,10 @@ class EmailBilling
                     }
                 }
             }
-        } else {
-            throw new Exception('Unable to find billing footer template.');
-        }
 
-        return $bodyFooter;
+            return $bodyFooter;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
     }
 }

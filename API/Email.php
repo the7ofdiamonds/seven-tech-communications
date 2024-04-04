@@ -11,12 +11,10 @@ use WP_REST_Request;
 
 class Email
 {
-    private $stripeClient;
     private $mailer;
 
-    public function __construct($stripeClient, $mailer)
+    public function __construct($mailer)
     {
-        $this->stripeClient = $stripeClient;
         $this->mailer = $mailer;
     }
 
