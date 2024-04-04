@@ -1,0 +1,27 @@
+{
+    "name": "jamelclyons/seven-tech-communications",
+    "description": "API to email server",
+    "type": "project",
+    "authors": [
+        {
+            "name": "THE7OFDIAMONDS.TECH"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "symfony/dotenv": "^6.3",
+        "ext-pdo": "*",
+        "ext-pdo_pgsql": "*",
+        "phpmailer/phpmailer": "^6.8",
+        "mpdf/mpdf": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "SEVEN_TECH\\Communications\\": "",
+            "PHPMailer\\PHPMailer\\": "phpmailer"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
