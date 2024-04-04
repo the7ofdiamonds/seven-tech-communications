@@ -11,7 +11,8 @@ class EmailInvoice
 {
     private $email;
     private $billing;
-    private $pdf;
+    private $billingType;
+    private $billingNumberPrefix;
     private $mailer;
     private $smtp_host;
     private $smtp_port;
@@ -24,11 +25,6 @@ class EmailInvoice
 
     public function __construct(PHPMailer $mailer)
     {
-        $this->email = new Email();
-        $this->billing = new EmailBilling();
-        $this->mailer = $mailer;
-        // $this->pdf = $pdf;
-
         $this->smtp_host = get_option('invoice_smtp_host');
         $this->smtp_port = get_option('invoice_smtp_port');
         $this->smtp_secure = get_option('invoice_smtp_secure');
@@ -37,55 +33,20 @@ class EmailInvoice
         $this->smtp_password = get_option('invoice_smtp_password');
         $this->from_email = get_option('invoice_email');
         $this->from_name = get_option('invoice_name');
+
+        $this->email = new Email();
+        $this->billing = new EmailBilling();
+        $this->billingType = 'INVOICE';
+        $this->billingNumberPrefix = 'IN';
+        $this->mailer = $mailer;
+        // $this->pdf = $pdf;
     }
 
-    function invoiceEmailBodyHeader($invoice, $customer)
-    {
-        try {
-            $swap_var = array(
-                "{BILLING_TYPE}" => 'INVOICE',
-                "{BILLING_NUMBER}" => 'IN' . $invoice->id,
-                "{CUSTOMER_NAME}" => $customer->name,
-                "{CUSTOMER_EMAIL}" => $customer->email,
-                "{TAX_TYPE}" => $invoice->customer_tax_ids[0]->type,
-                "{TAX_ID}" => $invoice->customer_tax_ids[0]->value,
-                "{ADDRESS_LINE_1}" => $customer->address->line1,
-                "{ADDRESS_LINE_2}" => $customer->address->line2,
-                "{CITY}" => $customer->address->city,
-                "{STATE}" => $customer->address->state,
-                "{POSTAL_CODE}" => $customer->address->postal_code,
-                "{CUSTOMER_PHONE}" => $customer->phone,
-                "{DUE_DATE}" => $invoice->due_date,
-                "{AMOUNT_DUE}" => $invoice->amount_due,
-            );
-
-            if (file_exists($this->billing->header)) {
-                throw new Exception('Unable to find billing header template.');
-            }
-            
-            $bodyHeader = file_get_contents($this->billing->header);
-
-            foreach (array_keys($swap_var) as $key) {
-                if (strlen($key) > 2 && trim($key) != '') {
-                    if ($swap_var[$key] != '') {
-                        $bodyHeader = str_replace($key, $swap_var[$key], $bodyHeader);
-                    } else {
-                        $bodyHeader = str_replace($key, '', $bodyHeader);
-                    }
-                }
-            }
-
-            return $bodyHeader;
-        } catch (Exception $e) {
-            throw new Exception($e);
-        }
-    }
-
-    function invoiceEmailBody($invoice, $customer)
+    function invoiceEmailBody($billingNumber, $invoice, $customer)
     {
         try {
             $header = $this->email->emailHeader();
-            $bodyHeader = $this->invoiceEmailBodyHeader($invoice, $customer);
+            $bodyHeader = $this->billing->billingHeader($this->billingType, $billingNumber, $invoice, $customer);
             $bodyBody = $this->billing->billingBody($invoice->lines);
             $bodyFooter = $this->billing->billingFooter($invoice);
             $footer = $this->email->emailFooter();
@@ -102,11 +63,11 @@ class EmailInvoice
     {
         try {
             $to_email = $customer->email;
-            $invoice_number = 'Invoice #' . $invoice->id;
+            $billingNumber = $this->billingNumberPrefix . $invoice->id;
             $name =  $customer->name;
             $to_name = $name;
 
-            $subject = $invoice_number . ' for ' . $name;
+            $subject = $billingNumber . ' for ' . $name;
 
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
@@ -122,7 +83,7 @@ class EmailInvoice
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $this->invoiceEmailBody($invoice, $customer);
+            $this->mailer->Body = $this->invoiceEmailBody($billingNumber, $invoice, $customer);
             $this->mailer->AltBody = '<pre>' . $invoice . '</pre>';
 
             // Make the body the pdf

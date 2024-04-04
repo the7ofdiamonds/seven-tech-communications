@@ -7,114 +7,150 @@ use SEVEN_TECH\Communications\Email\EmailInvoice;
 use SEVEN_TECH\Communications\Email\EmailOnboarding;
 use SEVEN_TECH\Communications\Email\EmailReceipt;
 
+use Exception;
+
 use WP_REST_Request;
+
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Email
 {
     private $mailer;
+    private $quoteEmail;
+    private $invoiceEmail;
+    private $receiptEmail;
+    private $onboardingEmail;
 
-    public function __construct($mailer)
+    public function __construct(PHPMailer $mailer)
     {
         $this->mailer = $mailer;
+        $this->quoteEmail = new EmailQuote($this->mailer);
+        $this->invoiceEmail = new EmailInvoice($this->mailer);
+        $this->receiptEmail = new EmailReceipt($this->mailer);
+        $this->onboardingEmail = new EmailOnboarding($this->mailer);
     }
 
     public function send_quote_email(WP_REST_Request $request)
     {
-        $quote_email = new EmailQuote($this->stripeClient, $this->mailer);
-        $stripe_quote_id = $request->get_param('slug');
+        try {
+            $customer = $request['customer'];
+            $quote = $request['quote'];
 
-        if (empty($stripe_quote_id)) {
-            $msg = 'Quote ID is required';
-        }
+            if (empty($customer)) {
+                $statusCode = 400;
+                throw new Exception('Customer is required to send quote email.', $statusCode);
+            }
 
-        if (isset($msg)) {
+            if (empty($quote)) {
+                $statusCode = 400;
+                throw new Exception('Quote is required to send quote email.', $statusCode);
+            }
+
+            $quoteEmail = $this->quoteEmail->sendQuoteEmail($customer, $quote);
+
+            return rest_ensure_response($quoteEmail);
+        } catch (Exception $e) {
             $message = array(
-                'message' => $msg,
+                'errorMessage' => $e->getMessage(),
+                'statusCode' => $e->getCode()
             );
             $response = rest_ensure_response($message);
-            $response->set_status(400);
+            $response->set_status($e->getCode());
+
             return $response;
         }
-
-        $quoteEmail = $quote_email->sendQuoteEmail($stripe_quote_id);
-
-        return rest_ensure_response($quoteEmail);
     }
 
     public function send_invoice_email(WP_REST_Request $request)
     {
-        $invoice_email = new EmailInvoice($this->stripeClient, $this->mailer);
-        $stripe_invoice_id = $request->get_param('slug');
+        try {
+            $customer = $request['customer'];
+            $invoice = $request['invoice'];
 
-        if (empty($stripe_invoice_id)) {
-            $msg = 'Invoice ID is required';
-        }
+            if (empty($customer)) {
+                $statusCode = 400;
+                throw new Exception('Customer is required to send invoice email.', $statusCode);
+            }
 
-        if (isset($msg)) {
+            if (empty($invoice)) {
+                $statusCode = 400;
+                throw new Exception('Invoice is required to send invoice email.', $statusCode);
+            }
+
+            $invoiceEmail = $this->invoiceEmail->sendInvoiceEmail($customer, $invoice);
+
+            return rest_ensure_response($invoiceEmail);
+        } catch (Exception $e) {
             $message = array(
-                'message' => $msg,
+                'errorMessage' => $e->getMessage(),
+                'statusCode' => $e->getCode()
             );
             $response = rest_ensure_response($message);
-            $response->set_status(400);
+            $response->set_status($e->getCode());
+
             return $response;
         }
-
-        $invoiceEmail = $invoice_email->sendInvoiceEmail($stripe_invoice_id);
-
-        return rest_ensure_response($invoiceEmail);
     }
 
     public function send_receipt_email(WP_REST_Request $request)
     {
-        $receipt_email = new EmailReceipt($this->stripeClient, $this->mailer);
+        try {
+            $customer = $request['customer'];
+            $receipt = $request['receipt'];
 
-        $stripe_invoice_id = $request->get_param('slug');
+            if (empty($customer)) {
+                $statusCode = 400;
+                throw new Exception('Customer is required to send receipt email.', $statusCode);
+            }
 
-        if (empty($stripe_invoice_id)) {
-            $msg = 'Invoice ID is required';
-        }
+            if (empty($receipt)) {
+                $statusCode = 400;
+                throw new Exception('Receipt is required to send receipt email.', $statusCode);
+            }
 
-        if (isset($msg)) {
+            $receiptEmail = $this->receiptEmail->sendReceiptEmail($customer, $receipt);
+
+            return rest_ensure_response($receiptEmail);
+        } catch (Exception $e) {
             $message = array(
-                'message' => $msg,
+                'errorMessage' => $e->getMessage(),
+                'statusCode' => $e->getCode()
             );
             $response = rest_ensure_response($message);
-            $response->set_status(400);
+            $response->set_status($e->getCode());
+
             return $response;
         }
-
-        $receiptEmail = $receipt_email->sendReceiptEmail($stripe_invoice_id);
-
-        return rest_ensure_response($receiptEmail);
     }
 
     public function send_onboarding_email(WP_REST_Request $request)
     {
-        $onboarding_email = new EmailOnboarding($this->stripeClient, $this->mailer);
+        try {
+            $customer = $request['customer'];
+            $receipt = $request['receipt'];
 
-        $stripe_invoice_id = $request->get_param('slug');
+            if (empty($customer)) {
+                $statusCode = 400;
+                throw new Exception('Customer is required to send receipt email.', $statusCode);
+            }
 
-        $project_name = $request['project_name'];
+            if (empty($receipt)) {
+                $statusCode = 400;
+                throw new Exception('Receipt is required to send receipt email.', $statusCode);
+            }
 
-        if (empty($stripe_invoice_id)) {
-            $msg = 'Stripe Invoice ID is required';
-        }
+            $onboardingEmail = $this->onboardingEmail->sendOnboardingEmail($customer, $receipt);
 
-        if (empty($project_name)) {
-            $msg = 'Project name is required';
-        }
-
-        if (isset($msg)) {
+            return rest_ensure_response($onboardingEmail);
+        } catch (Exception $e) {
             $message = array(
-                'message' => $msg,
+                'errorMessage' => $e->getMessage(),
+                'statusCode' => $e->getCode()
             );
             $response = rest_ensure_response($message);
-            $response->set_status(400);
+            $response->set_status($e->getCode());
+
             return $response;
         }
-
-        $onboardingEmail = $onboarding_email->sendOnboardingEmail($stripe_invoice_id, $project_name);
-
-        return rest_ensure_response($onboardingEmail);
     }
 }

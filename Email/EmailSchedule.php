@@ -22,9 +22,6 @@ class EmailSchedule
 
     public function __construct(PHPMailer $mailer)
     {
-        // $this->email = $email;
-        $this->mailer = $mailer;
-
         $this->smtp_host = get_option('schedule_smtp_host');
         $this->smtp_port = get_option('schedule_smtp_port');
         $this->smtp_secure = get_option('schedule_smtp_secure');
@@ -33,6 +30,9 @@ class EmailSchedule
         $this->smtp_password = get_option('schedule_smtp_password');
         $this->from_name = get_option('schedule_email');
         $this->from_name = get_option('schedule_name');
+
+        $this->email = new Email();
+        $this->mailer = $mailer;
     }
 
     public function scheduleEmailBody($first_name, $last_name, $email, $subject, $message)

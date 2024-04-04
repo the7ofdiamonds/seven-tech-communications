@@ -9,10 +9,7 @@ use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class EmailOnboarding
 {
-    private $database_receipt;
-    private $stripe_invoice;
     private $message;
-    private $onboarding_link;
     private $body;
     private $email;
     private $mailer;
@@ -29,7 +26,6 @@ class EmailOnboarding
     {
         $this->email = new Email();
         $this->message = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailOnboardingMessage.php';
-        $this->onboarding_link = esc_url(home_url()) . '/services/service/on-boarding/';
         $this->body = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailOnboarding.php';
         $this->mailer = $mailer;
 
@@ -123,14 +119,14 @@ class EmailOnboarding
         }
     }
 
-    function sendOnboardingEmail($customer, $receipt, $subject)
+    function sendOnboardingEmail($customer, $receipt)
     {
         try {
             $to_email = $customer->email;
             $name = $customer->name;
             $to_name = $name;
 
-            $subject = 'Onboarding for Receipt# ' . $receipt->id;
+            $subject = 'Onboarding for ' . $receipt->project_name;
 
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
