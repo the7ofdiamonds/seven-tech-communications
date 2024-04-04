@@ -17,7 +17,7 @@ class AdminEmailQuote
 
     function create_section()
     {
-        include_once SEVEN_TECH_COMMUNICATIONS . 'includes/admin-edit-email-quote.php';
+        include_once SEVEN_TECH_COMMUNICATIONS . 'Admin/includes/admin-edit-email-quote.php';
     }
 
     function register_section()

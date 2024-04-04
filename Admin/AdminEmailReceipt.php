@@ -17,7 +17,7 @@ class AdminEmailReceipt
 
     function create_section()
     {
-        include_once SEVEN_TECH_COMMUNICATIONS . 'includes/admin-edit-email-receipt.php';
+        include_once SEVEN_TECH_COMMUNICATIONS . 'Admin/includes/admin-edit-email-receipt.php';
     }
 
     function register_section()

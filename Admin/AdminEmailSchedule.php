@@ -17,7 +17,7 @@ class AdminEmailSchedule
 
     function create_section()
     {
-        include_once SEVEN_TECH_COMMUNICATIONS . 'includes/admin-edit-email-schedule.php';
+        include_once SEVEN_TECH_COMMUNICATIONS . 'Admin/includes/admin-edit-email-schedule.php';
     }
 
     function register_section()
