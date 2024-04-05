@@ -1,8 +1,10 @@
 <?php
 
-namespace SEVEN_TECH\Communications\Email;
+namespace SEVEN_TECH\Communications\Email\Portfolio;
 
 use Exception;
+
+use SEVEN_TECH\Communications\Email\Email;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;

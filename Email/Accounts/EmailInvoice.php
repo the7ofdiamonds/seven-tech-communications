@@ -1,13 +1,15 @@
 <?php
 
-namespace SEVEN_TECH\Communications\Email;
+namespace SEVEN_TECH\Communications\Email\Accounts;
 
 use Exception;
+
+use SEVEN_TECH\Communications\Email\Email;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
-class EmailQuote
+class EmailInvoice
 {
     private $email;
     private $billing;
@@ -25,30 +27,30 @@ class EmailQuote
 
     public function __construct(PHPMailer $mailer)
     {
-        $this->smtp_host = get_option('quote_smtp_host');
-        $this->smtp_port = get_option('quote_smtp_port');
-        $this->smtp_secure = get_option('quote_smtp_secure');
-        $this->smtp_auth = get_option('quote_smtp_auth');
-        $this->smtp_username = get_option('quote_smtp_username');
-        $this->smtp_password = get_option('quote_smtp_password');
-        $this->from_email = get_option('quote_email');
-        $this->from_name = get_option('quote_name');
+        $this->smtp_host = get_option('invoice_smtp_host');
+        $this->smtp_port = get_option('invoice_smtp_port');
+        $this->smtp_secure = get_option('invoice_smtp_secure');
+        $this->smtp_auth = get_option('invoice_smtp_auth');
+        $this->smtp_username = get_option('invoice_smtp_username');
+        $this->smtp_password = get_option('invoice_smtp_password');
+        $this->from_email = get_option('invoice_email');
+        $this->from_name = get_option('invoice_name');
 
         $this->email = new Email();
         $this->billing = new EmailBilling();
-        $this->billingType = 'QUOTE';
-        $this->billingNumberPrefix = 'QT';
+        $this->billingType = 'INVOICE';
+        $this->billingNumberPrefix = 'IN';
         $this->mailer = $mailer;
         // $this->pdf = $pdf;
     }
 
-    function quoteEmailBody($billingNumber, $quote, $customer)
+    function invoiceEmailBody($billingNumber, $invoice, $customer)
     {
         try {
             $header = $this->email->emailHeader();
-            $bodyHeader = $this->billing->billingHeader($this->billingType, $billingNumber, $quote, $customer);
-            $bodyBody = $this->billing->billingBody($quote->line_items);
-            $bodyFooter = $this->billing->billingFooter($quote);
+            $bodyHeader = $this->billing->billingHeader($this->billingType, $billingNumber, $invoice, $customer);
+            $bodyBody = $this->billing->billingBody($invoice->lines);
+            $bodyFooter = $this->billing->billingFooter($invoice);
             $footer = $this->email->emailFooter();
 
             $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
@@ -59,12 +61,12 @@ class EmailQuote
         }
     }
 
-    function sendQuoteEmail($customer, $quote)
+    function sendInvoiceEmail($customer, $invoice)
     {
         try {
             $to_email = $customer->email;
-            $billingNumber = $this->billingNumberPrefix . $quote->id;
-            $name = $customer->name;
+            $billingNumber = $this->billingNumberPrefix . $invoice->id;
+            $name =  $customer->name;
             $to_name = $name;
 
             $subject = $billingNumber . ' for ' . $name;
@@ -83,13 +85,13 @@ class EmailQuote
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $this->quoteEmailBody($billingNumber, $quote, $customer);
-            $this->mailer->AltBody = '<pre>' . $quote . '</pre>';
+            $this->mailer->Body = $this->invoiceEmailBody($billingNumber, $invoice, $customer);
+            $this->mailer->AltBody = '<pre>' . $invoice . '</pre>';
 
             // Make the body the pdf
-            // if ($stripeQuote->status === 'paid' || $stripeQuote->status === 'open') {
-            //     $path = $stripeQuote->quote_pdf;
-            //     $attachment_name = $quote_number . '.pdf';
+            // if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
+            //     $path = $stripeInvoice->invoice_pdf;
+            //     $attachment_name = $invoice_number . '.pdf';
             // }
 
             // if (isset($path) && isset($attachment_name)) {

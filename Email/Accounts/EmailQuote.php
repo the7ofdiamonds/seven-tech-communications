@@ -1,13 +1,15 @@
 <?php
 
-namespace SEVEN_TECH\Communications\Email;
+namespace SEVEN_TECH\Communications\Email\Accounts;
 
 use Exception;
 
-use PHPMailer\PHPMailer\Exception as PHPMailerException;
-use PHPMailer\PHPMailer\PHPMailer;
+use SEVEN_TECH\Communications\Email\Email;
 
-class EmailReceipt
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
+
+class EmailQuote
 {
     private $email;
     private $billing;
@@ -25,30 +27,30 @@ class EmailReceipt
 
     public function __construct(PHPMailer $mailer)
     {
-        $this->smtp_host = get_option('receipt_smtp_host');
-        $this->smtp_port = get_option('receipt_smtp_port');
-        $this->smtp_secure = get_option('receipt_smtp_secure');
-        $this->smtp_auth = get_option('receipt_smtp_auth');
-        $this->smtp_username = get_option('receipt_smtp_username');
-        $this->smtp_password = get_option('receipt_smtp_password');
-        $this->from_email = get_option('receipt_email');
-        $this->from_name = get_option('receipt_name');
+        $this->smtp_host = get_option('quote_smtp_host');
+        $this->smtp_port = get_option('quote_smtp_port');
+        $this->smtp_secure = get_option('quote_smtp_secure');
+        $this->smtp_auth = get_option('quote_smtp_auth');
+        $this->smtp_username = get_option('quote_smtp_username');
+        $this->smtp_password = get_option('quote_smtp_password');
+        $this->from_email = get_option('quote_email');
+        $this->from_name = get_option('quote_name');
 
         $this->email = new Email();
         $this->billing = new EmailBilling();
-        $this->billingType = 'RECEIPT';
-        $this->billingNumberPrefix = 'RT';
+        $this->billingType = 'QUOTE';
+        $this->billingNumberPrefix = 'QT';
         $this->mailer = $mailer;
         // $this->pdf = $pdf;
     }
 
-    public function receiptEmailBody($billingNumber, $receipt, $customer)
+    function quoteEmailBody($billingNumber, $quote, $customer)
     {
         try {
             $header = $this->email->emailHeader();
-            $bodyHeader = $this->billing->billingHeader($this->billingType, $billingNumber, $receipt, $customer);
-            $bodyBody = $this->billing->billingBody($receipt->lines);
-            $bodyFooter = $this->billing->billingFooter($receipt);
+            $bodyHeader = $this->billing->billingHeader($this->billingType, $billingNumber, $quote, $customer);
+            $bodyBody = $this->billing->billingBody($quote->line_items);
+            $bodyFooter = $this->billing->billingFooter($quote);
             $footer = $this->email->emailFooter();
 
             $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
@@ -59,16 +61,16 @@ class EmailReceipt
         }
     }
 
-    public function sendReceiptEmail($customer, $receipt)
+    function sendQuoteEmail($customer, $quote)
     {
-        $to_email = $customer->email;
-        $billingNumber = $this->billingNumberPrefix . $receipt->id;
-        $name =  $customer->name;
-        $to_name = $name;
-
-        $subject = $billingNumber . ' for ' . $name;
-
         try {
+            $to_email = $customer->email;
+            $billingNumber = $this->billingNumberPrefix . $quote->id;
+            $name = $customer->name;
+            $to_name = $name;
+
+            $subject = $billingNumber . ' for ' . $name;
+
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
             $this->mailer->Host = $this->smtp_host;
@@ -83,17 +85,16 @@ class EmailReceipt
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $this->receiptEmailBody($billingNumber, $receipt, $customer);
-            $this->mailer->AltBody = '<pre>' . $receipt . '</pre>';
+            $this->mailer->Body = $this->quoteEmailBody($billingNumber, $quote, $customer);
+            $this->mailer->AltBody = '<pre>' . $quote . '</pre>';
 
             // Make the body the pdf
-            // if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
-            //     $path = $stripeInvoice->receipt_pdf;
-            //     $attachment_name = $receipt_number . '.pdf';
+            // if ($stripeQuote->status === 'paid' || $stripeQuote->status === 'open') {
+            //     $path = $stripeQuote->quote_pdf;
+            //     $attachment_name = $quote_number . '.pdf';
             // }
 
             // if (isset($path) && isset($attachment_name)) {
-
             //     $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
             // }
 

@@ -2,10 +2,9 @@
 
 namespace SEVEN_TECH\Communications\API;
 
-use SEVEN_TECH\Communications\Email\EmailQuote;
-use SEVEN_TECH\Communications\Email\EmailInvoice;
-use SEVEN_TECH\Communications\Email\EmailOnboarding;
-use SEVEN_TECH\Communications\Email\EmailReceipt;
+use SEVEN_TECH\Communications\Email\Accounts\EmailQuote;
+use SEVEN_TECH\Communications\Email\Accounts\EmailInvoice;
+use SEVEN_TECH\Communications\Email\Accounts\EmailReceipt;
 
 use Exception;
 
@@ -13,13 +12,12 @@ use WP_REST_Request;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-class Email
+class Accounts
 {
     private $mailer;
     private $quoteEmail;
     private $invoiceEmail;
     private $receiptEmail;
-    private $onboardingEmail;
 
     public function __construct(PHPMailer $mailer)
     {
@@ -27,7 +25,6 @@ class Email
         $this->quoteEmail = new EmailQuote($this->mailer);
         $this->invoiceEmail = new EmailInvoice($this->mailer);
         $this->receiptEmail = new EmailReceipt($this->mailer);
-        $this->onboardingEmail = new EmailOnboarding($this->mailer);
     }
 
     public function send_quote_email(WP_REST_Request $request)
@@ -111,37 +108,6 @@ class Email
             $receiptEmail = $this->receiptEmail->sendReceiptEmail($customer, $receipt);
 
             return rest_ensure_response($receiptEmail);
-        } catch (Exception $e) {
-            $message = array(
-                'errorMessage' => $e->getMessage(),
-                'statusCode' => $e->getCode()
-            );
-            $response = rest_ensure_response($message);
-            $response->set_status($e->getCode());
-
-            return $response;
-        }
-    }
-
-    public function send_onboarding_email(WP_REST_Request $request)
-    {
-        try {
-            $customer = $request['customer'];
-            $receipt = $request['receipt'];
-
-            if (empty($customer)) {
-                $statusCode = 400;
-                throw new Exception('Customer is required to send receipt email.', $statusCode);
-            }
-
-            if (empty($receipt)) {
-                $statusCode = 400;
-                throw new Exception('Receipt is required to send receipt email.', $statusCode);
-            }
-
-            $onboardingEmail = $this->onboardingEmail->sendOnboardingEmail($customer, $receipt);
-
-            return rest_ensure_response($onboardingEmail);
         } catch (Exception $e) {
             $message = array(
                 'errorMessage' => $e->getMessage(),

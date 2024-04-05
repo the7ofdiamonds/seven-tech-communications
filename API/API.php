@@ -4,44 +4,110 @@ namespace SEVEN_TECH\Communications\API;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-use SEVEN_TECH\Communications\Email\EmailInvoice;
-use SEVEN_TECH\Communications\Email\EmailQuote;
-use SEVEN_TECH\Communications\Email\EmailReceipt;
-use SEVEN_TECH\Communications\Email\EmailOnboarding;
-
 class API
 {
     public function __construct()
     {
         $mailer = new PHPMailer();
 
-        $email = new Email($mailer);
-        new EmailQuote($mailer);
-        new EmailInvoice($mailer);
-        new EmailReceipt($mailer);
-        new EmailOnboarding($mailer);
+        $accounts = new Accounts($mailer);
+        $gateway = new Gateway($mailer);
+        $portfolio = new Portfolio($mailer);
+        $schedule = new Schedule($mailer);
 
         register_rest_route('seven-tech/v1', '/email/quote/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'POST',
-            'callback' => array($email, 'send_quote_email'),
+            'callback' => array($accounts, 'send_quote_email'),
             'permission_callback' => '__return_true',
         ));
 
         register_rest_route('seven-tech/v1', '/email/invoice/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'POST',
-            'callback' => array($email, 'send_invoice_email'),
+            'callback' => array($accounts, 'send_invoice_email'),
             'permission_callback' => '__return_true',
         ));
 
         register_rest_route('seven-tech/v1', '/email/receipt/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'POST',
-            'callback' => array($email, 'send_receipt_email'),
+            'callback' => array($accounts, 'send_receipt_email'),
             'permission_callback' => '__return_true',
         ));
 
         register_rest_route('seven-tech/v1', '/email/onboarding/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'POST',
-            'callback' => array($email, 'send_onboarding_email'),
+            'callback' => array($portfolio, 'send_onboarding_email'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/signup', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'signup'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/verify-account', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'verifyAccount'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/verified-account', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'verifiedAccount'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/locked-account', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'lockedAccount'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/removed-account', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'removedAccount'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/deleted-account', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'deletedAccount'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/forgot-password', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'forgotPassword'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/update-password', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'updatePassword'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/changed-password', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'changedPassword'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/changed-name', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'changedName'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/changed-phone', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'changedPhone'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/gateway/changed-username', array(
+            'methods' => 'POST',
+            'callback' => array($gateway, 'changedUsername'),
             'permission_callback' => '__return_true',
         ));
     }

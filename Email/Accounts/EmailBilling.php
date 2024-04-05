@@ -1,6 +1,6 @@
 <?php
 
-namespace SEVEN_TECH\Communications\Email;
+namespace SEVEN_TECH\Communications\Email\Accounts;
 
 use Exception;
 
