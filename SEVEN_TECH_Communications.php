@@ -28,20 +28,95 @@ require_once SEVEN_TECH_COMMUNICATIONS . 'vendor/autoload.php';
 
 use SEVEN_TECH\Communications\Admin\Admin;
 
+use SEVEN_TECH\Communications\API\API;
+use SEVEN_TECH\Communications\CSS\CSS;
+use SEVEN_TECH\Communications\CSS\Customizer\Customizer;
+use SEVEN_TECH\Communications\CSS\Customizer\BorderRadius;
+use SEVEN_TECH\Communications\CSS\Customizer\Color;
+use SEVEN_TECH\Communications\CSS\Customizer\Shadow;
+use SEVEN_TECH\Communications\CSS\Customizer\SocialBar;
+use SEVEN_TECH\Communications\Database\Database;
+use SEVEN_TECH\Communications\JS\JS;
+use SEVEN_TECH\Communications\Pages\Pages;
+use SEVEN_TECH\Communications\Post_Types\Founders\Founders;
+use SEVEN_TECH\Communications\Post_Types\Post_Types;
+use SEVEN_TECH\Communications\Roles\Roles;
+use SEVEN_TECH\Communications\Router\Router;
+use SEVEN_TECH\Communications\Shortcodes\Shortcodes;
+use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
+use SEVEN_TECH\Communications\Templates\Templates;
+use SEVEN_TECH\Communications\Templates\TemplatesCustom;
+
 class SEVEN_TECH_Communications
 {
+    private $pages;
+
     public function __construct()
     {
+        $plugin = plugin_basename(__FILE__);
+        add_filter("plugin_action_links_{$plugin}", [$this, 'settings_link']);
+
         $admin = new Admin;
-// Add social medaia and bar to this plugin
+
         add_action('admin_init', function () use ($admin) {
             $admin;
+        });
+
+        add_action('rest_api_init', function () {
+            new API();
+        });
+
+        $css = new CSS;
+        $js = new JS;
+        $this->pages = new Pages;
+        $templates_custom = new TemplatesCustom;
+
+        add_action('init', function () use ($css, $js, $templates_custom) {
+            $posttypes = new Post_Types;
+            $posttypes->custom_post_types();
+            $taxonomies = new Taxonomies;
+            $taxonomies->custom_taxonomy();
+            $templates = new Templates(
+                $css,
+                $js,
+            );
+            $router = new Router(
+                $this->pages,
+                $posttypes,
+                $taxonomies,
+                $templates,
+                $templates_custom
+            );
+            $router->load_page();
+            $router->react_rewrite_rules();
+            new Shortcodes;
+        });
+
+        add_action('wp_head', function () {
+            (new SocialBar)->load_css();
+            (new CSS)->load_social_bar_css();
+        });
+
+        add_action('customize_register', function ($wp_customize) {
+            (new Customizer)->register_customizer_panel($wp_customize);
+            (new BorderRadius)->seven_tech_border_radius_section($wp_customize);
+            (new Color)->seven_tech_color_section($wp_customize);
+            (new Shadow)->seven_tech_shadow_section($wp_customize);
+            (new SocialBar)->seven_tech_social_bar_section($wp_customize);
         });
     }
 
     function activate()
     {
         flush_rewrite_rules();
+    }
+
+    public function settings_link($links)
+    {
+        $settings_link = '<a href="' . admin_url('admin.php?page=seven-tech-communications') . '">Settings</a>';
+        array_push($links, $settings_link);
+
+        return $links;
     }
 }
 

@@ -31,7 +31,7 @@ class Admin
             'seven-tech-communications',
             '',
             'dashicons-info',
-            4
+            102
         );
         add_submenu_page(
             'seven-tech-communications',

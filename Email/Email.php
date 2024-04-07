@@ -24,7 +24,12 @@ class Email
         $custom_logo_id = get_theme_mod('custom_logo');
         $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
         $this->web_address = esc_url(home_url());
-        $this->logo_link = esc_url($logo[0]);
+        $this->logo_link = '';
+
+        if (!empty($logo[0])) {
+            $this->logo_link = esc_url($logo[0]);
+        }
+
         $this->site_name = get_bloginfo('name');
 
         $this->facebook = esc_attr(get_option('facebook_link'));

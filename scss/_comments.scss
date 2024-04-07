@@ -1,0 +1,54 @@
+.comment-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    list-style-type: none;
+    gap: .5rem;
+
+    .comment {
+        width: 100%;
+        display: flex;
+
+        .comment-body {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: .25rem;
+
+            .comment-author {
+                display: flex;
+                gap: .25rem;
+                width: fit-content;
+                
+                img {
+                    width: 3rem;
+                    height: 3rem;
+                }
+            }
+
+            .comment-meta {
+                display: flex;
+                width: 100%;
+            }
+
+            p {
+                line-height: normal;
+                display:flex;
+                width: fit-content;
+            }
+
+            .reply {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
+                a{
+                    padding: .5rem;
+                    color: white;
+                    background-color: black;
+                }
+            }
+        }
+    }
+}
