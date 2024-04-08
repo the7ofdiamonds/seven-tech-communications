@@ -12,7 +12,7 @@ class AdminSocialBar
     function register_custom_submenu_page()
     {
         add_submenu_page('seven-tech-communications', 'Add Social Media', 'Add Social', 'manage_options', 'seven-tech-social-bar', [$this, 'create_section'], 4);
-        $this->register_section();
+        add_action('admin_init', [$this, 'register_section']);
     }
 
     function create_section()
@@ -22,16 +22,16 @@ class AdminSocialBar
 
     function register_section()
     {
-        register_setting('seven-tech-admin-contact-group', 'facebook_link');
-        register_setting('seven-tech-admin-contact-group', 'twitter_link');
-        register_setting('seven-tech-admin-contact-group', 'linkedin_link');
-        register_setting('seven-tech-admin-contact-group', 'instagram_link');
-        add_settings_section('seven-tech-admin-contact', 'Add Social Media Links', [$this, 'section_description'], 'seven_tech_contact');
-        add_settings_field('facbook_link', 'Facebook', [$this, 'admin_facebook_input'], 'seven_tech_contact', 'seven-tech-admin-contact');
-        add_settings_field('twitter_link', 'Twitter', [$this, 'admin_twitter_input'], 'seven_tech_contact', 'seven-tech-admin-contact');
-        add_settings_field('linkedin_link', 'linkedin', [$this, 'admin_linkedin_input'], 'seven_tech_contact', 'seven-tech-admin-contact');
-        add_settings_field('instagram_link', 'instagram', [$this, 'admin_instagram_input'], 'seven_tech_contact', 'seven-tech-admin-contact');
-        add_settings_field('contact_email', 'Contact Email', [$this, 'admin_contact_email'], 'seven_tech_contact', 'seven-tech-admin-contact');
+        register_setting('seven-tech-communications-social-group', 'facebook_link');
+        register_setting('seven-tech-communications-social-group', 'twitter_link');
+        register_setting('seven-tech-communications-social-group', 'linkedin_link');
+        register_setting('seven-tech-communications-social-group', 'instagram_link');
+        add_settings_section('seven-tech-communications-social', 'Add Social Media Links', [$this, 'section_description'], 'seven-tech-social-bar');
+        add_settings_field('facbook_link', 'Facebook', [$this, 'admin_facebook_input'], 'seven-tech-social-bar', 'seven-tech-communications-social');
+        add_settings_field('twitter_link', 'Twitter', [$this, 'admin_twitter_input'], 'seven-tech-social-bar', 'seven-tech-communications-social');
+        add_settings_field('linkedin_link', 'linkedin', [$this, 'admin_linkedin_input'], 'seven-tech-social-bar', 'seven-tech-communications-social');
+        add_settings_field('instagram_link', 'instagram', [$this, 'admin_instagram_input'], 'seven-tech-social-bar', 'seven-tech-communications-social');
+        add_settings_field('contact_email', 'Contact Email', [$this, 'admin_contact_email'], 'seven-tech-social-bar', 'seven-tech-communications-social');
     }
 
     function section_description()

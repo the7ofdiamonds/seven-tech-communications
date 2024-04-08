@@ -2,8 +2,6 @@
 
 namespace SEVEN_TECH\Communications\Templates;
 
-use Exception;
-
 use SEVEN_TECH\Communications\CSS\CSS;
 use SEVEN_TECH\Communications\JS\JS;
 
@@ -25,18 +23,22 @@ class Templates
     function get_front_page_template($frontpage_template, $section)
     {
         if (is_front_page()) {
+            $frontpage_template = SEVEN_TECH_COMMUNICATIONS . 'Pages/front-page.php';
 
-            add_action('wp_head', function () use ($section) {
-                $this->css->load_front_page_css($section);
-            });
-            add_action('wp_footer', function () use ($section) {
-                $this->js->load_front_page_react($section);
-            });
+            if (file_exists($frontpage_template)) {
+                add_action('wp_head', function () use ($section) {
+                    $this->css->load_front_page_css($section);
+                });
+                add_action('wp_footer', function () use ($section) {
+                    $this->js->load_front_page_react($section);
+                });
+
+                return $frontpage_template;
+            }
 
             return $frontpage_template;
         }
     }
-
 
     function get_custom_page_template($template_include, $custom_page)
     {
@@ -59,8 +61,6 @@ class Templates
     function get_protected_page_template($template_include, $protected_page)
     {
         $template = $this->pluginDir . 'Pages/page-protected.php';
-
-        error_log("get_protected_page_template");
 
         if (file_exists($template)) {
             add_action('wp_head', function () use ($protected_page) {

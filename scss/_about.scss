@@ -1,0 +1,53 @@
+.mission-statement-card.card {
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0.375em;
+  width: fit-content;
+  background-color: black;
+
+  h3 {
+    color: white;
+  }
+}
+
+.about-where {
+  text-align: center;
+}
+
+.about-where {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .about-where.card {
+    position: relative;
+    overflow: hidden;
+    height: 50vh;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 5rem;
+  min-height: 100vh;
+  section {
+    margin-top: 0;
+    min-height: fit-content;
+  }
+}

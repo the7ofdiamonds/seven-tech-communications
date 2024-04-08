@@ -1,0 +1,20 @@
+{
+  "src/index.jsx": {
+    "file": "index.js",
+    "name": "index",
+    "src": "src/index.jsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/views/About.jsx"
+    ]
+  },
+  "src/views/About.jsx": {
+    "file": "About.js",
+    "name": "About",
+    "src": "src/views/About.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx"
+    ]
+  }
+}

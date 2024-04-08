@@ -13,9 +13,19 @@ class Pages
 
     public function __construct()
     {
-        $this->front_page_react = [];
+        $this->front_page_react = [
+            'About',
+        ];
 
-        $this->custom_pages_list = [];
+        $this->custom_pages_list = [
+            [
+                'url' => 'about',
+                'regex' => '#^/about#',
+                'file_name' => 'About',
+                'title' => 'ABOUT',
+                'name' => 'about'
+            ],
+        ];
 
         $this->protected_pages_list = [];
 

@@ -1,2 +1,11 @@
 @use './_comments.scss';
 @use './_social-bar.scss';
+
+.front-page {
+    margin-top: 5rem;
+    min-height: 100vh;
+    section {
+      margin-top: 0;
+      min-height: fit-content;
+    }
+  }

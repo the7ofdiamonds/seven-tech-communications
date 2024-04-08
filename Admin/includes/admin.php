@@ -19,7 +19,7 @@ settings_errors();
 <section class="orb-services-admin">
     <?php settings_errors(); ?>
     <form method="post" action="/wp-admin/admin.php?page=seven-tech-communications">
-        <?php settings_fields('seven-tech-communications-types-group'); ?>
+        <?php settings_fields('seven-tech-communications-group'); ?>
         <?php do_settings_sections('seven-tech-communications'); ?>
         <?php submit_button(); ?>
     </form>

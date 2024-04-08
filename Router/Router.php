@@ -127,15 +127,9 @@ class Router
 
     function react_rewrite_rules()
     {
-        add_rewrite_rule('^forgot/?', 'index.php?', 'top');
-        add_rewrite_rule('^password-recovery\/([a-z0-9.%]+)\/([a-zA-Z0-9-]+)?$', 'index.php?', 'top');
-        add_rewrite_rule('^account-recovery\/([a-z0-9.%]+)\/([a-zA-Z0-9-]+)?$', 'index.php?', 'top');
-        add_rewrite_rule('^verify-email\/([a-z0-9.%]+)\/([a-zA-Z0-9-]+)?$', 'index.php?', 'top');
-        add_rewrite_rule('^remove-account\/([a-z0-9.%]+)\/([a-zA-Z0-9-]+)?$', 'index.php?', 'top');
-        add_rewrite_rule('^login/?', 'index.php?', 'top');
-        add_rewrite_rule('^logout/?', 'index.php?', 'top');
-        add_rewrite_rule('^signup/?', 'index.php?', 'top');
-        add_rewrite_rule('^dashboard/?', 'index.php?', 'top');
-        add_rewrite_rule('^founders/([a-zA-Z\-]+)/resume/?$', 'index.php?founder_name=$matches[1]', 'top');
+        add_rewrite_rule('^contact/?', 'index.php?', 'top');
+        add_rewrite_rule('^contact/success/?', 'index.php?', 'top');
+        add_rewrite_rule('^support/?', 'index.php?', 'top');
+        add_rewrite_rule('^support/success/?', 'index.php?', 'top');
     }
 }

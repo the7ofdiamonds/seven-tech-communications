@@ -94,7 +94,7 @@ class CSS
                 $this->load_customization_css();
                 $this->load_index_css();
 
-                $filename = $page['file_name'] . '.css';
+                $filename = $page . '.css';
                 $cssFilePath = $this->cssFolderPath . $filename;
                 $cssFilePathURL = $this->cssFolderPathURL . $filename;
 

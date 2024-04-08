@@ -13,11 +13,13 @@ class Admin
         add_action('wp_ajax_remove_communication_type', [$this, 'remove_communication_type_callback']);
 
         add_action('admin_menu', [$this, 'register_custom_menu_page']);
+        add_action('admin_menu', [new AdminAbout, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminEmail, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminEmailInvoice, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminEmailQuote, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminEmailReceipt, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminEmailSchedule, 'register_custom_submenu_page']);
+        add_action('admin_menu', [new AdminSocialBar, 'register_custom_submenu_page']);
 
         // add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_styles']);
     }
