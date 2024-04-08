@@ -3,17 +3,23 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import ContentComponent from '../views/components/ContentComponent';
 
+import { getMissionStatement } from '../controllers/aboutSlice';
 import { getContent } from '../controllers/contentSlice';
 
 function About() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  const missionStatement = 'Turning ideas into tangible assets ';
-  // const { content } = useSelector((state) => state.content);
+  // const missionStatement = 'Turning ideas into tangible assets ';
+  const { missionStatement } = useSelector((state) => state.about);
+  const { content } = useSelector((state) => state.content);
 
-  // useEffect(() => {
-  //   dispatch(getContent('about'));
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getMissionStatement());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getContent('about'));
+  }, [dispatch]);
 
   return (
     <>
@@ -25,7 +31,7 @@ function About() {
         </h3>
       </div>
 
-      {/* <ContentComponent content={content} /> */}
+      <ContentComponent content={content} />
     </>
   );
 }

@@ -2,7 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
     contentLoading: false,
+    contentStatusCode: '',
     contentError: '',
+    contentErrorMessage: '',
     content: '',
     headquarters: ''
 };
@@ -17,16 +19,12 @@ export const getContent = createAsyncThunk('content/getContent', async (pageSlug
             },
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            const errorMessage = errorData.message;
-            throw new Error(errorMessage);
-        }
-        
         const responseData = await response.json();
+
         return responseData;
     } catch (error) {
-        throw error;
+        console.error(error);
+        throw new Error(error.message);
     }
 });
 
@@ -41,12 +39,15 @@ export const contentSlice = createSlice({
             })
             .addCase(getContent.fulfilled, (state, action) => {
                 state.contentLoading = false;
-                state.contentError = null;
-                state.content = action.payload
+                state.contentStatusCode = action.payload.statusCode;
+                state.contentError = action.payload.error;
+                state.contentErrorMessage = action.payload.errorMessage;
+                state.content = action.payload.content
             })
             .addCase(getContent.rejected, (state, action) => {
                 state.contentLoading = false
-                state.contentError = action.error.message
+                state.contentError = action.error
+                state.contentErrorMessage = action.error.message
             })
     }
 })

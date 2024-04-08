@@ -50,6 +50,7 @@ use SEVEN_TECH\Communications\Templates\TemplatesCustom;
 class SEVEN_TECH_Communications
 {
     private $pages;
+    private $router;
 
     public function __construct()
     {
@@ -66,31 +67,40 @@ class SEVEN_TECH_Communications
             new API();
         });
 
+        $pages = new Pages;
+        $posttypes = new Post_Types;
+        $taxonomies = new Taxonomies;
         $css = new CSS;
         $js = new JS;
-        $this->pages = new Pages;
+        $templates = new Templates(
+            $css,
+            $js,
+        );
         $templates_custom = new TemplatesCustom;
+        $router = new Router(
+            $pages,
+            $posttypes,
+            $taxonomies,
+            $templates,
+            $templates_custom
+        );
 
-        add_action('init', function () use ($css, $js, $templates_custom) {
-            $posttypes = new Post_Types;
+        add_action('init', function () use ($posttypes, $taxonomies, $router) {
             $posttypes->custom_post_types();
-            $taxonomies = new Taxonomies;
             $taxonomies->custom_taxonomy();
-            $templates = new Templates(
-                $css,
-                $js,
-            );
-            $router = new Router(
-                $this->pages,
-                $posttypes,
-                $taxonomies,
-                $templates,
-                $templates_custom
-            );
             $router->load_page();
             $router->react_rewrite_rules();
             new Shortcodes;
         });
+
+        $this->router = new Router(
+            $pages,
+            $posttypes,
+            $taxonomies,
+            $templates,
+            $templates_custom
+        );
+        $this->pages = new Pages;
 
         add_action('wp_head', function () {
             (new SocialBar)->load_css();
@@ -108,6 +118,12 @@ class SEVEN_TECH_Communications
 
     function activate()
     {
+        $this->router->react_rewrite_rules();
+        $this->pages->add_pages();
+    }
+
+    function deactivate()
+    {
         flush_rewrite_rules();
     }
 
@@ -122,3 +138,4 @@ class SEVEN_TECH_Communications
 
 $seven_tech_communications = new SEVEN_TECH_Communications();
 register_activation_hook(__FILE__, array($seven_tech_communications, 'activate'));
+register_deactivation_hook(__FILE__, array($seven_tech_communications, 'deactivate'));

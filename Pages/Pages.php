@@ -31,7 +31,15 @@ class Pages
 
         $this->pages_list = [];
 
-        $this->pages = [];
+        $this->pages = [
+            [
+                'url' => 'about',
+                'regex' => '#^/about#',
+                'file_name' => 'About',
+                'title' => 'ABOUT',
+                'name' => 'about'
+            ]
+        ];
     }
 
     function add_pages()

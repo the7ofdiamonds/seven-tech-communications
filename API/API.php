@@ -10,11 +10,18 @@ class API
     {
         $mailer = new PHPMailer();
 
+        $about = new About;
         $accounts = new Accounts($mailer);
         $content = new Content;
         $gateway = new Gateway($mailer);
         $portfolio = new Portfolio($mailer);
         $schedule = new Schedule($mailer);
+
+        register_rest_route('seven-tech/v1', '/about/mission-statement', array(
+            'methods' => 'GET',
+            'callback' => array($about, 'get_mission_statement'),
+            'permission_callback' => '__return_true',
+        ));
 
         register_rest_route('seven-tech/v1', '/email/quote/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'POST',
