@@ -20,18 +20,20 @@ class Templates
         $this->pluginDir = SEVEN_TECH_COMMUNICATIONS;
     }
 
-    function get_front_page_template($frontpage_template, $section)
+    function get_front_page_template($frontpage_template, $sections)
     {
         if (is_front_page()) {
-            $frontpage_template = SEVEN_TECH_COMMUNICATIONS . 'Pages/front-page.php';
+            $frontpage_template = $this->pluginDir . 'Pages/front-page.php';
 
             if (file_exists($frontpage_template)) {
-                add_action('wp_head', function () use ($section) {
-                    $this->css->load_front_page_css($section);
-                });
-                add_action('wp_footer', function () use ($section) {
-                    $this->js->load_front_page_react($section);
-                });
+                foreach ($sections as $section) {
+                    add_action('wp_head', function () use ($section) {
+                        $this->css->load_front_page_css($section);
+                    });
+                    add_action('wp_footer', function () use ($section) {
+                        $this->js->load_front_page_react($section);
+                    });
+                }
 
                 return $frontpage_template;
             }
@@ -45,11 +47,13 @@ class Templates
         $custom_template = $this->pluginDir . "Pages/page-{$custom_page['name']}.php";
 
         if (file_exists($custom_template)) {
-            add_action('wp_head', function () use ($custom_page) {
-                $this->css->load_pages_css($custom_page);
+            $filename = $custom_page['file_name'];
+
+            add_action('wp_head', function () use ($filename) {
+                $this->css->load_pages_css($filename);
             });
-            add_action('wp_footer', function () use ($custom_page) {
-                $this->js->load_pages_react($custom_page);
+            add_action('wp_footer', function () use ($filename) {
+                $this->js->load_pages_react($filename);
             });
 
             return $custom_template;
@@ -63,11 +67,13 @@ class Templates
         $template = $this->pluginDir . 'Pages/page-protected.php';
 
         if (file_exists($template)) {
-            add_action('wp_head', function () use ($protected_page) {
-                $this->css->load_pages_css($protected_page);
+            $filename = $protected_page['file_name'];
+
+            add_action('wp_head', function () use ($filename) {
+                $this->css->load_pages_css($filename);
             });
-            add_action('wp_footer', function () use ($protected_page) {
-                $this->js->load_pages_react($protected_page);
+            add_action('wp_footer', function () use ($filename) {
+                $this->js->load_pages_react($filename);
             });
 
             return $template;
@@ -83,12 +89,13 @@ class Templates
         $template = $this->pluginDir . 'Pages/page.php';;
 
         if (file_exists($template)) {
-            add_action('wp_head', function () use ($page) {
-                error_log($page);
-                $this->css->load_pages_css($page);
+            $filename = $page['file_name'];
+
+            add_action('wp_head', function () use ($filename) {
+                $this->css->load_pages_css($filename);
             });
-            add_action('wp_footer', function () use ($page) {
-                $this->js->load_pages_react($page);
+            add_action('wp_footer', function () use ($filename) {
+                $this->js->load_pages_react($filename);
             });
 
             return $template;
@@ -99,17 +106,33 @@ class Templates
         return $template_include;
     }
 
+    function get_page_list_template($template_include, $page)
+    {
+        $filename = $page['file_name'];
+
+        add_action('wp_head', function () use ($filename) {
+            $this->css->load_pages_css($filename);
+        });
+        add_action('wp_footer', function () use ($filename) {
+            $this->js->load_pages_react($filename);
+        });
+
+        return $template_include;
+    }
+
     function get_taxonomy_page_template($taxonomy_template, $taxonomy)
     {
         if (is_tax($taxonomy['taxonomy'])) {
             $custom_taxonomy_template = $this->pluginDir . "Taxonomies/taxonomy-{$taxonomy['file_name']}.php";
 
             if (file_exists($custom_taxonomy_template)) {
-                add_action('wp_head', function () use ($taxonomy) {
-                    $this->css->load_taxonomies_css($taxonomy);
+                $filename = $taxonomy['file_name'];
+
+                add_action('wp_head', function () use ($filename) {
+                    $this->css->load_pages_css($filename);
                 });
-                add_action('wp_footer', function () use ($taxonomy) {
-                    $this->js->load_taxonomies_react($taxonomy);
+                add_action('wp_footer', function () use ($filename) {
+                    $this->js->load_pages_react($filename);
                 });
 
                 return $custom_taxonomy_template;
@@ -125,11 +148,13 @@ class Templates
             $custom_archive_template = $this->pluginDir . 'Post_Types/' . $post_type['plural'] . '/archive-' . $post_type['name'] . '.php';
 
             if (file_exists($custom_archive_template)) {
-                add_action('wp_head', function () use ($post_type) {
-                    $this->css->load_post_types_css($post_type);
+                $filename = $post_type['file_name'];
+
+                add_action('wp_head', function () use ($filename) {
+                    $this->css->load_pages_css($filename);
                 });
-                add_action('wp_footer', function () use ($post_type) {
-                    $this->js->load_post_types_archive_react($post_type);
+                add_action('wp_footer', function () use ($filename) {
+                    $this->js->load_pages_react($filename);
                 });
 
                 return $custom_archive_template;
@@ -145,11 +170,13 @@ class Templates
             $custom_single_template = $this->pluginDir . 'Post_Types/' . $post_type['plural'] . '/single-' . $post_type['name'] . '.php';
 
             if (file_exists($custom_single_template)) {
-                add_action('wp_head', function () use ($post_type) {
-                    $this->css->load_post_types_css($post_type);
+                $filename = $post_type['file_name'];
+
+                add_action('wp_head', function () use ($filename) {
+                    $this->css->load_pages_css($filename);
                 });
-                add_action('wp_footer', function () use ($post_type) {
-                    $this->js->load_post_types_single_react($post_type);
+                add_action('wp_footer', function () use ($filename) {
+                    $this->js->load_pages_react($filename);
                 });
 
                 return $custom_single_template;

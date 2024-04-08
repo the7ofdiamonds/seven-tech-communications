@@ -39,7 +39,7 @@ class JS
     function load_front_page_react($section)
     {
         try {
-            // $this->load_react_index();
+            $this->load_react_index();
 
             if (!empty($section)) {
                 wp_enqueue_script('wp-element', $this->includes_url . 'js/dist/element.min.js', [], null, true);
@@ -70,15 +70,15 @@ class JS
             $this->load_react_index();
 
             if (!empty($page) && is_array($page)) {
-                $filePath = $this->buildDir . $page['file_name'] . '.js';
-                $filePathURL = $this->buildDirURL . $page['file_name'] . '.js';
+                $filePath = $this->buildDir . $page . '.js';
+                $filePathURL = $this->buildDirURL . $page . '.js';
 
                 wp_enqueue_script('wp-element', $this->includes_url . 'js/dist/element.min.js', [], null, true);
 
                 if (file_exists($filePath)) {
                     echo '<script type="module" src="' . esc_url($filePathURL) . '"></script>';
                 } else {
-                    throw new Exception($page['file_name'] . ' page has not been created in react JSX.');
+                    throw new Exception($page . ' page has not been created in react JSX.');
                 }
             }
         } catch (Exception $e) {
@@ -87,90 +87,6 @@ class JS
             $response = $errorMessage . ' ' . $errorCode;
 
             error_log($response . ' at load_pages_react');
-
-            return $response;
-        }
-    }
-
-    function load_taxonomies_react($taxonomy)
-    {
-        try {
-            $this->load_react_index();
-
-            if (!empty($taxonomy) && is_array($taxonomy) && is_tax($taxonomy['taxonomy'])) {
-                $filePath = $this->buildDir . $taxonomy['file_name'] . '.js';
-                $filePathURL = $this->buildDirURL . $taxonomy['file_name'] . '.js';
-
-                wp_enqueue_script('wp-element', $this->includes_url . 'js/dist/element.min.js', [], null, true);
-
-                if (file_exists($filePath)) {
-                    echo '<script type="module" src="' . esc_url($filePathURL) . '"></script>';
-                } else {
-                    throw new Exception('Taxonomy ' . ucfirst($taxonomy['name']) . ' page has not been created in react JSX.');
-                }
-            }
-        } catch (Exception $e) {
-            $errorMessage = $e->getMessage();
-            $errorCode = $e->getCode();
-            $response = $errorMessage . ' ' . $errorCode;
-
-            error_log($response . ' at load_taxonomies_react');
-
-            return $response;
-        }
-    }
-
-    function load_post_types_archive_react($post_type)
-    {
-        try {
-            $this->load_react_index();
-
-            if (!empty($post_type) && is_array($post_type) && is_post_type_archive($post_type['name'])) {
-                $filePath = $this->buildDir . $post_type['archive_page'] . '.js';
-                $filePathURL = $this->buildDirURL . $post_type['archive_page'] . '.js';
-
-                wp_enqueue_script('wp-element', $this->includes_url . 'js/dist/element.min.js', [], null, true);
-
-                if (file_exists($filePath)) {
-                    echo '<script type="module" src="' . esc_url($filePathURL) . '"></script>';
-                } else {
-                    throw new Exception('Post Type ' . ucfirst($post_type['name']) . ' page has not been created in react JSX.', 404);
-                }
-            }
-        } catch (Exception $e) {
-            $errorMessage = $e->getMessage();
-            $errorCode = $e->getCode();
-            $response = $errorMessage . ' ' . $errorCode;
-
-            error_log($response . ' at load_post_types_archive_react');
-
-            return $response;
-        }
-    }
-
-    function load_post_types_single_react($post_type)
-    {
-        try {
-            $this->load_react_index();
-
-            if (!empty($post_type) && is_array($post_type) && is_singular($post_type['name'])) {
-                $filePath = $this->buildDir . $post_type['single_page'] . '.js';
-                $filePathURL = $this->buildDirURL . $post_type['single_page'] . '.js';
-
-                wp_enqueue_script('wp-element', $this->includes_url . 'js/dist/element.min.js', [], null, true);
-
-                if (file_exists($filePath)) {
-                    echo '<script type="module" src="' . esc_url($filePathURL) . '"></script>';
-                } else {
-                    throw new Exception('Post Type ' . ucfirst($post_type['name']) . ' page has not been created in react JSX.');
-                }
-            }
-        } catch (Exception $e) {
-            $errorMessage = $e->getMessage();
-            $errorCode = $e->getCode();
-            $response = $errorMessage . ' ' . $errorCode;
-
-            error_log($response . ' at load_post_types_single_react');
 
             return $response;
         }

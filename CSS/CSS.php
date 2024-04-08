@@ -116,64 +116,6 @@ class CSS
         }
     }
 
-    function load_taxonomies_css($taxonomy)
-    {
-        try {
-            if (!empty($taxonomy['name']) && is_tax($taxonomy['name'])) {
-                $this->load_customization_css();
-                $this->load_index_css();
-
-                $filename = $taxonomy['file_name'] . '.css';
-                $cssFilePath = $this->cssFolderPath . $filename;
-                $cssFilePathURL = $this->cssFolderPathURL . $filename;
-
-                if (file_exists($cssFilePath)) {
-                    wp_register_style($this->handle_prefix . 'css',  $cssFilePathURL, array(), false, 'all');
-                    wp_enqueue_style($this->handle_prefix . 'css');
-                } else {
-                    throw new Exception('CSS file ' . $filename . ' is missing at :' . $this->cssFolderPath, 404);
-                }
-            }
-        } catch (Exception $e) {
-            $errorMessage = $e->getMessage();
-            $errorCode = $e->getCode();
-            $response = $errorMessage . ' ' . $errorCode;
-
-            error_log($response . ' at load_taxonomies_css');
-
-            return $response;
-        }
-    }
-
-    function load_post_types_css($post_type)
-    {
-        try {
-            if (!empty($post_type) && (is_array($post_type) || is_object($post_type)) && (is_post_type_archive($post_type) || is_singular($post_type))) {
-                $this->load_customization_css();
-                $this->load_index_css();
-
-                $filename = $post_type['file_name'] . '.css';
-                $cssFilePath = $this->cssFolderPath . $filename;
-                $cssFilePathURL = $this->cssFolderPathURL . $filename;
-
-                if (file_exists($cssFilePath)) {
-                    wp_register_style($this->handle_prefix . 'css',  $cssFilePathURL, array(), false, 'all');
-                    wp_enqueue_style($this->handle_prefix . 'css');
-                } else {
-                    throw new Exception('CSS file ' . $filename . ' is missing at :' . $this->cssFolderPath, 404);
-                }
-            }
-        } catch (Exception $e) {
-            $errorMessage = $e->getMessage();
-            $errorCode = $e->getCode();
-            $response = $errorMessage . ' ' . $errorCode;
-
-            error_log($response . ' at load_post_types_css');
-
-            return $response;
-        }
-    }
-
     function load_social_bar_css()
     {
         try {
