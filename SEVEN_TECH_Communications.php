@@ -35,7 +35,6 @@ use SEVEN_TECH\Communications\CSS\Customizer\BorderRadius;
 use SEVEN_TECH\Communications\CSS\Customizer\Color;
 use SEVEN_TECH\Communications\CSS\Customizer\Shadow;
 use SEVEN_TECH\Communications\CSS\Customizer\SocialBar;
-use SEVEN_TECH\Communications\Database\Database;
 use SEVEN_TECH\Communications\JS\JS;
 use SEVEN_TECH\Communications\Pages\Pages;
 use SEVEN_TECH\Communications\Post_Types\Founders\Founders;
@@ -45,7 +44,6 @@ use SEVEN_TECH\Communications\Router\Router;
 use SEVEN_TECH\Communications\Shortcodes\Shortcodes;
 use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
 use SEVEN_TECH\Communications\Templates\Templates;
-use SEVEN_TECH\Communications\Templates\TemplatesCustom;
 
 class SEVEN_TECH_Communications
 {
@@ -76,13 +74,11 @@ class SEVEN_TECH_Communications
             $css,
             $js,
         );
-        $templates_custom = new TemplatesCustom;
         $router = new Router(
             $pages,
             $posttypes,
             $taxonomies,
-            $templates,
-            $templates_custom
+            $templates
         );
 
         add_action('init', function () use ($posttypes, $taxonomies, $router) {
@@ -97,8 +93,7 @@ class SEVEN_TECH_Communications
             $pages,
             $posttypes,
             $taxonomies,
-            $templates,
-            $templates_custom
+            $templates
         );
         $this->pages = new Pages;
 

@@ -5,8 +5,8 @@ namespace SEVEN_TECH\Communications\Pages;
 class Pages
 {
     public $front_page_react;
-    public $custom_pages_list;
-    public $protected_pages_list;
+    public $custom_pages;
+    public $protected_pages;
     public $pages_list;
     public $pages;
     public $page_titles;
@@ -17,27 +17,62 @@ class Pages
             'About',
         ];
 
-        $this->custom_pages_list = [
+        $this->custom_pages = [
             [
-                'url' => 'about',
                 'regex' => '#^/about#',
                 'file_name' => 'About',
-                'title' => 'ABOUT',
-                'name' => 'about'
+                'page_name' => 'about'
             ],
         ];
 
-        $this->protected_pages_list = [];
-
-        $this->pages_list = [];
+        $this->protected_pages = [];
 
         $this->pages = [
             [
-                'url' => 'about',
-                'regex' => '#^/about#',
-                'file_name' => 'About',
+                'url' => 'contact',
+                'regex' => '#^/contact#',
+                'file_name' => 'Contact',
+            ],
+            [
+                'url' => 'contact/success',
+                'regex' => '#^/contact/success#',
+                'file_name' => 'ContactSuccess',
+            ],
+            [
+                'url' => 'faq',
+                'regex' => '#^/faq#',
+                'file_name' => 'FAQ',
+            ],
+            [
+                'url' => 'support',
+                'regex' => '#^/support#',
+                'file_name' => 'Support',
+            ],
+            [
+                'url' => 'support/success',
+                'regex' => '#^/support/success#',
+                'file_name' => 'SupportSuccess',
+            ],
+        ];
+
+        $this->pages_list = [
+            [
                 'title' => 'ABOUT',
-                'name' => 'about'
+            ],
+            [
+                'title' => 'CONTACT',
+            ],
+            [
+                'title' => 'CONTACT SUCCESS',
+            ],
+            [
+                'title' => 'FAQ',
+            ],
+            [
+                'title' => 'SUPPORT',
+            ],
+            [
+                'title' => 'SUPPORT SUCCESS',
             ]
         ];
     }

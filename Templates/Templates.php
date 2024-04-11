@@ -44,7 +44,7 @@ class Templates
 
     function get_custom_page_template($template_include, $custom_page)
     {
-        $custom_template = $this->pluginDir . "Pages/page-{$custom_page['name']}.php";
+        $custom_template = $this->pluginDir . "Pages/page-{$custom_page['page_name']}.php";
 
         if (file_exists($custom_template)) {
             $filename = $custom_page['file_name'];

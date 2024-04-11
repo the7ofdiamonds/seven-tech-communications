@@ -9,7 +9,6 @@ import { getContent } from '../controllers/contentSlice';
 function About() {
   const dispatch = useDispatch();
 
-  // const missionStatement = 'Turning ideas into tangible assets ';
   const { missionStatement } = useSelector((state) => state.about);
   const { content } = useSelector((state) => state.content);
 

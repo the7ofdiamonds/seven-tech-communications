@@ -1,0 +1,2 @@
+import{j as s}from"./index.js";function t(){var a=new URLSearchParams(window.location.search),e=a.get("first_name"),r=a.get("email");return s.jsx("main",{className:"contact-success",children:s.jsx("div",{className:"status-bar card success",children:s.jsx("span",{children:s.jsxs("h4",{children:["Thank You, ",e,". Your message has been sent, and a reply will be sent to ",r,"."]})})})})}export{t as default};
+//# sourceMappingURL=ContactSuccess.js.map
