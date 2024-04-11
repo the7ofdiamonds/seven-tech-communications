@@ -1,6 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import ContentComponent from '../views/components/ContentComponent';
+
+import { getContent } from '../controllers/contentSlice';
 
 function SupportComponent() {
+  const dispatch = useDispatch();
+
+  const { content } = useSelector((state) => state.content);
+
+  useEffect(() => {
+    dispatch(getContent('support'));
+  }, [dispatch]);
+
   const [messageType, setMessageType] = useState('');
   const [message, setMessage] = useState('');
 
@@ -69,7 +82,9 @@ function SupportComponent() {
 
   return (
     <>
-      <section className="support">
+      <main className="support">
+        <ContentComponent content={content} />
+
         <div className="support-card card">
           <form>
             <table>
@@ -163,7 +178,7 @@ function SupportComponent() {
             <span>{message}</span>
           </div>
         )}
-      </section>
+      </main>
     </>
   );
 }

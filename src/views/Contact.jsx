@@ -1,6 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import ContentComponent from '../views/components/ContentComponent';
+
+import { getContent } from '../controllers/contentSlice';
 
 function ContactComponent() {
+  const dispatch = useDispatch();
+
+  const { content } = useSelector((state) => state.content);
+
+  useEffect(() => {
+    dispatch(getContent('contact'));
+  }, [dispatch]);
+
   const [messageType, setMessageType] = useState('');
   const [message, setMessage] = useState('');
 
@@ -71,6 +84,9 @@ function ContactComponent() {
     <>
       <main className="contact">
         <h2 className="title">CONTACT</h2>
+
+        <ContentComponent content={content} />
+
         <div className="contact-card card">
           <form>
             <table>
