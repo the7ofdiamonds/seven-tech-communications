@@ -9,7 +9,6 @@ class Pages
     public $protected_pages;
     public $pages_list;
     public $pages;
-    public $page_titles;
 
     public function __construct()
     {

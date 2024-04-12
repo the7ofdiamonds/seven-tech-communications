@@ -14,13 +14,6 @@
       "_ContentComponent.js"
     ]
   },
-  "_useDispatch.js": {
-    "file": "useDispatch.js",
-    "name": "useDispatch",
-    "imports": [
-      "src/index.jsx"
-    ]
-  },
   "src/index.jsx": {
     "file": "index.js",
     "name": "index",

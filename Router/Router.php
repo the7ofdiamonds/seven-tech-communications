@@ -43,17 +43,14 @@ class Router
         try {
             $path = $_SERVER['REQUEST_URI'];
 
-            if (preg_match('#^/$|^/index\.php(?:\?|$)#', $path)) {
+            if (!empty($this->front_page_react)) {
+                $sections = $this->front_page_react;
 
-                if (!empty($this->front_page_react)) {
-                    $sections = $this->front_page_react;
-
-                    add_filter('frontpage_template', function ($frontpage_template) use ($sections) {
-                        return $this->templates->get_front_page_template($frontpage_template, $sections);
-                    });
-                }
+                add_filter('frontpage_template', function ($frontpage_template) use ($sections) {
+                    return $this->templates->get_front_page_template($frontpage_template, $sections);
+                });
             }
-
+            
             if (!empty($this->custom_pages)) {
                 foreach ($this->custom_pages as $custom_page) {
                     if (!isset($custom_page['regex'])) {
@@ -182,9 +179,7 @@ class Router
     {
         add_rewrite_rule("^about$/?", 'index.php?', 'top');
         add_rewrite_rule("^contact$/?", 'index.php?', 'top');
-        add_rewrite_rule("^contact/success$/?", 'index.php?', 'top');
         add_rewrite_rule("^faq$/?", 'index.php?', 'top');
         add_rewrite_rule("^support$/?", 'index.php?', 'top');
-        add_rewrite_rule("^support/success$/?", 'index.php?', 'top');
     }
 }
