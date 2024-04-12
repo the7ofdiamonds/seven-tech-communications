@@ -1,23 +1,47 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import ContentComponent from '../views/components/ContentComponent';
+
+import LoadingComponent from '../loading/LoadingComponent';
 
 import { getContent } from '../controllers/contentSlice';
 
 function Faq() {
+  const location = useLocation();
+  const path = location.pathname;
+  const page = path.replace(/^\/+|\/+$/g, '');
+
   const dispatch = useDispatch();
 
-  const { content } = useSelector((state) => state.content);
+  const {
+    contentLoading,
+    contentStatusCode,
+    contentErrorMessage,
+    title,
+    content,
+  } = useSelector((state) => state.content);
 
   useEffect(() => {
-    dispatch(getContent('faq'));
+    dispatch(getContent(page));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (contentStatusCode && contentErrorMessage) {
+      setMessageType('error');
+      setMessage(contentErrorMessage);
+    }
+  }, [contentStatusCode, contentErrorMessage]);
+
+  if (contentLoading) {
+    return <LoadingComponent />;
+  }
 
   return (
     <>
       <main className="faq">
-        <h2 className="title">FAQ</h2>
+        <h2 className="title">{title}</h2>
 
         <ContentComponent content={content} />
       </main>

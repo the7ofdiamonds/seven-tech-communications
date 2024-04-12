@@ -9,13 +9,14 @@ class API
     public function __construct()
     {
         $mailer = new PHPMailer();
-
         $about = new About;
         $accounts = new Accounts($mailer);
+        $contact = new Contact($mailer);
         $content = new Content;
         $gateway = new Gateway($mailer);
         $portfolio = new Portfolio($mailer);
         $schedule = new Schedule($mailer);
+        $support = new Support($mailer);
 
         register_rest_route('seven-tech/v1', '/about/mission-statement', array(
             'methods' => 'GET',
@@ -38,6 +39,12 @@ class API
         register_rest_route('seven-tech/v1', '/email/receipt/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'POST',
             'callback' => array($accounts, 'send_receipt_email'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/contact', array(
+            'methods' => 'POST',
+            'callback' => array($contact, 'send_contact_email'),
             'permission_callback' => '__return_true',
         ));
 
@@ -122,6 +129,18 @@ class API
         register_rest_route('seven-tech/v1', '/email/gateway/changed-username', array(
             'methods' => 'POST',
             'callback' => array($gateway, 'changedUsername'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/schedule', array(
+            'methods' => 'POST',
+            'callback' => array($schedule, 'send_schedule_email'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/support', array(
+            'methods' => 'POST',
+            'callback' => array($support, 'send_support_email'),
             'permission_callback' => '__return_true',
         ));
     }

@@ -6,6 +6,14 @@
       "src/index.jsx"
     ]
   },
+  "_StatusBarComponent.js": {
+    "file": "StatusBarComponent.js",
+    "name": "StatusBarComponent",
+    "imports": [
+      "src/index.jsx",
+      "_ContentComponent.js"
+    ]
+  },
   "_useDispatch.js": {
     "file": "useDispatch.js",
     "name": "useDispatch",
@@ -21,10 +29,8 @@
     "dynamicImports": [
       "src/views/About.jsx",
       "src/views/FAQ.jsx",
-      "src/views/Support.jsx",
-      "src/views/SupportSuccess.jsx",
       "src/views/Contact.jsx",
-      "src/views/ContactSuccess.jsx"
+      "src/views/Support.jsx"
     ]
   },
   "src/views/About.jsx": {
@@ -44,17 +50,8 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
-      "_ContentComponent.js"
-    ]
-  },
-  "src/views/ContactSuccess.jsx": {
-    "file": "ContactSuccess.js",
-    "name": "ContactSuccess",
-    "src": "src/views/ContactSuccess.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "src/index.jsx",
-      "_ContentComponent.js"
+      "_ContentComponent.js",
+      "_StatusBarComponent.js"
     ]
   },
   "src/views/FAQ.jsx": {
@@ -74,17 +71,8 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
-      "_ContentComponent.js"
-    ]
-  },
-  "src/views/SupportSuccess.jsx": {
-    "file": "SupportSuccess.js",
-    "name": "SupportSuccess",
-    "src": "src/views/SupportSuccess.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "src/index.jsx",
-      "_ContentComponent.js"
+      "_ContentComponent.js",
+      "_StatusBarComponent.js"
     ]
   }
 }

@@ -35,7 +35,8 @@ class Content
             header('Content-Type: text/html; charset=UTF-8');
 
             $content = [
-                'content' => $contentArray
+                'content' => $contentArray,
+                'title' => $page->post_title
             ];
 
             return rest_ensure_response($content);
@@ -43,9 +44,7 @@ class Content
             $statusCode = $e->getCode();
             $response_data = [
                 'statusCode' => $statusCode,
-                'error' => $e,
                 'errorMessage' => $e->getMessage(),
-                'content' => ''
             ];
             $response = rest_ensure_response($response_data);
             $response->set_status($statusCode);

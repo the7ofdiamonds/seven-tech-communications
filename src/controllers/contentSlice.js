@@ -6,7 +6,7 @@ const initialState = {
     contentError: '',
     contentErrorMessage: '',
     content: '',
-    headquarters: ''
+    title: ''
 };
 
 export const getContent = createAsyncThunk('content/getContent', async (pageSlug) => {
@@ -35,19 +35,23 @@ export const contentSlice = createSlice({
         builder
             .addCase(getContent.pending, (state) => {
                 state.contentLoading = true
-                state.contentError = ''
+                state.contentStatusCode = '';
+                state.contentError = '';
+                state.contentErrorMessage = '';
             })
             .addCase(getContent.fulfilled, (state, action) => {
                 state.contentLoading = false;
                 state.contentStatusCode = action.payload.statusCode;
                 state.contentError = action.payload.error;
                 state.contentErrorMessage = action.payload.errorMessage;
-                state.content = action.payload.content
+                state.content = action.payload.content;
+                state.title = action.payload.title;
             })
             .addCase(getContent.rejected, (state, action) => {
                 state.contentLoading = false
-                state.contentError = action.error
-                state.contentErrorMessage = action.error.message
+                state.contentStatusCode = action.error.code;
+                state.contentError = action.error;
+                state.contentErrorMessage = action.error.message;
             })
     }
 })

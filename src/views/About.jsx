@@ -1,28 +1,49 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import ContentComponent from '../views/components/ContentComponent';
-
 import { getMissionStatement } from '../controllers/aboutSlice';
 import { getContent } from '../controllers/contentSlice';
 
+import LoadingComponent from '../loading/LoadingComponent';
+
+import ContentComponent from '../views/components/ContentComponent';
+
 function About() {
+  const page = 'about';
+
   const dispatch = useDispatch();
 
   const { missionStatement } = useSelector((state) => state.about);
-  const { content } = useSelector((state) => state.content);
+  const {
+    contentLoading,
+    contentStatusCode,
+    contentErrorMessage,
+    title,
+    content,
+  } = useSelector((state) => state.content);
+
+  useEffect(() => {
+    if (contentStatusCode && contentErrorMessage) {
+      setMessageType('error');
+      setMessage(contentErrorMessage);
+    }
+  }, [contentStatusCode, contentErrorMessage]);
 
   useEffect(() => {
     dispatch(getMissionStatement());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getContent('about'));
+    dispatch(getContent(page));
   }, [dispatch]);
+
+  if (contentLoading) {
+    return <LoadingComponent />;
+  }
 
   return (
     <>
-      <h2>ABOUT</h2>
+      <h2 className="title">{title}</h2>
 
       <div className="mission-statement-card card">
         <h3 className="mission-statement">

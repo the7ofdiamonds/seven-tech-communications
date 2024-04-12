@@ -34,11 +34,6 @@ class Pages
                 'file_name' => 'Contact',
             ],
             [
-                'url' => 'contact/success',
-                'regex' => '#^/contact/success#',
-                'file_name' => 'ContactSuccess',
-            ],
-            [
                 'url' => 'faq',
                 'regex' => '#^/faq#',
                 'file_name' => 'FAQ',
@@ -47,12 +42,7 @@ class Pages
                 'url' => 'support',
                 'regex' => '#^/support#',
                 'file_name' => 'Support',
-            ],
-            [
-                'url' => 'support/success',
-                'regex' => '#^/support/success#',
-                'file_name' => 'SupportSuccess',
-            ],
+            ]
         ];
 
         $this->pages_list = [
@@ -63,16 +53,10 @@ class Pages
                 'title' => 'CONTACT',
             ],
             [
-                'title' => 'CONTACT SUCCESS',
-            ],
-            [
                 'title' => 'FAQ',
             ],
             [
                 'title' => 'SUPPORT',
-            ],
-            [
-                'title' => 'SUPPORT SUCCESS',
             ]
         ];
     }
