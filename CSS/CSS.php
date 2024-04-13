@@ -70,11 +70,22 @@ class CSS
                 $cssFilePathURL = $this->cssFolderPathURL . $filename;
 
                 if ($cssFilePath) {
-                    wp_register_style($this->handle_prefix . 'css',  $cssFilePathURL, array(), false, 'all');
-                    wp_enqueue_style($this->handle_prefix . 'css');
+                    wp_register_style($this->handle_prefix . $filename,  $cssFilePathURL, array(), false, 'all');
+                    wp_enqueue_style($this->handle_prefix . $filename);
                 } else {
                     throw new Exception('CSS file ' . $filename . ' is missing at :' . $this->cssFolderPath, 404);
                 }
+            }
+
+            $frontPageFile = 'Front-Page.css';
+            $frontPageFilePath = $this->cssFolderPath . $frontPageFile;
+            $frontPageFilePathURL = $this->cssFolderPathURL . $frontPageFile;
+
+            if ($frontPageFilePath) {
+                wp_register_style($this->handle_prefix . $frontPageFile,  $frontPageFilePathURL, array(), false, 'all');
+                wp_enqueue_style($this->handle_prefix . $frontPageFile);
+            } else {
+                throw new Exception('CSS file ' . $filename . ' is missing at :' . $this->cssFolderPath, 404);
             }
         } catch (Exception $e) {
             $errorMessage = $e->getMessage();
