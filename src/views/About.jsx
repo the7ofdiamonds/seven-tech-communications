@@ -43,15 +43,17 @@ function About() {
 
   return (
     <>
-      <h2 className="title">{title}</h2>
+      <main>
+        <h2 className="title">{title}</h2>
 
-      <div className="mission-statement-card card">
-        <h3 className="mission-statement">
-          <q>{missionStatement}</q>
-        </h3>
-      </div>
+        <div className="mission-statement-card card">
+          <h3 className="mission-statement">
+            <q>{missionStatement}</q>
+          </h3>
+        </div>
 
-      <ContentComponent content={content} />
+        <ContentComponent content={content} />
+      </main>
     </>
   );
 }

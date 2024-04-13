@@ -7,7 +7,7 @@ if (!function_exists('is_plugin_active')) {
 ?>
 
 <div class='about'>
-    <?php
+<?php
     include SEVEN_TECH_COMMUNICATIONS . 'includes/react.php';
 
     if (is_plugin_active('seven-tech-location/SEVEN_TECH_Location.php')) {
@@ -17,7 +17,11 @@ if (!function_exists('is_plugin_active')) {
     if (is_plugin_active('seven-tech-schedule/SEVEN_TECH_Schedule.php')) {
         echo do_shortcode('[seven-tech-schedule]');
     }
-    ?>
+
+    if (is_plugin_active('seven-tech/SEVEN_TECH.php')) {
+        echo do_shortcode('[seven-tech-gateway-nav]');
+    }
+?>
 </div>
 
 <?php

@@ -1,3 +1,7 @@
-.faq {
-  min-height: fit-content;
+section {
+  min-height: 100vh;
+
+  main.faq {
+    margin: 5rem 0;
+  }
 }

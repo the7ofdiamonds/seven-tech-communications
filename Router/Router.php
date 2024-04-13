@@ -59,13 +59,9 @@ class Router
                     }
 
                     if (preg_match($custom_page['regex'], $path)) {
+
                         if (!isset($custom_page['file_name'])) {
                             error_log('Filename is required for custom_pages at Pages.');
-                            return;
-                        }
-
-                        if (!isset($custom_page['page_name'])) {
-                            error_log('Page name is required for custom_pages at Pages.');
                             return;
                         }
 
