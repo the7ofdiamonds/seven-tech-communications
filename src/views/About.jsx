@@ -4,9 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getMissionStatement } from '../controllers/aboutSlice';
 import { getContent } from '../controllers/contentSlice';
 
-import LoadingComponent from '../loading/LoadingComponent';
-
-import ContentComponent from '../views/components/ContentComponent';
+import ContentComponent from './components/ContentComponent';
+import LoadingComponent from './components/LoadingComponent';
 
 function About() {
   const page = 'about';

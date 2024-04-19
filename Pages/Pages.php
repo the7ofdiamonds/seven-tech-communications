@@ -22,6 +22,13 @@ class Pages
                 'file_name' => 'About',
                 'page_name' => 'about'
             ],
+            [
+                'url' => 'founders/([a-zA-Z-]+)/resume',
+                'regex' => '#^/founders/([a-zA-Z-]+)/resume#',
+                'title' => '',
+                'name' => 'founder-resume',
+            ]
+        
         ];
 
         $this->protected_pages = [];

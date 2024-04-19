@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import ContentComponent from './components/ContentComponent';
 import MessageCardComponent from './components/MessageCardComponent';
 import StatusBarComponent from './components/StatusBarComponent';
-import LoadingComponent from '../loading/LoadingComponent';
+import LoadingComponent from './components/LoadingComponent';
 
 import { getContent } from '../controllers/contentSlice';
 

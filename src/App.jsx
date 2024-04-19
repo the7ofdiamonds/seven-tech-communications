@@ -11,6 +11,11 @@ const FAQ = lazy(() => import('./views/FAQ.jsx'));
 const Contact = lazy(() => import('./views/Contact.jsx'));
 const Support = lazy(() => import('./views/Support.jsx'));
 
+const Founders = lazy(() => import('./views/Founders.jsx'));
+const Founder = lazy(() => import('./views/Founder.jsx'));
+const Team = lazy(() => import('./views/Team.jsx'));
+const TeamMember = lazy(() => import('./views/TeamMember.jsx'));
+
 function App() {
   return (
     <>
@@ -23,6 +28,10 @@ function App() {
               <Route path="contact" element={<Contact />} />
               <Route path="faq" element={<FAQ />} />
               <Route path="support" element={<Support />} />
+              <Route path="/founders" element={<Founders />} />
+              <Route path="/founders/:founder" element={<Founder />} />
+              <Route path="/team" element={<Team />} />
+              <Route path="/team/:teammember" element={<TeamMember />} />
             </Routes>
           </Suspense>
         </Router>

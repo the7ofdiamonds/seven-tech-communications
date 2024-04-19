@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-import ContentComponent from '../views/components/ContentComponent';
+import ContentComponent from './components/ContentComponent';
 
-import LoadingComponent from '../loading/LoadingComponent';
+import LoadingComponent from './components/LoadingComponent';
 
 import { getContent } from '../controllers/contentSlice';
 

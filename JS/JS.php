@@ -69,7 +69,7 @@ class JS
         try {
             $this->load_react_index();
 
-            if (!empty($page) && is_array($page)) {
+            if (!empty($page)) {
                 $filePath = $this->buildDir . $page . '.js';
                 $filePathURL = $this->buildDirURL . $page . '.js';
 
