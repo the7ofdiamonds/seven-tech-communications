@@ -1,0 +1,2 @@
+import{u,r as a,j as r,L as i}from"./index.js";import{g as d}from"./founderSlice.js";import{G as f}from"./GroupMembers.js";import{u as m}from"./useDispatch.js";function l(){var e=u(function(t){return t.founder}),n=e.founderLoading;e.founderError;var o=e.founders,s=m();return a.useEffect(function(){s(d())},[s]),n?r.jsx(i,{}):r.jsx(r.Fragment,{children:Array.isArray(o)?r.jsxs(r.Fragment,{children:[r.jsx("h4",{className:"title",children:"Founders"}),r.jsx(f,{group:o})]}):""})}export{l as default};
+//# sourceMappingURL=Founders.js.map

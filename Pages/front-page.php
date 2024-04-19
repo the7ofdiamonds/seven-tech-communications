@@ -7,8 +7,6 @@ if (!function_exists('is_plugin_active')) {
 ?>
 
 <div class="front-page">
-    <h2 className="title"><?php echo get_option('blogdescription'); ?></h2>
-
     <?php
     if (is_plugin_active('orb-products-services/ORB_Products_Services.php')) {
         echo do_shortcode('[orb-products-services-frontpage]');

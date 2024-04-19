@@ -1,0 +1,163 @@
+{
+  "_ContentComponent.js": {
+    "file": "ContentComponent.js",
+    "name": "ContentComponent",
+    "imports": [
+      "src/index.jsx"
+    ]
+  },
+  "_GroupMembers.js": {
+    "file": "GroupMembers.js",
+    "name": "GroupMembers",
+    "imports": [
+      "src/index.jsx"
+    ]
+  },
+  "_MemberIntroductionComponent.js": {
+    "file": "MemberIntroductionComponent.js",
+    "name": "MemberIntroductionComponent",
+    "imports": [
+      "src/index.jsx"
+    ]
+  },
+  "_StatusBarComponent.js": {
+    "file": "StatusBarComponent.js",
+    "name": "StatusBarComponent",
+    "imports": [
+      "src/index.jsx",
+      "_useDispatch.js"
+    ]
+  },
+  "_founderSlice.js": {
+    "file": "founderSlice.js",
+    "name": "founderSlice",
+    "imports": [
+      "src/index.jsx"
+    ]
+  },
+  "_teamSlice.js": {
+    "file": "teamSlice.js",
+    "name": "teamSlice",
+    "imports": [
+      "src/index.jsx"
+    ]
+  },
+  "_useDispatch.js": {
+    "file": "useDispatch.js",
+    "name": "useDispatch",
+    "imports": [
+      "src/index.jsx"
+    ]
+  },
+  "src/index.jsx": {
+    "file": "index.js",
+    "name": "index",
+    "src": "src/index.jsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/views/About.jsx",
+      "src/views/FAQ.jsx",
+      "src/views/Contact.jsx",
+      "src/views/Support.jsx",
+      "src/views/Founders.jsx",
+      "src/views/Founder.jsx",
+      "src/views/Team.jsx",
+      "src/views/TeamMember.jsx"
+    ]
+  },
+  "src/views/About.jsx": {
+    "file": "About.js",
+    "name": "About",
+    "src": "src/views/About.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ContentComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Contact.jsx": {
+    "file": "Contact.js",
+    "name": "Contact",
+    "src": "src/views/Contact.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ContentComponent.js",
+      "_StatusBarComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/FAQ.jsx": {
+    "file": "FAQ.js",
+    "name": "FAQ",
+    "src": "src/views/FAQ.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ContentComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Founder.jsx": {
+    "file": "Founder.js",
+    "name": "Founder",
+    "src": "src/views/Founder.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_founderSlice.js",
+      "_MemberIntroductionComponent.js",
+      "_ContentComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Founders.jsx": {
+    "file": "Founders.js",
+    "name": "Founders",
+    "src": "src/views/Founders.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_founderSlice.js",
+      "_GroupMembers.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Support.jsx": {
+    "file": "Support.js",
+    "name": "Support",
+    "src": "src/views/Support.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ContentComponent.js",
+      "_StatusBarComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Team.jsx": {
+    "file": "Team.js",
+    "name": "Team",
+    "src": "src/views/Team.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_teamSlice.js",
+      "_GroupMembers.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/TeamMember.jsx": {
+    "file": "TeamMember.js",
+    "name": "TeamMember",
+    "src": "src/views/TeamMember.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_teamSlice.js",
+      "_MemberIntroductionComponent.js",
+      "_useDispatch.js"
+    ]
+  }
+}

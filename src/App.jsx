@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import store from './model/store.js';
 
-import LoadingComponent from './loading/LoadingComponent';
+import LoadingComponent from './views/components/LoadingComponent';
 
 const About = lazy(() => import('./views/About.jsx'));
 const FAQ = lazy(() => import('./views/FAQ.jsx'));
