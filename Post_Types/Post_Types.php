@@ -9,17 +9,18 @@ class Post_Types
     public function __construct()
     {
         $this->post_types_list = [
-            // [
-            //     'name' => 'founders',
-            //     'menu_icon' => '',
-            //     'menu_position' => 11,
-            //     'title' => 'FOUNDERS',
-            //     'singular' => 'Founder',
-            //     'plural' => 'Founders',
-            //     'archive_page' => 'founders',
-            //     'single_page' => 'founder',
-            //     'file_name' => "Founders"
-            // ],
+            [
+                'name' => 'founders',
+                'menu_icon' => '',
+                'menu_position' => 11,
+                'title' => 'FOUNDERS',
+                'singular' => 'Founder',
+                'plural' => 'Founders',
+                'archive_page' => 'founders',
+                'single_page' => 'founder',
+                'file_name' => "Founders",
+                'regex' => '#^/founders/([a-zA-Z-]+)#',
+            ],
         ];
     }
 

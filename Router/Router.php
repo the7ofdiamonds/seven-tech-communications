@@ -50,7 +50,7 @@ class Router
                     return $this->templates->get_front_page_template($frontpage_template, $sections);
                 });
             }
-            
+
             if (!empty($this->custom_pages)) {
                 foreach ($this->custom_pages as $custom_page) {
                     if (!isset($custom_page['regex'])) {
@@ -136,10 +136,9 @@ class Router
 
             if (!empty($this->taxonomies_list)) {
                 foreach ($this->taxonomies_list as $taxonomy) {
-                    if (is_tax($taxonomy['name'])) {
-
-                        add_filter('taxonomy_template', function ($taxonomy_template) use ($taxonomy) {
-                            return $this->templates->get_archive_page_template($taxonomy_template, $taxonomy);
+                    if (preg_match($taxonomy['regex'], $path)) {
+                        add_filter('template_include', function ($template_include) use ($taxonomy) {
+                            return $this->templates->get_taxonomy_page_template($template_include, $taxonomy);
                         });
                     }
                 }
@@ -147,17 +146,19 @@ class Router
 
             if (!empty($this->post_types_list)) {
                 foreach ($this->post_types_list as $post_type) {
-                    add_filter('single_template', function ($single_template) use ($post_type) {
-                        return $this->templates->get_single_page_template($single_template, $post_type);
+                    add_filter('archive_template', function ($archive_template) use ($post_type) {
+                        return $this->templates->get_archive_page_template($archive_template, $post_type);
                     });
                 }
             }
 
-            if (!empty($this->taxonomies_list)) {
-                foreach ($this->taxonomies_list as $taxonomy) {
-                    add_filter('taxonomy_template', function ($taxonomy_template) use ($taxonomy) {
-                        return $this->templates->get_archive_page_template($taxonomy_template, $taxonomy);
-                    });
+            if (!empty($this->post_types_list)) {
+                foreach ($this->post_types_list as $post_type) {
+                    if (preg_match($post_type['regex'], $path)) {
+                        add_filter('single_template', function ($single_template) use ($post_type) {
+                            return $this->templates->get_single_page_template($single_template, $post_type);
+                        });
+                    }
                 }
             }
         } catch (Exception $e) {
