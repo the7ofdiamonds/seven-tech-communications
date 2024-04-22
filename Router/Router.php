@@ -60,10 +60,10 @@ class Router
 
                     if (preg_match($custom_page['regex'], $path)) {
 
-                        if (!isset($custom_page['file_name'])) {
-                            error_log('Filename is required for custom_pages at Pages.');
-                            return;
-                        }
+                        // if (!isset($custom_page['file_name'])) {
+                        //     error_log('Filename is required for custom_pages at Pages.');
+                        //     return;
+                        // }
 
                         add_filter('template_include', function ($template_include) use ($custom_page) {
                             return $this->templates->get_custom_page_template($template_include, $custom_page);

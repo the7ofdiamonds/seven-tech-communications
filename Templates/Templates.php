@@ -45,31 +45,31 @@ class Templates
     function get_custom_page_template($template_include, $custom_page)
     {
 
-        if (isset($custom_page['file_name'])) {
-            $filename = $custom_page['file_name'];
-            $filename_css = $this->pluginDir . 'dist/css/' . $filename . '.css';
-            $filename_js = $this->pluginDir . 'dist/js/' . $filename . '.js';
+        // if (isset($custom_page['file_name'])) {
+        //     $filename = $custom_page['file_name'];
+        //     $filename_css = $this->pluginDir . 'dist/css/' . $filename . '.css';
+        //     $filename_js = $this->pluginDir . 'dist/js/' . $filename . '.js';
 
-            if (file_exists($filename_css)) {
-                add_action('wp_head', function () use ($filename) {
-                    $this->css->load_pages_css($filename);
-                });
-            }
+        //     if (file_exists($filename_css)) {
+        //         add_action('wp_head', function () use ($filename) {
+        //             $this->css->load_pages_css($filename);
+        //         });
+        //     }
 
-            if (file_exists($filename_js)) {
-                add_action('wp_footer', function () use ($filename) {
-                    $this->js->load_pages_react($filename);
-                });
-            }
-        }
+        //     if (file_exists($filename_js)) {
+        //         add_action('wp_footer', function () use ($filename) {
+        //             $this->js->load_pages_react($filename);
+        //         });
+        //     }
+        // }
 
-        if (isset($custom_page['page_name'])) {
+        // if (isset($custom_page['page_name'])) {
             $custom_template = $this->pluginDir . "Pages/page-{$custom_page['page_name']}.php";
 
             if (file_exists($custom_template)) {
                 return $custom_template;
             }
-        }
+        // }
 
         return $template_include;
     }

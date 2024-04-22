@@ -4,10 +4,15 @@ namespace SEVEN_TECH\Communications\Post_Types\Founders;
 
 use Exception;
 
+use SEVEN_TECH\Communications\Media\Media;
+
 class Founders
 {
+    private $media;
+
     public function __construct()
     {
+        $this->media = new Media;
     }
 
     function extractNameFromString($inputString)
@@ -232,18 +237,15 @@ class Founders
         }
     }
 
-    function getFounderResume($request)
+    function getFounderResume($nicename)
     {
         try {
-            $pageTitle = $request->get_param('slug');
-            $page = get_page_by_title($pageTitle, OBJECT, 'founders');
-            error_log(print_r($page, true));
-            // $id = '';
-            // $resume_pdf_url = $this->pt_founder->getFounderResume($id);
-            $custom = get_post_custom($page->ID);
-            $resume_pdf_url = isset($custom['founder_resume'][0]) ? esc_url($custom['founder_resume'][0]) : '';
+            $user = get_user_by('slug', $nicename);
+            $path = 'resume';
+            $file = "Resume_{$user->ID}.pdf";
+            $url = $this->media->getURL($path, $file);
 
-            return rest_ensure_response($resume_pdf_url);
+            return $url;
         } catch (Exception $e) {
             $statusCode = $e->getCode();
             $response_data = [
