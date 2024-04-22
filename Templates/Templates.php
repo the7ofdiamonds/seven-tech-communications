@@ -139,11 +139,11 @@ class Templates
 
     function get_taxonomy_page_template($taxonomy_template, $taxonomy)
     {
-        if (is_tax($taxonomy['taxonomy'])) {
+        if (is_tax($taxonomy['name'])) {
             $custom_taxonomy_template = $this->pluginDir . "Taxonomies/taxonomy-{$taxonomy['file_name']}.php";
 
             if (file_exists($custom_taxonomy_template)) {
-                $filename = $taxonomy['file_name'];
+                $filename = $taxonomy['name'];
 
                 add_action('wp_head', function () use ($filename) {
                     $this->css->load_pages_css($filename);

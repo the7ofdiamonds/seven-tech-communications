@@ -10,16 +10,16 @@ class Taxonomies
 
     public function __construct()
     {
-        // $this->taxonomies_list = [
-        //     [
-        //         'name' => 'Skills',
-        //         'singular' => 'Skill',
-        //         'plural' => 'Skills',
-        //         'slug' => 'skills',
-        //         'menu_position' => 3,
-        //         'post_type' => 'founders'
-        //     ]
-        // ];
+        $this->taxonomies_list = [
+            [
+                'name' => 'Skills',
+                'singular' => 'Skill',
+                'plural' => 'Skills',
+                'slug' => 'skills',
+                'menu_position' => 3,
+                'post_type' => 'founders'
+            ]
+        ];
     }
 
     function custom_taxonomy()

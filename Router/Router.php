@@ -136,11 +136,11 @@ class Router
 
             if (!empty($this->taxonomies_list)) {
                 foreach ($this->taxonomies_list as $taxonomy) {
-                    if (preg_match($taxonomy['regex'], $path)) {
-                        add_filter('template_include', function ($template_include) use ($taxonomy) {
+                    // if (preg_match($taxonomy['regex'], $path)) {
+                        add_filter('taxonomy_template', function ($template_include) use ($taxonomy) {
                             return $this->templates->get_taxonomy_page_template($template_include, $taxonomy);
                         });
-                    }
+                    // }
                 }
             }
 

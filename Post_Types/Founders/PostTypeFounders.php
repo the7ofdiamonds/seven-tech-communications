@@ -1,10 +1,10 @@
 <?php
 
-namespace SEVEN_TECH\Post_Types\Founders;
+namespace SEVEN_TECH\Communications\Post_Types\Founders;
 
 use Exception;
 
-use SEVEN_TECH\Media\Media;
+use SEVEN_TECH\Communications\Media\Media;
 
 /**
  * @package SEVEN TECH
@@ -23,7 +23,7 @@ class PostTypeFounders
     {
         $this->current_user = wp_get_current_user();
         $this->admin = $this->current_user->has_cap('administrator');
-
+error_log('founder');
         add_action('load-post-new.php', [$this, 'show_founder_select']);
         add_action('load-post.php', [$this, 'get_founder']);
 
