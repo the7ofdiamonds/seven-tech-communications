@@ -19,7 +19,7 @@ const initialState = {
 export const getFounders = createAsyncThunk('founder/getFounders', async () => {
 
     try {
-        const response = await fetch(`/wp-json/orb/v1/users/founders`, {
+        const response = await fetch(`/wp-json/seven-tech/v1/founders`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ export const getFounders = createAsyncThunk('founder/getFounders', async () => {
 export const getFounder = createAsyncThunk('founder/getFounder', async (founder) => {
 
     try {
-        const response = await fetch(`/wp-json/orb/v1/users/founder/${founder}`, {
+        const response = await fetch(`/wp-json/seven-tech/v1/founders/${founder}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -57,7 +57,7 @@ export const getFounder = createAsyncThunk('founder/getFounder', async (founder)
 export const getFounderResume = createAsyncThunk('founder/getFounderResume', async (pageTitle) => {
 
     try {
-        const response = await fetch(`/wp-json/orb/v1/users/founder/${pageTitle}/resume`, {
+        const response = await fetch(`/wp-json/seven-tech/v1/founders/${pageTitle}/resume`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -82,7 +82,7 @@ export const founderSlice = createSlice({
                 state.founderLoading = false;
                 state.founderStatusCode = action.payload.statusCode
                 state.founderErrorMessage = action.payload.errorMessage
-                state.founders = action.payload
+                state.founders = action.payload.founders
             })
             .addCase(getFounder.fulfilled, (state, action) => {
                 state.founderLoading = false

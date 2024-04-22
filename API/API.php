@@ -13,6 +13,7 @@ class API
         $accounts = new Accounts($mailer);
         $contact = new Contact($mailer);
         $content = new Content;
+        $founders = new Founders;
         $gateway = new Gateway($mailer);
         $portfolio = new Portfolio($mailer);
         $schedule = new Schedule($mailer);
@@ -51,6 +52,18 @@ class API
         register_rest_route('seven-tech/v1', '/content/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'GET',
             'callback' => array($content, 'get_content'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/founders', array(
+            'methods' => 'GET',
+            'callback' => array($founders, 'get_founders'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/founders/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'GET',
+            'callback' => array($founders, 'get_founder'),
             'permission_callback' => '__return_true',
         ));
 

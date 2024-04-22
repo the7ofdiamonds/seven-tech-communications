@@ -28,13 +28,6 @@
       "_useDispatch.js"
     ]
   },
-  "_founderSlice.js": {
-    "file": "founderSlice.js",
-    "name": "founderSlice",
-    "imports": [
-      "src/index.jsx"
-    ]
-  },
   "_teamSlice.js": {
     "file": "teamSlice.js",
     "name": "teamSlice",
@@ -106,7 +99,6 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
-      "_founderSlice.js",
       "_MemberIntroductionComponent.js",
       "_ContentComponent.js",
       "_useDispatch.js"
@@ -119,7 +111,6 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
-      "_founderSlice.js",
       "_GroupMembers.js",
       "_useDispatch.js"
     ]

@@ -1,6 +1,6 @@
 <?php
 
-namespace SEVEN_TECH\Post_Types\Founders;
+namespace SEVEN_TECH\Communications\Post_Types\Founders;
 
 use Exception;
 
@@ -21,7 +21,7 @@ class Founders
         return $lowercaseName;
     }
 
-    function add_founder_pages()
+    function addFounderPages()
     {
         try {
             $users = get_users(array(
@@ -116,29 +116,27 @@ class Founders
             ]
         ]);
 
-        if ($users) {
-            foreach ($users as $user) {
-                $user_data = get_userdata($user->ID);
-
-                if (!empty($user_data->user_url)) {
-                    $founder = array(
-                        'id' => $user_data->ID,
-                        'first_name' => $user_data->first_name,
-                        'last_name' => $user_data->last_name,
-                        'email' => $user_data->user_email,
-                        'role' => $user_data->roles,
-                        'author_url' => $user_data->user_url,
-                        'avatar_url' => get_avatar_url($user_data->ID, ['size' => 384])
-                    );
-
-                    $founders[] = $founder;
-                }
-            }
-
-            return $founders;
-        } else {
+        if (empty($users)) {
             throw new Exception("No Founders at this time.", 404);
         }
+
+        foreach ($users as $user) {
+            $user_data = get_userdata($user->ID);
+
+            $founder = array(
+                'id' => $user_data->ID,
+                'first_name' => $user_data->first_name,
+                'last_name' => $user_data->last_name,
+                'email' => $user_data->user_email,
+                'role' => $user_data->roles,
+                'user_url' => "/founders/{$user_data->user_nicename}",
+                'avatar_url' => get_avatar_url($user_data->ID, ['size' => 384])
+            );
+
+            $founders[] = $founder;
+        }
+
+        return $founders;
     }
 
     function getFounderSkills($post_id)
@@ -231,6 +229,31 @@ class Founders
             return $founder;
         } else {
             throw new Exception("No Founders found.", 404);
+        }
+    }
+
+    function getFounderResume($request)
+    {
+        try {
+            $pageTitle = $request->get_param('slug');
+            $page = get_page_by_title($pageTitle, OBJECT, 'founders');
+            error_log(print_r($page, true));
+            // $id = '';
+            // $resume_pdf_url = $this->pt_founder->getFounderResume($id);
+            $custom = get_post_custom($page->ID);
+            $resume_pdf_url = isset($custom['founder_resume'][0]) ? esc_url($custom['founder_resume'][0]) : '';
+
+            return rest_ensure_response($resume_pdf_url);
+        } catch (Exception $e) {
+            $statusCode = $e->getCode();
+            $response_data = [
+                'errorMessage' => $e->getMessage(),
+                'statusCode' => $statusCode
+            ];
+            $response = rest_ensure_response($response_data);
+            $response->set_status($statusCode);
+
+            return $response;
         }
     }
 }

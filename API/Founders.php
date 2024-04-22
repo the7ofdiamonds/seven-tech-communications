@@ -1,10 +1,10 @@
 <?php
 
-namespace ORB\Products_Services\API;
+namespace SEVEN_TECH\Communications\API;
 
 use Exception;
 
-use ORB\Products_Services\Post_Types\Founders\Founders as PTFounders;
+use SEVEN_TECH\Communications\Post_Types\Founders\Founders as PT_Founders;
 
 use WP_REST_Request;
 
@@ -14,7 +14,7 @@ class Founders
 
     public function __construct()
     {
-        $this->pt_founder = new PTFounders;
+        $this->pt_founder = new PT_Founders;
     }
 
     function get_founders()
@@ -26,11 +26,15 @@ class Founders
                 throw new Exception('There are no founders to show.', 404);
             }
 
-            return rest_ensure_response($founders);
+            $foundersResponse = [
+                'statusCode' => 200,
+                'founders' => $founders
+            ];
+
+            return rest_ensure_response($foundersResponse);
         } catch (Exception $e) {
             $statusCode = $e->getCode();
             $response_data = [
-                'error' => $e,
                 'errorMessage' => $e->getMessage(),
                 'statusCode' => $statusCode
             ];

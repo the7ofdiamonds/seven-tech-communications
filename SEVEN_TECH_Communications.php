@@ -115,6 +115,7 @@ class SEVEN_TECH_Communications
     {
         $this->router->react_rewrite_rules();
         $this->pages->add_pages();
+        (new Founders)->addFounderPages();
     }
 
     function deactivate()

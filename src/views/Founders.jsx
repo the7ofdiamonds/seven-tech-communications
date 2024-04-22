@@ -5,11 +5,16 @@ import { getFounders } from '../controllers/founderSlice';
 
 import LoadingComponent from './components/LoadingComponent';
 import GroupMembers from './components/GroupMembers';
+import ErrorComponent from './components/ErrorComponent';
 
 function Founders() {
-  const { founderLoading, founderError, founders } = useSelector(
-    (state) => state.founder
-  );
+  const {
+    founderLoading,
+    founderError,
+    founderErrorMessage,
+    founderStatusCode,
+    founders,
+  } = useSelector((state) => state.founder);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,17 +25,21 @@ function Founders() {
     return <LoadingComponent />;
   }
 
+  // if(founderError){
+  //   return <ErrorComponent message={founderErrorMessage} />;
+  // }
+
   return (
     <>
-      {Array.isArray(founders) ? (
-        <>
-          <h4 className="title">Founders</h4>
+      <main className="founders">
+        {Array.isArray(founders) && (
+          <>
+            <h4 className="title">Founders</h4>
 
-          <GroupMembers group={founders} />
-        </>
-      ) : (
-        ''
-      )}
+            <GroupMembers group={founders} />
+          </>
+        )}
+      </main>
     </>
   );
 }

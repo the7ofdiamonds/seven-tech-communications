@@ -30,7 +30,6 @@ class JS
 
         if (file_exists($indexPath)) {
             echo '<script type="module" src="' . esc_url($indexPathURL) . '"></script>';
-
         } else {
             throw new Exception('Index page has not been created in react JSX.', 404);
         }

@@ -163,9 +163,9 @@ class Templates
     {
         if (is_post_type_archive($post_type['name'])) {
             $custom_archive_template = $this->pluginDir . 'Post_Types/' . $post_type['plural'] . '/archive-' . $post_type['name'] . '.php';
-
+           
             if (file_exists($custom_archive_template)) {
-                $filename = $post_type['file_name'];
+                $filename = $post_type['plural'];
 
                 add_action('wp_head', function () use ($filename) {
                     $this->css->load_pages_css($filename);
@@ -187,7 +187,7 @@ class Templates
             $custom_single_template = $this->pluginDir . 'Post_Types/' . $post_type['plural'] . '/single-' . $post_type['name'] . '.php';
 
             if (file_exists($custom_single_template)) {
-                $filename = $post_type['file_name'];
+                $filename = $post_type['singular'];
 
                 add_action('wp_head', function () use ($filename) {
                     $this->css->load_pages_css($filename);
