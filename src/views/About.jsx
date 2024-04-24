@@ -8,8 +8,6 @@ import ContentComponent from './components/ContentComponent';
 import LoadingComponent from './components/LoadingComponent';
 
 function About() {
-  const page = 'about';
-
   const dispatch = useDispatch();
 
   const { missionStatement } = useSelector((state) => state.about);
@@ -33,7 +31,7 @@ function About() {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getContent(page));
+    dispatch(getContent('/about'));
   }, [dispatch]);
 
   if (contentLoading) {

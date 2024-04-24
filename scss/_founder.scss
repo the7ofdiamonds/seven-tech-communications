@@ -1,10 +1,11 @@
-@use './author.scss';
-@use './author_skills.scss';
+@use './_author.scss';
+@use './_author_skills.scss';
+@use './_content.scss';
 
 section {
   min-height: 100vh;
 
-  main.member-intro {
-    margin: 8rem 0;
+  main.author-intro {
+    margin: 9rem 0;
   }
 }

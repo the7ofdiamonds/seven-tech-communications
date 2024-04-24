@@ -1,7 +1,6 @@
 function MemberNavigationComponent(props) {
   const { resume, portfolioElement } = props;
-  console.log(resume);
-  console.log(portfolioElement);
+  
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
 
@@ -33,12 +32,12 @@ function MemberNavigationComponent(props) {
         <nav class="author-nav">
           {portfolioElement ? (
             <>
-              <button onClick={scrollToSection('intro')} id="founder_button">
+              <button onClick={() => scrollToSection('author_intro')} id="founder_button">
                 <h3 className="title">intro</h3>
               </button>
 
               <button
-                onClick={scrollToSection('7tech_portfolio')}
+                onClick={() => scrollToSection('seven_tech_portfolio')}
                 id="portfolio_button">
                 <h3 className="title">PORTFOLIO</h3>
               </button>

@@ -5,14 +5,16 @@ function ContentComponent(props) {
 
   return (
     <>
-      {content
-        ? content.map((paragraph, index) => (
+      {content && (
+        <>
+          {content.map((content, index) => (
             <div
               key={index}
-              className="card"
-              dangerouslySetInnerHTML={{ __html: paragraph }}></div>
-          ))
-        : null}
+              className="content"
+              dangerouslySetInnerHTML={{ __html: content }}></div>
+          ))}
+        </>
+      )}
     </>
   );
 }

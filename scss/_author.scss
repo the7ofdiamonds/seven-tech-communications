@@ -30,6 +30,14 @@
   max-width: 1000px;
 }
 
+.author-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
 .author {
   display: flex;
   flex-direction: column;
@@ -51,7 +59,7 @@
   }
 }
 
-.author-greeting {
+.author-bio {
   width: 100%;
   padding: 0.75rem;
 }

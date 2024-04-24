@@ -5,30 +5,32 @@ import MemberNavigationComponent from './MemberNavigationComponent';
 function MemberIntroductionComponent(props) {
   const { title, avatarURL, fullName, greeting, founder_resume } = props;
 
-  const portfolioElement = document.getElementById('portfolio');
+  const portfolioElement = document.getElementById('seven_tech_portfolio');
 
   return (
-    <main class="member-intro">
+    <main class="author-intro" id='author_intro'>
       {(founder_resume || portfolioElement) && (
-        <MemberNavigationComponent resume={founder_resume} />
+        <MemberNavigationComponent resume={founder_resume} portfolioElement={portfolioElement} />
       )}
 
-      <h2 class="title">{title}</h2>
+      <h2 class="title">{fullName}</h2>
 
-      <div class="member">
-        <div class="member-card card">
-          <div class="member-pic">
-            <img src={avatarURL} alt="" />
+      <div className="author-info">
+        <div class="author">
+          <div class="author-card card">
+            <div class="author-pic">
+              <img src={avatarURL} alt="" />
+            </div>
           </div>
+          <h4 class="title">{title}</h4>
         </div>
-        <h4 class="title">{fullName}</h4>
-      </div>
 
-      {greeting && (
-        <div class="author-card card">
-          <p class="author-greeting">{greeting}</p>
-        </div>
-      )}
+        {greeting && (
+          <div class="author-card card">
+            <p class="author-bio">{greeting}</p>
+          </div>
+        )}
+      </div>
     </main>
   );
 }

@@ -9,11 +9,7 @@ import LoadingComponent from './components/LoadingComponent';
 import { getContent } from '../controllers/contentSlice';
 
 function Faq() {
-  const location = useLocation();
-  const path = location.pathname;
-  const page = path.replace(/^\/+|\/+$/g, '');
-
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
 
   const {
     contentLoading,
@@ -24,7 +20,7 @@ function Faq() {
   } = useSelector((state) => state.content);
 
   useEffect(() => {
-    dispatch(getContent(page));
+    dispatch(getContent('/faq'));
   }, [dispatch]);
 
   useEffect(() => {

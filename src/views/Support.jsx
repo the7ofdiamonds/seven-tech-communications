@@ -10,11 +10,7 @@ import LoadingComponent from './components/LoadingComponent';
 import { getContent } from '../controllers/contentSlice';
 
 function SupportComponent() {
-  const location = useLocation();
-  const path = location.pathname;
-  const page = path.replace(/^\/+|\/+$/g, '');
-
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
 
   const { contentLoading, contentStatusCode, contentErrorMessage, content, title } =
     useSelector((state) => state.content);
@@ -26,7 +22,7 @@ function SupportComponent() {
   } = useSelector((state) => state.contact);
 
   useEffect(() => {
-    dispatch(getContent(page));
+    dispatch(getContent('/support'));
   }, [dispatch]);
 
   useEffect(() => {
@@ -69,7 +65,7 @@ function SupportComponent() {
         <ContentComponent content={content} />
 
         <div className="support-card card">
-          <MessageCardComponent page={page} />
+          <MessageCardComponent page={'/support'} />
         </div>
 
         <StatusBarComponent messageType={messageType} message={message} />

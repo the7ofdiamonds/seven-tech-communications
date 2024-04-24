@@ -12,7 +12,7 @@ const initialState = {
 export const getContent = createAsyncThunk('content/getContent', async (pageSlug) => {
 
     try {
-        const response = await fetch(`/wp-json/seven-tech/v1/content/${pageSlug}`, {
+        const response = await fetch(`/wp-json/seven-tech/v1/content${pageSlug}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

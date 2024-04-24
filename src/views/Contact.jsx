@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 
 import ContentComponent from './components/ContentComponent';
 import MessageCardComponent from './components/MessageCardComponent';
@@ -10,11 +9,7 @@ import LoadingComponent from './components/LoadingComponent';
 import { getContent } from '../controllers/contentSlice';
 
 function ContactComponent() {
-  const location = useLocation();
-  const path = location.pathname;
-  const page = path.replace(/^\/+|\/+$/g, '');
-
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
 
   const { contentLoading, contentStatusCode, contentErrorMessage, title, content } =
     useSelector((state) => state.content);
@@ -26,7 +21,7 @@ function ContactComponent() {
   } = useSelector((state) => state.contact);
 
   useEffect(() => {
-    dispatch(getContent(page));
+    dispatch(getContent('/contact'));
   }, [dispatch]);
 
   useEffect(() => {
@@ -69,7 +64,7 @@ function ContactComponent() {
         <ContentComponent content={content} />
 
         <div className="contact-card card">
-          <MessageCardComponent page={page} />
+          <MessageCardComponent page={'/contact'} />
         </div>
 
         <StatusBarComponent messageType={messageType} message={message} />

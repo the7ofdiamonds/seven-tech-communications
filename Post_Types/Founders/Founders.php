@@ -246,11 +246,13 @@ class Founders
         }
 
         $id = $user_data->ID;
+        $first_name = get_user_meta($id, 'first_name', true);
+        $last_name = get_user_meta($id, 'last_name', true);
         $avatar_url = get_avatar_url($id, ['size' => 384]);
 
         $founder = array(
             'id' => $id,
-            'fullName' => $user_data->first_name . ' ' . $user_data->last_name,
+            'fullName' => $post->post_title,
             'email' => $user_data->user_email,
             'title' => 'founder',
             'greeting' => get_the_author_meta('description', $id),

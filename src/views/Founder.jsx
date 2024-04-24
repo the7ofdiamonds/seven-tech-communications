@@ -12,16 +12,18 @@ import ContentComponent from './components/ContentComponent';
 import { getContent } from '../controllers/contentSlice';
 
 function Founder() {
-  const { founder } = useParams();
+  const url = new URL(window.location.href);
+  const pageSlug = url.pathname;
 
+  const { founder } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getFounder(founder));
+    dispatch(getContent(pageSlug));
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getContent(founder));
+    dispatch(getFounder(founder));
   }, [dispatch]);
 
   const {
