@@ -6,37 +6,50 @@ use Exception;
 
 class Content
 {
-    private $contentRegexs;
-
     public function __construct()
     {
-        $paragraphRegex = '/<!-- wp:paragraph -->(.*?)<!-- \/wp:paragraph -->/s';
-        $codeRegex = '/<!-- wp:code -->(.*?)<!-- \/wp:code -->/s';
-        $galleryRegex = '/<!-- wp:gallery -->(.*?)<!-- \/wp:gallery -->/s';
-        $orderedListRegex = '/<!-- wp:list {"ordered":true} -->(.*?)<!-- \/wp:list -->/s';
-        $headingRegex = '/<!-- wp:heading -->(.*?)<!-- \/wp:heading -->/s';
-        $imageRegex = '/<!-- wp:image {"id":149,"sizeSlug":"full","linkDestination":"none"} -->(.*?)<!-- \/wp:image -->/s';
-
-        $this->contentRegexs = [
-            $headingRegex,
-            $paragraphRegex,
-            $codeRegex,
-            $galleryRegex,
-            $orderedListRegex,
-            $imageRegex
-        ];
     }
 
     function filter($page_content)
     {
         $contentArray = [];
 
-        foreach ($this->contentRegexs as $contentRegex) {
-            preg_match_all($contentRegex, $page_content, $matches);
+        $parsed_blocks = parse_blocks($page_content);
 
-            foreach ($matches[1] as $matched_content) {
-                $contentArray[] = $matched_content;
+        foreach ($parsed_blocks as $parsed_block) {
+            $content = '';
+
+            if (empty($parsed_block['innerBlocks']) && trim($parsed_block['innerHTML']) !== '') {
+                $content .=  $parsed_block['innerHTML'];
             }
+
+            if (!empty($parsed_block['innerBlocks']) && is_array($parsed_block['innerBlocks'])) {
+
+                if (count($parsed_block['innerContent']) > 1) {
+                    $content .= $parsed_block['innerContent'][0];
+
+                    foreach ($parsed_block['innerBlocks'] as $block) {
+                        $content .= $block['innerHTML'];
+                    }
+
+                    $last_item = count($parsed_block['innerContent']) - 1;
+
+                    $content .= $parsed_block['innerContent'][$last_item];
+                }
+
+                if (count($parsed_block['innerContent']) == 1) {
+
+                    foreach ($parsed_block['innerBlocks'] as $block) {
+                        $content .= $block['innerHTML'];
+                    }
+                }
+            }
+
+            if (trim($content) === '') {
+                continue;
+            }
+
+            $contentArray[] = $content;
         }
 
         return $contentArray;
@@ -64,17 +77,11 @@ class Content
             $page_id = $page->ID;
             $page = get_post($page_id);
             $page_content = $page->post_content;
-            
-            $html = preg_split('/<!-- wp:.* -->(.*?)<!-- \/wp:.* -->/', $page_content);
-
-            error_log(print_r($html, true));
-
-            $contentArray = $this->filter($page_content);
 
             header('Content-Type: text/html; charset=UTF-8');
 
             $content = [
-                'content' => $contentArray,
+                'content' => $this->filter($page_content),
                 'title' => $page->post_title
             ];
 
