@@ -55,7 +55,7 @@
       "src/views/Founders.jsx",
       "src/views/Founder.jsx",
       "src/views/Team.jsx",
-      "src/views/TeamMember.jsx"
+      "src/views/Team-Member.jsx"
     ]
   },
   "src/views/About.jsx": {
@@ -127,6 +127,17 @@
       "_useDispatch.js"
     ]
   },
+  "src/views/Team-Member.jsx": {
+    "file": "Team-Member.js",
+    "name": "Team-Member",
+    "src": "src/views/Team-Member.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_MemberIntroductionComponent.js",
+      "_useDispatch.js"
+    ]
+  },
   "src/views/Team.jsx": {
     "file": "Team.js",
     "name": "Team",
@@ -134,20 +145,7 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
-      "_teamSlice.js",
       "_GroupMembers.js",
-      "_useDispatch.js"
-    ]
-  },
-  "src/views/TeamMember.jsx": {
-    "file": "TeamMember.js",
-    "name": "TeamMember",
-    "src": "src/views/TeamMember.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "src/index.jsx",
-      "_teamSlice.js",
-      "_MemberIntroductionComponent.js",
       "_useDispatch.js"
     ]
   }

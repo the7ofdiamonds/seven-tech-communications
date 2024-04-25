@@ -1,1 +1,1 @@
-div.team{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:.75rem;width:100%;flex-wrap:wrap}
+section{min-height:100vh}section main.team{margin:5rem 0}

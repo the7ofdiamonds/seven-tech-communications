@@ -2,83 +2,52 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
     teamLoading: false,
+    teamStatusCode: '',
     teamError: '',
+    teamErrorMessage: '',
     team: '',
     title: '',
     author_url: '',
     avatar_url: '',
     fullName: '',
-    greeting: '',
-    skills: '',
-    teamResume: ''
+    greeting: ''
 };
 
 export const getTeam = createAsyncThunk('team/getTeam', async () => {
 
     try {
-        const response = await fetch(`/wp-json/seven-tech/v1/users/team`, {
+        const response = await fetch(`/wp-json/seven-tech/v1/team`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            const errorMessage = errorData.message;
-            throw new Error(errorMessage);
-        }
-
         const responseData = await response.json();
+
         return responseData;
     } catch (error) {
-        throw error;
+        console.error(error);
+        throw new Error(error.message);
     }
 });
 
 export const getTeamMember = createAsyncThunk('team/getTeamMember', async (team) => {
 
     try {
-        const response = await fetch(`/wp-json/seven-tech/v1/users/team/${team}`, {
+        const response = await fetch(`/wp-json/seven-tech/v1/team/${team}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            const errorMessage = errorData.message;
-            throw new Error(errorMessage);
-        }
-
         const responseData = await response.json();
+
         return responseData;
     } catch (error) {
-        throw error;
-    }
-});
-
-export const getTeamMemberResume = createAsyncThunk('team/getTeamMemberResume', async (pageTitle) => {
-
-    try {
-        const response = await fetch(`/wp-json/seven-tech/v1/users/team/${pageTitle}/resume`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            const errorMessage = errorData.message;
-            throw new Error(errorMessage);
-        }
-
-        const responseData = await response.json();
-        return responseData;
-    } catch (error) {
-        throw error;
+        console.error(error);
+        throw new Error(error.message);
     }
 });
 
@@ -94,11 +63,15 @@ export const teamSlice = createSlice({
             .addCase(getTeam.fulfilled, (state, action) => {
                 state.teamLoading = false;
                 state.teamError = null;
-                state.team = action.payload
+                state.teamErrorMessage = action.payload.errorMessage;
+                state.teamStatusCode = action.payload.statusCode;
+                state.team = action.payload.team;
             })
             .addCase(getTeam.rejected, (state, action) => {
                 state.teamLoading = false
-                state.teamError = action.error.message
+                state.teamError = action.error
+                state.teamErrorMessage = action.error.message
+                state.teamStatusCode = action.error.code
             })
             .addCase(getTeamMember.pending, (state) => {
                 state.teamLoading = true
@@ -119,20 +92,6 @@ export const teamSlice = createSlice({
                 state.teamLoading = false
                 state.teamError = action.error.message
             })
-            .addCase(getTeamMemberResume.pending, (state) => {
-                state.teamLoading = true
-                state.teamError = ''
-            })
-            .addCase(getTeamMemberResume.fulfilled, (state, action) => {
-                state.teamLoading = false;
-                state.teamError = null;
-                state.teamResume = action.payload
-            })
-            .addCase(getTeamMemberResume.rejected, (state, action) => {
-                state.teamLoading = false
-                state.teamError = action.error.message
-            })
-
     }
 })
 

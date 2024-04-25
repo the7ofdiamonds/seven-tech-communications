@@ -18,6 +18,7 @@ class API
         $portfolio = new Portfolio($mailer);
         $schedule = new Schedule($mailer);
         $support = new Support($mailer);
+        $team = new Team;
 
         register_rest_route('seven-tech/v1', '/about/mission-statement', array(
             'methods' => 'GET',
@@ -54,7 +55,7 @@ class API
             'callback' => array($content, 'get_content'),
             'permission_callback' => '__return_true',
         ));
-        
+
         register_rest_route('seven-tech/v1', '/founders', array(
             'methods' => 'GET',
             'callback' => array($founders, 'get_founders'),
@@ -154,6 +155,18 @@ class API
         register_rest_route('seven-tech/v1', '/email/support', array(
             'methods' => 'POST',
             'callback' => array($support, 'send_support_email'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/team', array(
+            'methods' => 'GET',
+            'callback' => array($team, 'get_team'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/team/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'GET',
+            'callback' => array($team, 'get_team_member'),
             'permission_callback' => '__return_true',
         ));
     }

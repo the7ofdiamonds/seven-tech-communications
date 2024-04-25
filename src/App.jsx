@@ -14,7 +14,7 @@ const Support = lazy(() => import('./views/Support.jsx'));
 const Founders = lazy(() => import('./views/Founders.jsx'));
 const Founder = lazy(() => import('./views/Founder.jsx'));
 const Team = lazy(() => import('./views/Team.jsx'));
-const TeamMember = lazy(() => import('./views/TeamMember.jsx'));
+const TeamMember = lazy(() => import('./views/Team-Member.jsx'));
 
 function App() {
   return (

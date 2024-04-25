@@ -39,6 +39,7 @@ use SEVEN_TECH\Communications\JS\JS;
 use SEVEN_TECH\Communications\Pages\Pages;
 use SEVEN_TECH\Communications\Post_Types\Founders\Founders;
 use SEVEN_TECH\Communications\Post_Types\Post_Types;
+use SEVEN_TECH\Communications\Post_Types\Team\Team;
 use SEVEN_TECH\Communications\Roles\Roles;
 use SEVEN_TECH\Communications\Router\Router;
 use SEVEN_TECH\Communications\Shortcodes\Shortcodes;
@@ -49,6 +50,7 @@ class SEVEN_TECH_Communications
 {
     private $pages;
     private $router;
+    private $posttypes;
 
     public function __construct()
     {
@@ -81,11 +83,14 @@ class SEVEN_TECH_Communications
             $templates
         );
 
+        $team = new Team;
+
         add_action('init', function () use ($posttypes, $taxonomies, $router) {
             $posttypes->custom_post_types();
+            // $posttypes->log_registered_post_types();
             $taxonomies->custom_taxonomy();
             $router->load_page();
-            $router->react_rewrite_rules();
+            // $router->react_rewrite_rules();
             new Shortcodes;
         });
 
@@ -96,6 +101,7 @@ class SEVEN_TECH_Communications
             $templates
         );
         $this->pages = new Pages;
+        $this->posttypes = new Post_Types;
 
         add_action('wp_head', function () {
             (new SocialBar)->load_css();
@@ -116,6 +122,7 @@ class SEVEN_TECH_Communications
         $this->router->react_rewrite_rules();
         $this->pages->add_pages();
         (new Founders)->addFounderPages();
+        $this->posttypes->custom_post_types();
     }
 
     function deactivate()

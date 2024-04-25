@@ -21,11 +21,8 @@ class Founders
 
     function addFounderPages()
     {
-        $users = get_users(array(
-            'role__in' => array(
-                $this->role,
-            )
-        ));
+        $args = ['role__in' => [$this->role]];
+        $users = get_users($args);
 
         if (!empty($users)) {
             return '';
@@ -69,11 +66,8 @@ class Founders
 
     function getFoundersList()
     {
-        $users = get_users([
-            'role__in' => [
-                $this->role,
-            ]
-        ]);
+        $args = ['role__in' => [$this->role]];
+        $users = get_users($args);
 
         if (!is_array($users)) {
             return 'There are no founders at this time.';
@@ -102,11 +96,8 @@ class Founders
 
     function getFounders()
     {
-        $users = get_users([
-            'role__in' => [
-                $this->role
-            ]
-        ]);
+        $args = ['role__in' => [$this->role]];
+        $users = get_users($args);
 
         if (!is_array($users)) {
             return '';
@@ -246,8 +237,6 @@ class Founders
         }
 
         $id = $user_data->ID;
-        $first_name = get_user_meta($id, 'first_name', true);
-        $last_name = get_user_meta($id, 'last_name', true);
         $avatar_url = get_avatar_url($id, ['size' => 384]);
 
         $founder = array(

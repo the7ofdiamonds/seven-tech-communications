@@ -20,11 +20,11 @@ function Team() {
 
   return (
     <>
-      <section className="team">
+      <main className="team">
         <h4 className="title">Team</h4>
 
         <GroupMembers group={team} />
-      </section>
+      </main>
     </>
   );
 }

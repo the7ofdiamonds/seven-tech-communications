@@ -2,12 +2,17 @@
 
 namespace SEVEN_TECH\Communications\Post_Types;
 
+use SEVEN_TECH\Communications\Post_Types\Team\Team;
+
 class Post_Types
 {
     public $post_types_list;
+    private $pluginDir;
 
     public function __construct()
     {
+        // (new Team)->addCustomPostType();
+
         $this->post_types_list = [
             [
                 'name' => 'founders',
@@ -19,9 +24,23 @@ class Post_Types
                 'archive_page' => 'founders',
                 'single_page' => 'founder',
                 'file_name' => "Founders",
-                'regex' => '#^/founders/([a-zA-Z-]+)#',
+                'slug' => 'founders',
+            ],
+            [
+                'name' => 'team',
+                'menu_icon' => '',
+                'menu_position' => 12,
+                'title' => 'TEAM',
+                'singular' => 'Team Member',
+                'plural' => 'Team',
+                'archive_page' => 'Team',
+                'single_page' => 'Team-Member',
+                'file_name' => "Team",
+                'slug' => 'team',
             ],
         ];
+
+        $this->pluginDir = SEVEN_TECH_COMMUNICATIONS;
     }
 
     function custom_post_types()
@@ -55,7 +74,7 @@ class Post_Types
                     'query_var' => true,
                     'rewrite' => array(
                         'with_front' => false,
-                        'slug'       => $post_type['archive_page']
+                        'slug'       => $post_type['slug']
                     ),
                     'hierarchical' => true,
                     'supports' => [
@@ -74,6 +93,16 @@ class Post_Types
 
                 register_post_type($post_type['name'], $args);
             }
+        }
+    }
+
+    function log_registered_post_types()
+    {
+        $post_type_object = get_post_type_object('founders');
+        $file = '/var/www/wordpress/wp-content/plugins/seven-tech-communications/Post_Types/Team/archive-team.php';
+
+        if (file_exists($file)) {
+            error_log(print_r($post_type_object, true));
         }
     }
 }
