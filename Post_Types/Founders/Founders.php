@@ -6,18 +6,21 @@ use Exception;
 
 use SEVEN_TECH\Communications\Media\Media;
 use SEVEN_TECH\Communications\Role\Role;
+use SEVEN_TECH\Communications\User\User;
 
 class Founders
 {
     private $media;
     private $post_type;
     private $role;
+    private $user;
 
     public function __construct()
     {
         $this->media = new Media;
         $this->role = 'founder';
         $this->post_type = 'founders';
+        $this->user = new User;
     }
 
     function getFoundersList()
@@ -55,35 +58,11 @@ class Founders
         $args = [
             'role__in' => [$this->role]
         ];
-        $users = get_users($args);
 
-        if (!is_array($users)) {
+        $founders = $this->user->getUsers($args);
+
+        if (!is_array($founders)) {
             return '';
-        }
-
-        $founders = [];
-
-        foreach ($users as $user) {
-            $user_data = get_userdata($user->ID);
-
-            if ($user_data == false) {
-                continue;
-            }
-
-            $roles = (new Role)->getOrderedRoles($user_data->roles);
-            $roleLink = (new Role)->getRoleLink($roles[0], $user_data->user_nicename);
-
-            $founder = array(
-                'id' => $user_data->ID,
-                'first_name' => $user_data->first_name,
-                'last_name' => $user_data->last_name,
-                'email' => $user_data->user_email,
-                'roles' => $roles,
-                'user_url' => $roleLink,
-                'avatar_url' => get_avatar_url($user_data->ID, ['size' => 384])
-            );
-
-            $founders[] = $founder;
         }
 
         return $founders;
@@ -163,16 +142,10 @@ class Founders
         return $social_networks;
     }
 
-    function getFounderResume($nicename)
+    function getFounderResume($id)
     {
-        $user = get_user_by('slug', $nicename);
-
-        if ($user == false) {
-            return '';
-        }
-
         $path = 'resume';
-        $file = "Resume_{$user->ID}.pdf";
+        $file = "Resume_{$id}.pdf";
 
         return $this->media->getURL($path, $file);
     }
@@ -185,35 +158,17 @@ class Founders
             return '';
         }
 
-        $user = get_user_by('ID', $post->post_author);
+        $id = $post->post_author;
 
-        if ($user == false) {
+        $founder = $this->user->getUser($id);
+
+        if (!is_array($founder)) {
             return '';
         }
 
-        $user_data = get_userdata($user->ID);
-
-        if (empty($user_data)) {
-            return '';
-        }
-
-        $id = $user_data->ID;
-        $avatar_url = get_avatar_url($id, ['size' => 384]);
-        $roles = (new Role)->getOrderedRoles($user_data->roles);
-        $roleLink = (new Role)->getRoleLink($roles[0], $user_data->user_nicename);
-
-        $founder = array(
-            'id' => $id,
-            'fullName' => $post->post_title,
-            'email' => $user_data->user_email,
-            'title' => $roles,
-            'greeting' => get_the_author_meta('description', $id),
-            'author_url' => $roleLink,
-            'avatar_url' => $avatar_url == false ? '' : $avatar_url,
-            'skills' => $this->getFounderSkills($post->ID),
-            'social_networks' => $this->getFounderSocialNetworks($post->ID),
-            'founder_resume' => $this->getFounderResume($user_data->user_nicename)
-        );
+        $founder['skills'] = $this->getFounderSkills($id);
+        $founder['social_networks'] = $this->getFounderSocialNetworks($id);
+        $founder['founder_resume'] = $this->getFounderResume($id);
 
         return $founder;
     }

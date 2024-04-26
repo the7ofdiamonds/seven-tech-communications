@@ -6,6 +6,7 @@ import { getContent } from '../controllers/contentSlice';
 
 import ContentComponent from './components/ContentComponent';
 import LoadingComponent from './components/LoadingComponent';
+import FoundersComponent from './components/FoundersComponent';
 
 function About() {
   const dispatch = useDispatch();
@@ -50,6 +51,8 @@ function About() {
         </div>
 
         <ContentComponent content={content} />
+
+        <FoundersComponent />
       </main>
     </>
   );

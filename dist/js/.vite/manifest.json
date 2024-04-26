@@ -6,6 +6,15 @@
       "src/index.jsx"
     ]
   },
+  "_FoundersComponent.js": {
+    "file": "FoundersComponent.js",
+    "name": "FoundersComponent",
+    "imports": [
+      "src/index.jsx",
+      "_GroupMembers.js",
+      "_useDispatch.js"
+    ]
+  },
   "_GroupMembers.js": {
     "file": "GroupMembers.js",
     "name": "GroupMembers",
@@ -59,7 +68,9 @@
     "imports": [
       "src/index.jsx",
       "_ContentComponent.js",
-      "_useDispatch.js"
+      "_FoundersComponent.js",
+      "_useDispatch.js",
+      "_GroupMembers.js"
     ]
   },
   "src/views/Contact.jsx": {
@@ -104,6 +115,7 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
+      "_FoundersComponent.js",
       "_GroupMembers.js",
       "_useDispatch.js"
     ]
