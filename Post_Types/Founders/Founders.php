@@ -5,6 +5,7 @@ namespace SEVEN_TECH\Communications\Post_Types\Founders;
 use Exception;
 
 use SEVEN_TECH\Communications\Media\Media;
+use SEVEN_TECH\Communications\Role\Role;
 
 class Founders
 {
@@ -17,51 +18,6 @@ class Founders
         $this->media = new Media;
         $this->role = 'founder';
         $this->post_type = 'founders';
-    }
-
-    function addFounderPages()
-    {
-        $args = ['role__in' => [$this->role]];
-        $users = get_users($args);
-
-        if (!empty($users)) {
-            return '';
-        }
-
-        foreach ($users as $user) {
-            $user_data = get_userdata($user->ID);
-
-            if ($user_data == false) {
-                continue;
-            }
-
-            $first_name = $user_data->first_name;
-            $last_name = $user_data->last_name;
-
-            $post_title = $first_name . ' ' . $last_name;
-            $post_slug = $user_data->nicename;
-
-            $existing_post = get_page_by_path($post_slug, OBJECT, $this->post_type);
-
-            if (!empty($existing_post)) {
-                continue;
-            }
-
-            $args = array(
-                'post_title'    => $post_title,
-                'post_content'  => '',
-                'post_status'   => 'publish',
-                'post_type'     => $this->post_type,
-                'post_name'     => $post_slug,
-            );
-
-            $founder_page = wp_insert_post($args);
-
-            if (!is_int($founder_page)) {
-                error_log('There was an error creatin founder page.');
-                continue;
-            }
-        }
     }
 
     function getFoundersList()
@@ -96,7 +52,9 @@ class Founders
 
     function getFounders()
     {
-        $args = ['role__in' => [$this->role]];
+        $args = [
+            'role__in' => [$this->role]
+        ];
         $users = get_users($args);
 
         if (!is_array($users)) {
@@ -112,13 +70,16 @@ class Founders
                 continue;
             }
 
+            $roles = (new Role)->getOrderedRoles($user_data->roles);
+            $roleLink = (new Role)->getRoleLink($roles[0], $user_data->user_nicename);
+
             $founder = array(
                 'id' => $user_data->ID,
                 'first_name' => $user_data->first_name,
                 'last_name' => $user_data->last_name,
                 'email' => $user_data->user_email,
-                'role' => $user_data->roles,
-                'user_url' => "/founders/{$user_data->user_nicename}",
+                'roles' => $roles,
+                'user_url' => $roleLink,
                 'avatar_url' => get_avatar_url($user_data->ID, ['size' => 384])
             );
 
@@ -238,14 +199,16 @@ class Founders
 
         $id = $user_data->ID;
         $avatar_url = get_avatar_url($id, ['size' => 384]);
+        $roles = (new Role)->getOrderedRoles($user_data->roles);
+        $roleLink = (new Role)->getRoleLink($roles[0], $user_data->user_nicename);
 
         $founder = array(
             'id' => $id,
             'fullName' => $post->post_title,
             'email' => $user_data->user_email,
-            'title' => 'founder',
+            'title' => $roles,
             'greeting' => get_the_author_meta('description', $id),
-            'author_url' => "/founders/{$user_data->user_nicename}",
+            'author_url' => $roleLink,
             'avatar_url' => $avatar_url == false ? '' : $avatar_url,
             'skills' => $this->getFounderSkills($post->ID),
             'social_networks' => $this->getFounderSocialNetworks($post->ID),

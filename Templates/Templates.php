@@ -136,29 +136,6 @@ class Templates
         return $template_include;
     }
 
-    function get_page_list_template($template_include, $page)
-    {
-        if (is_page($page['title'])) {
-            $filename = $page['file_name'];
-            $filename_css = $this->cssDir . $filename . '.css';
-            $filename_js = $this->jsDir . $filename . '.js';
-
-            if (file_exists($filename_css)) {
-                add_action('wp_head', function () use ($filename) {
-                    $this->css->load_pages_css($filename);
-                });
-            }
-
-            if (file_exists($filename_js)) {
-                add_action('wp_footer', function () use ($filename) {
-                    $this->js->load_pages_react($filename);
-                });
-            }
-        }
-
-        return $template_include;
-    }
-
     function get_taxonomy_page_template($taxonomy_template, $taxonomy)
     {
         if (is_tax($taxonomy['name'])) {
@@ -222,17 +199,16 @@ class Templates
     }
 
     function get_single_page_template($single_template, $post_type)
-    {$single_template = "{$this->pluginDir}Post_Types/{$post_type['plural']}/single-{$post_type['name']}.php";
-    error_log($single_template);
-        if (is_single($post_type['name'])) {
+    {
+        if (is_singular($post_type['name'])) {
             $single_template = "{$this->pluginDir}Post_Types/{$post_type['plural']}/single-{$post_type['name']}.php";
-            error_log($single_template);
+
             if (file_exists($single_template)) {
                 $filename = $post_type['singular'];
                 $filename_css = $this->cssDir . $filename . '.css';
                 $filename_js = $this->jsDir . $filename . '.js';
-                error_log('template');
 
+                
                 if (file_exists($filename_css)) {
                     add_action('wp_head', function () use ($filename) {
                         $this->css->load_pages_css($filename);

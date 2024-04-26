@@ -1,15 +1,15 @@
 function GroupMembers(props) {
   const { group } = props;
-  console.log(group);
+
   return (
     <>
       {group?.length > 0 &&
         group.map((group_member) => (
           <div className="group" key={group_member.id}>
-            {group_member && typeof group_member === 'object' ? (
+            {group_member && typeof group_member === 'object' && (
               <div className="author-card card">
                 <div className="author-pic">
-                  <a href={group_member.user_url}>
+                  <a href={group_member.user_url ? group_member.user_url : ''}>
                     <img src={group_member.avatar_url} alt="" />
                   </a>
                 </div>
@@ -20,9 +20,12 @@ function GroupMembers(props) {
                   </h4>
                 </div>
 
-                <div className="role">
-                  <h5>{group_member.role}</h5>
-                </div>
+                {Array.isArray(group_member.roles) &&
+                  group_member.roles.map((role) => (
+                    <div className="role">
+                      <h5>{role}</h5>
+                    </div>
+                  ))}
 
                 <div className="author-contact">
                   <a href={`mailto:${group_member.email}`}>
@@ -30,8 +33,6 @@ function GroupMembers(props) {
                   </a>
                 </div>
               </div>
-            ) : (
-              ''
             )}
           </div>
         ))}

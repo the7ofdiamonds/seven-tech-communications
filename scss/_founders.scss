@@ -1,15 +1,9 @@
+@use '_group_Members.scss';
+
 section {
   min-height: 100vh;
 
   main.founders {
     margin: 5rem 0;
-  }
-}
-
-.group {
-  .role {
-    h5 {
-      text-transform: capitalize;
-    }
   }
 }

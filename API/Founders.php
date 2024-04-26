@@ -26,7 +26,7 @@ class Founders
                 throw new Exception('There are no founders to show.', 404);
             }
 
-            return rest_ensure_response($founders);
+            return rest_ensure_response(['founders' => $founders]);
         } catch (Exception $e) {
             $statusCode = $e->getCode();
             $response_data = [

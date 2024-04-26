@@ -28,13 +28,6 @@
       "_useDispatch.js"
     ]
   },
-  "_teamSlice.js": {
-    "file": "teamSlice.js",
-    "name": "teamSlice",
-    "imports": [
-      "src/index.jsx"
-    ]
-  },
   "_useDispatch.js": {
     "file": "useDispatch.js",
     "name": "useDispatch",

@@ -6,19 +6,21 @@ use SEVEN_TECH\Communications\Role\Role;
 
 class Team
 {
-    private $roles;
+    private $role;
+    private $roleNames;
     private $post_type;
 
     public function __construct()
     {
-        $this->roles = (new Role)->getRoles();
+        $this->role = new role;
+        $this->roleNames = (new Role)->getRoleNames();
         $this->post_type = 'team';
     }
 
     function getTeam()
     {
         $args = [
-            'role__in' => $this->roles
+            'role__in' => $this->roleNames
         ];
         $users = get_users($args);
 
@@ -35,13 +37,16 @@ class Team
                 continue;
             }
 
+            $roles = $this->role->getOrderedRoles($user_data->roles);
+            $roleLink = $this->role->getRoleLink($roles[0], $user_data->user_nicename);
+
             $teamMember = array(
                 'id' => $user_data->ID,
                 'first_name' => $user_data->first_name,
                 'last_name' => $user_data->last_name,
                 'email' => $user_data->user_email,
-                'role' => $user_data->roles,
-                'user_url' => "/founders/{$user_data->user_nicename}",
+                'roles' => $roles,
+                'user_url' => $roleLink,
                 'avatar_url' => get_avatar_url($user_data->ID, ['size' => 384])
             );
 
@@ -72,15 +77,17 @@ class Team
         }
 
         $id = $user_data->ID;
+        $roles = $this->role->getOrderedRoles($user_data->roles);
+        $roleLink = $this->role->getRoleLink($roles[0], $user_data->user_nicename);
         $avatar_url = get_avatar_url($id, ['size' => 384]);
 
         $teamMember = array(
             'id' => $id,
-            'fullName' => $post->post_title,
+            'full_name' => $post->post_title,
             'email' => $user_data->user_email,
-            'title' => 'founder',
-            'greeting' => get_the_author_meta('description', $id),
-            'author_url' => "/founders/{$user_data->user_nicename}",
+            'title' => $roles[0],
+            'bio' => get_the_author_meta('description', $id),
+            'user_url' => $roleLink,
             'avatar_url' => $avatar_url == false ? '' : $avatar_url,
         );
 
