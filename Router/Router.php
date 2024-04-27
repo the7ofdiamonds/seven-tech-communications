@@ -59,7 +59,6 @@ class Router
                     }
 
                     if (preg_match($custom_page['regex'], $path)) {
-
                         add_filter('template_include', function ($template_include) use ($custom_page) {
                             return $this->templates->get_custom_page_template($template_include, $custom_page);
                         });
@@ -130,7 +129,7 @@ class Router
                         });
                     }
 
-                    if (preg_match("#^/{$post_type['slug']}/([a-zA-Z-]+)#", $path)) {
+                    if (preg_match("#^/{$post_type['slug']}/([a-zA-Z-]+)/#", $path)) {
                         add_filter('single_template', function ($single_template) use ($post_type) {
                             return $this->templates->get_single_page_template($single_template, $post_type);
                         });
@@ -150,9 +149,6 @@ class Router
 
     function react_rewrite_rules()
     {
-        add_rewrite_rule("^about$/?", 'index.php?', 'top');
-        add_rewrite_rule("^contact$/?", 'index.php?', 'top');
-        add_rewrite_rule("^faq$/?", 'index.php?', 'top');
-        add_rewrite_rule("^support$/?", 'index.php?', 'top');
+        add_rewrite_rule('^founders/([a-zA-Z\-]+)/resume?$', 'index.php', 'top');
     }
 }

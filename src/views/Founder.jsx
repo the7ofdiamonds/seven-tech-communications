@@ -32,9 +32,9 @@ function Founder() {
     title,
     avatarURL,
     fullName,
-    greeting,
+    bio,
     skills,
-    founder_resume,
+    founderResume,
   } = useSelector((state) => state.founder);
 
   const { content } = useSelector((state) => state.content);
@@ -49,13 +49,12 @@ function Founder() {
         title={title}
         avatarURL={avatarURL}
         fullName={fullName}
-        greeting={greeting}
-        founder_resume={founder_resume}
+        bio={bio}
+        founder_resume={founderResume}
       />
 
       <ContentComponent content={content} />
 
-      {/* This should be in the portfolio plugin */}
       <MemberProgrammingSkillsComponent skills={skills} />
     </>
   );

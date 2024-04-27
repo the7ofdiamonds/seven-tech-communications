@@ -48,7 +48,7 @@ class Templates
         return $frontpage_template;
     }
 
-    function get_custom_page_template($template_include, $custom_page)
+    function get_custom_page_template($template, $custom_page)
     {
 
         if (isset($custom_page['file_name'])) {
@@ -70,14 +70,14 @@ class Templates
         }
 
         if (isset($custom_page['page_name'])) {
-            $custom_template = $this->pluginDir . "Pages/page-{$custom_page['page_name']}.php";
+            $template = "{$this->pluginDir}Pages/page-{$custom_page['page_name']}.php";
 
-            if (file_exists($custom_template)) {
-                return $custom_template;
+            if (file_exists($template)) {
+                return $template;
             }
         }
 
-        return $template_include;
+        return $template;
     }
 
     function get_protected_page_template($template_include, $protected_page)

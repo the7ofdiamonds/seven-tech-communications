@@ -7,10 +7,10 @@ const initialState = {
     teamErrorMessage: '',
     team: '',
     title: '',
-    author_url: '',
-    avatar_url: '',
+    authorURL: '',
+    avatarURL: '',
     fullName: '',
-    greeting: ''
+    bio: ''
 };
 
 export const getTeam = createAsyncThunk('team/getTeam', async () => {
@@ -83,8 +83,8 @@ export const teamSlice = createSlice({
                 state.title = action.payload.title
                 state.authorURL = action.payload.author_url
                 state.avatarURL = action.payload.avatar_url
-                state.fullName = action.payload.fullName
-                state.greeting = action.payload.greeting
+                state.fullName = action.payload.full_name
+                state.bio = action.payload.bio
                 state.skills = action.payload.skills
                 state.teamResume = action.payload.teamResume
             })

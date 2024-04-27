@@ -60,25 +60,4 @@ class Founders
             return $response;
         }
     }
-
-    function get_founder_resume(WP_REST_Request $request)
-    {
-        try {
-            $pageTitle = $request->get_param('slug');
-           
-            $resume_pdf_url = $this->pt_founder->getFounderResume($pageTitle);
-
-            return rest_ensure_response($resume_pdf_url);
-        } catch (Exception $e) {
-            $statusCode = $e->getCode();
-            $response_data = [
-                'errorMessage' => $e->getMessage(),
-                'statusCode' => $statusCode
-            ];
-            $response = rest_ensure_response($response_data);
-            $response->set_status($statusCode);
-
-            return $response;
-        }
-    }
 }

@@ -3,7 +3,7 @@ import React from 'react';
 import MemberNavigationComponent from './MemberNavigationComponent';
 
 function MemberIntroductionComponent(props) {
-  const { title, avatarURL, fullName, greeting, founder_resume } = props;
+  const { title, avatarURL, fullName, bio, founder_resume } = props;
 
   const portfolioElement = document.getElementById('seven_tech_portfolio');
 
@@ -25,9 +25,9 @@ function MemberIntroductionComponent(props) {
           <h4 class="title">{title}</h4>
         </div>
 
-        {greeting && (
+        {bio && (
           <div class="author-card card">
-            <p class="author-bio">{greeting}</p>
+            <p class="author-bio">{bio}</p>
           </div>
         )}
       </div>

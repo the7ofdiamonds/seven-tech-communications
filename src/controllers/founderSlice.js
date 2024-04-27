@@ -10,10 +10,10 @@ const initialState = {
     avatarURL: '',
     authorURL: '',
     fullName: '',
-    greeting: '',
+    bio: '',
     skills: '',
-    social_networks: '',
-    founder_resume: ''
+    socialNetworks: '',
+    founderResume: ''
 };
 
 export const getFounders = createAsyncThunk('founder/getFounders', async () => {
@@ -54,25 +54,6 @@ export const getFounder = createAsyncThunk('founder/getFounder', async (founder)
     }
 });
 
-export const getFounderResume = createAsyncThunk('founder/getFounderResume', async (pageTitle) => {
-
-    try {
-        const response = await fetch(`/wp-json/seven-tech/v1/founders/${pageTitle}/resume`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-
-        const responseData = await response.json();
-
-        return responseData;
-    } catch (error) {
-        console.error(error);
-        throw new Error(error.message);
-    }
-});
-
 export const founderSlice = createSlice({
     name: 'founder',
     initialState,
@@ -90,21 +71,15 @@ export const founderSlice = createSlice({
                 state.title = action.payload.title
                 state.authorURL = action.payload.author_url
                 state.avatarURL = action.payload.avatar_url
-                state.fullName = action.payload.fullName
-                state.greeting = action.payload.greeting
+                state.fullName = action.payload.full_name
+                state.bio = action.payload.bio
                 state.skills = action.payload.skills
-                state.social_networks = action.payload.social_networks
-                state.founder_resume = action.payload.founder_resume
-            })
-            .addCase(getFounderResume.fulfilled, (state, action) => {
-                state.founderLoading = false;
-                state.founderError = null;
-                state.founder_resume = action.payload
+                state.socialNetworks = action.payload.social_networks
+                state.founderResume = action.payload.founder_resume
             })
             .addMatcher(isAnyOf(
                 getFounders.pending,
-                getFounder.pending,
-                getFounderResume.pending
+                getFounder.pending
             ), (state) => {
                 state.founderLoading = true
                 state.founderStatusCode = ''
@@ -113,8 +88,7 @@ export const founderSlice = createSlice({
             })
             .addMatcher(isAnyOf(
                 getFounders.rejected,
-                getFounder.rejected,
-                getFounderResume.rejected
+                getFounder.rejected
             ), (state, action) => {
                 state.founderLoading = false
                 state.founderStatusCode = action.error.code

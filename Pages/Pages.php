@@ -26,9 +26,8 @@ class Pages
                 'url' => 'founders/([a-zA-Z-]+)/resume',
                 'regex' => '#^/founders/([a-zA-Z-]+)/resume#',
                 'title' => '',
-                'page_name' => 'founder-resume',
+                'page_name' => 'resume',
             ]
-        
         ];
 
         $this->protected_pages = [];
@@ -48,7 +47,12 @@ class Pages
                 'url' => 'support',
                 'regex' => '#^/support#',
                 'file_name' => 'Support',
-            ]
+            ],
+            // [
+            //     'url' => 'founders/([a-zA-Z-]+)/resume',
+            //     'regex' => '#^/founders/([a-zA-Z-]+)/resume#',
+            //     'file_name' => 'Resume',
+            // ]
         ];
 
         $this->pages_list = [

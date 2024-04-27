@@ -1,9 +1,9 @@
 <?php
-header('X-Frame-Options: SAMEORIGIN');
+header('X-Frame-Options: DENY');
 
-use SEVEN_TECH\Communications\Post_Types\Founders\Founders;
+use SEVEN_TECH\Communications\Resume\Resume;
 
-$founders = new Founders;
+$resume = new Resume;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +15,10 @@ $founders = new Founders;
         <?php
         $currentURL = $_SERVER['REQUEST_URI'];
         $urlPosition = explode('/', $currentURL);
-        $nicename = $urlPosition[2];
+
+        $resumeInfo = $resume->getResumeInfo($urlPosition[1], $urlPosition[2]);
+
+        echo "{$resumeInfo['full_name']} Resume";
         ?>
     </title>
 
@@ -26,16 +29,6 @@ $founders = new Founders;
         echo '<link rel="icon" href="' . esc_url($site_icon_url) . '" sizes="32x32" type="image/png">';
     }
     ?>
-    <style>
-        main {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
 </head>
 
 <body>
@@ -49,7 +42,7 @@ $founders = new Founders;
         }
     </style>
 
-    <iframe id="pdfViewer" src="<?php echo $founders->getFounderResume($nicename);; ?>" frameborder="0"></iframe>
+    <iframe id="pdfViewer" src="<?php echo $resumeInfo['resume']; ?>" frameborder="0"></iframe>
 </body>
 
 </html>

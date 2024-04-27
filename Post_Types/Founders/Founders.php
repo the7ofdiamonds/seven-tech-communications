@@ -3,24 +3,22 @@
 namespace SEVEN_TECH\Communications\Post_Types\Founders;
 
 use Exception;
-
-use SEVEN_TECH\Communications\Media\Media;
-use SEVEN_TECH\Communications\Role\Role;
+use SEVEN_TECH\Communications\Resume\Resume;
 use SEVEN_TECH\Communications\User\User;
 
 class Founders
 {
-    private $media;
     private $post_type;
     private $role;
     private $user;
+    private $resume;
 
     public function __construct()
     {
-        $this->media = new Media;
         $this->role = 'founder';
         $this->post_type = 'founders';
         $this->user = new User;
+        $this->resume = new Resume;
     }
 
     function getFoundersList()
@@ -142,14 +140,6 @@ class Founders
         return $social_networks;
     }
 
-    function getFounderResume($id)
-    {
-        $path = 'resume';
-        $file = "Resume_{$id}.pdf";
-
-        return $this->media->getURL($path, $file);
-    }
-
     function getFounder($slug)
     {
         $post = get_page_by_path($slug, OBJECT, $this->post_type);
@@ -166,9 +156,9 @@ class Founders
             return '';
         }
 
-        $founder['skills'] = $this->getFounderSkills($id);
-        $founder['social_networks'] = $this->getFounderSocialNetworks($id);
-        $founder['founder_resume'] = $this->getFounderResume($id);
+        $founder['skills'] = $this->getFounderSkills($post->ID);
+        $founder['social_networks'] = $this->getFounderSocialNetworks($post->ID);
+        $founder['founder_resume'] = $this->resume->getResume($id);
 
         return $founder;
     }

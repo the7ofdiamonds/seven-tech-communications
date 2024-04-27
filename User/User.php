@@ -21,7 +21,6 @@ class User
             return '';
         }
 
-        $id = $user_data->ID;
         $roles = $this->role->getOrderedRoles($user_data->roles);
         $roleLink = $this->role->getRoleLink($roles[0], $user_data->user_nicename);
         $avatar_url = get_avatar_url($id, ['size' => 384]);

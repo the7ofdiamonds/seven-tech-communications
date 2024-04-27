@@ -17,6 +17,7 @@
     "gulp": "gulp"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^3.4.4",
     "@reduxjs/toolkit": "^1.9.5",
     "dotenv": "^16.3.1",
     "esbuild": "^0.18.15",
