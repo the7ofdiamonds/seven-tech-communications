@@ -18,6 +18,7 @@ class API
         $portfolio = new Portfolio($mailer);
         $schedule = new Schedule($mailer);
         $support = new Support($mailer);
+        $taxonomies = new Taxonomies;
         $team = new Team;
 
         register_rest_route('seven-tech/v1', '/about/mission-statement', array(
@@ -167,6 +168,18 @@ class API
         register_rest_route('seven-tech/v1', '/team/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'GET',
             'callback' => array($team, 'get_team_member'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/skills', array(
+            'methods' => 'GET',
+            'callback' => array($taxonomies, 'get_skills'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/skills/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'GET',
+            'callback' => array($taxonomies, 'get_skill'),
             'permission_callback' => '__return_true',
         ));
     }

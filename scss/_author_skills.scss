@@ -11,17 +11,28 @@
 
 .author-skills-slide {
   display: flex;
+  gap: 2rem;
   animation: var(--animation-duration) slide infinite linear;
 }
 
-.author-skills-slide i {
-  font-size: 4rem;
-  padding: 0;
-  width: var(--icon-width)
+.author-skills-slide {
+  .icon {
+    padding: 0;
+    width: var(--icon-width);
+
+    i {
+      font-size: 4rem;
+    }
+
+    img {
+      width: auto;
+      height: 4rem;
+    }
+  }
 }
 
 @keyframes slide {
   100% {
-      transform: translateX(calc(-100% / 2));
+    transform: translateX(calc(-100% / 2));
   }
 }

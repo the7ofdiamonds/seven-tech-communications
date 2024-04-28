@@ -23,9 +23,7 @@ class Pages
                 'page_name' => 'about'
             ],
             [
-                'url' => 'founders/([a-zA-Z-]+)/resume',
-                'regex' => '#^/founders/([a-zA-Z-]+)/resume#',
-                'title' => '',
+                'regex' => '#^/([a-zA-Z-]+)/([a-zA-Z-]+)/resume#',
                 'page_name' => 'resume',
             ]
         ];

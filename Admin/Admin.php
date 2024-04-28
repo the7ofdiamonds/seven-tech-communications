@@ -2,6 +2,8 @@
 
 namespace SEVEN_TECH\Communications\Admin;
 
+use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
+
 class Admin
 {
     private $table_name;
@@ -102,7 +104,7 @@ class Admin
                 </tr>
             </tbody>
         </table>
-<?php
+    <?php
     }
 
     function handle_communication_form_submission()

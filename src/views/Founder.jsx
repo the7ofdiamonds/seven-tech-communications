@@ -6,7 +6,7 @@ import { getFounder } from '../controllers/founderSlice.js';
 
 import LoadingComponent from './components/LoadingComponent';
 import MemberProgrammingSkillsComponent from './components/MemberProgrammingSkillsComponent';
-import MemberIntroductionComponent from './components/MemberIntroductionComponent';
+import MemberComponent from './components/MemberComponent.jsx';
 import ContentComponent from './components/ContentComponent';
 
 import { getContent } from '../controllers/contentSlice';
@@ -45,17 +45,19 @@ function Founder() {
 
   return (
     <>
-      <MemberIntroductionComponent
-        title={title}
-        avatarURL={avatarURL}
-        fullName={fullName}
-        bio={bio}
-        founder_resume={founderResume}
-      />
+      <main class="author-intro" id="author_intro">
+        <MemberComponent
+          title={title}
+          avatarURL={avatarURL}
+          fullName={fullName}
+          bio={bio}
+          founder_resume={founderResume}
+        />
 
-      <ContentComponent content={content} />
+        <ContentComponent content={content} />
 
-      <MemberProgrammingSkillsComponent skills={skills} />
+        <MemberProgrammingSkillsComponent skills={skills} />
+      </main>
     </>
   );
 }

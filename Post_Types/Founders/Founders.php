@@ -3,8 +3,10 @@
 namespace SEVEN_TECH\Communications\Post_Types\Founders;
 
 use Exception;
+
 use SEVEN_TECH\Communications\Resume\Resume;
 use SEVEN_TECH\Communications\User\User;
+use SEVEN_TECH\Communications\Taxonomies\Skills;
 
 class Founders
 {
@@ -12,6 +14,7 @@ class Founders
     private $role;
     private $user;
     private $resume;
+    private $skills;
 
     public function __construct()
     {
@@ -19,6 +22,7 @@ class Founders
         $this->post_type = 'founders';
         $this->user = new User;
         $this->resume = new Resume;
+        $this->skills = new Skills;
     }
 
     function getFoundersList()
@@ -64,35 +68,6 @@ class Founders
         }
 
         return $founders;
-    }
-
-    function getFounderSkills($post_id)
-    {
-        if (empty($post_id)) {
-            throw new Exception('Post ID is required to get skills.', 400);
-        }
-
-        $taxonomies = get_post_taxonomies($post_id);
-
-        if (!is_array($taxonomies)) {
-            return '';
-        }
-
-        $skills = [];
-
-        foreach ($taxonomies as $taxonomy) {
-            $terms = get_the_terms($post_id, $taxonomy);
-
-            if (!is_array($terms) || $terms == false || is_wp_error($terms)) {
-                continue;
-            }
-
-            foreach ($terms as $term) {
-                $skills[] = $term;
-            }
-        }
-
-        return $skills;
     }
 
     function getFounderSocialNetworks($post_id)
@@ -156,7 +131,7 @@ class Founders
             return '';
         }
 
-        $founder['skills'] = $this->getFounderSkills($post->ID);
+        $founder['skills'] = $this->skills->getSkills($post->ID);
         $founder['social_networks'] = $this->getFounderSocialNetworks($post->ID);
         $founder['founder_resume'] = $this->resume->getResume($id);
 

@@ -95,6 +95,8 @@ class Media
             throw new Exception('File does not exists.', 404);
         }
 
+        $url = '';
+
         $file_extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 
         if (in_array($file_extension, $this->valid_extensions())) {

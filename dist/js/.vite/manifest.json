@@ -22,9 +22,9 @@
       "src/index.jsx"
     ]
   },
-  "_MemberIntroductionComponent.js": {
-    "file": "MemberIntroductionComponent.js",
-    "name": "MemberIntroductionComponent",
+  "_MemberComponent.js": {
+    "file": "MemberComponent.js",
+    "name": "MemberComponent",
     "imports": [
       "src/index.jsx"
     ]
@@ -103,7 +103,7 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
-      "_MemberIntroductionComponent.js",
+      "_MemberComponent.js",
       "_ContentComponent.js",
       "_useDispatch.js"
     ]
@@ -139,7 +139,7 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
-      "_MemberIntroductionComponent.js",
+      "_MemberComponent.js",
       "_useDispatch.js"
     ]
   },

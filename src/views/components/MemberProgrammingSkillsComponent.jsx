@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import IconComponent from './IconComponent';
 
 function MemberProgrammingSkillsComponent(props) {
   const { skills } = props;
@@ -20,17 +21,17 @@ function MemberProgrammingSkillsComponent(props) {
 
   return (
     <>
-      {Array.isArray(skills) && skills.length > 0 ? (
+      {Array.isArray(skills) && skills.length > 0 && (
         <div className="author-skills">
           <div className="author-skills-slide" ref={skillsSlideRef}>
             {skills.map((skill, index) => (
-              <i
-                key={index}
-                className={`fa-brands fa-${skill['slug'].toLowerCase()}`}></i>
+              <div className="icon">
+                <IconComponent key={index} icon={skill} />
+              </div>
             ))}
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 }

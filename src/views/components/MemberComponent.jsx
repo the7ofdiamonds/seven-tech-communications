@@ -8,9 +8,12 @@ function MemberIntroductionComponent(props) {
   const portfolioElement = document.getElementById('seven_tech_portfolio');
 
   return (
-    <main class="author-intro" id='author_intro'>
+    <>
       {(founder_resume || portfolioElement) && (
-        <MemberNavigationComponent resume={founder_resume} portfolioElement={portfolioElement} />
+        <MemberNavigationComponent
+          resume={founder_resume}
+          portfolioElement={portfolioElement}
+        />
       )}
 
       <h2 class="title">{fullName}</h2>
@@ -31,7 +34,7 @@ function MemberIntroductionComponent(props) {
           </div>
         )}
       </div>
-    </main>
+    </>
   );
 }
 

@@ -65,6 +65,8 @@ class Taxonomies
 
                 register_taxonomy($taxonomy['name'], $taxonomy['post_type'], $args);
             }
+
+            new Skills;
         }
     }
 

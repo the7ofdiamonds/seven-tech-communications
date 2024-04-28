@@ -7,7 +7,7 @@ import { getTeamMember } from '../controllers/teamSlice';
 import LoadingComponent from './components/LoadingComponent';
 import MemberNavigationComponent from './components/MemberNavigationComponent';
 import MemberProgrammingSkillsComponent from './components/MemberProgrammingSkillsComponent';
-import MemberIntroductionComponent from './components/MemberIntroductionComponent';
+import MemberComponent from './components/MemberComponent';
 
 function TeamMember() {
   const { teammember } = useParams();
@@ -37,7 +37,7 @@ function TeamMember() {
       <MemberNavigationComponent resume={teamResume} />
 
       <main class="founder">
-        <MemberIntroductionComponent
+        <MemberComponent
           title={title}
           avatarURL={avatarURL}
           fullName={fullName}
