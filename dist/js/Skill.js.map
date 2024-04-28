@@ -1,0 +1,1 @@
+{"version":3,"file":"Skill.js","sources":["../../src/views/Skill.jsx"],"sourcesContent":["import React from 'react'\n\nfunction Skill() {\n  return (\n    <div>Skill</div>\n  )\n}\n\nexport default Skill"],"names":["Skill","jsx","children"],"mappings":"+BAEA,SAASA,GAAQ,CAEb,OAAAC,EAAAA,IAAC,OAAIC,SAAK,OAAA,CAAA,CAEd"}

@@ -5,11 +5,13 @@ namespace SEVEN_TECH\Communications\Taxonomies;
 use Exception;
 
 use SEVEN_TECH\Communications\Media\Media;
+use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
 
 class Skills
 {
     private $media;
     private $post_types;
+    private $taxonomies;
 
     public function __construct()
     {
@@ -22,6 +24,8 @@ class Skills
         add_action('Skills_edit_form_fields', [$this, 'edit_fields'], 10, 2);
         add_action('created_Skills', [$this, 'save_fields']);
         add_action('edited_Skills', [$this, 'save_fields']);
+
+        $this->taxonomies = new Taxonomies;
     }
 
     function edit_columns($columns)
@@ -97,7 +101,13 @@ class Skills
         }
     }
 
-    function getSkills($post_id)
+    function getSkills()
+    {
+        // Could be other post types
+        return $this->taxonomies->get_post_type_taxonomy('founders', 'Skills');
+    }
+
+    function getPostSkills($post_id)
     {
         if (empty($post_id)) {
             throw new Exception('Post ID is required to get skills.', 400);
@@ -136,7 +146,7 @@ class Skills
         return $skills;
     }
 
-    function getSkillsBySlug($slug)
+    function getPostSkillsBySlug($slug)
     {
         $post = get_page_by_path($slug, OBJECT, $this->post_types);
 
@@ -144,6 +154,6 @@ class Skills
             return '';
         }
 
-        return $this->getSkills($post->ID);
+        return $this->getPostSkills($post->ID);
     }
 }

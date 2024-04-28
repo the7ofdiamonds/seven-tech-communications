@@ -19,12 +19,37 @@ class Taxonomies{
     public function get_skills(WP_REST_Request $request)
     {
         try {
-            $slug = $request->get_param('slug');
-
-            $skills = $this->skills->getSkillsBySlug($slug);
+            $skills = $this->skills->getSkills();
 
             if (empty($skills)) {
-                throw new Exception('No Project Tags found', 404);
+                throw new Exception('No Skills found.', 404);
+            }
+
+            return rest_ensure_response(['skills' => $skills]);
+        } catch (Exception $e) {
+            $statusCode = $e->getCode();
+
+            $response_data = [
+                'errorMessage' => $e->getMessage(),
+                'statusCode' => $statusCode
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($statusCode);
+
+            return $response;
+        }
+    }
+
+    public function get_skill(WP_REST_Request $request)
+    {
+        try {
+            $slug = $request->get_param('slug');
+
+            $skills = $this->skills->getPostSkillsBySlug($slug);
+
+            if (empty($skills)) {
+                throw new Exception('No Skills found.', 404);
             }
 
             return rest_ensure_response($skills);

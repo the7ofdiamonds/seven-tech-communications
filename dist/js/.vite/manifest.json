@@ -22,11 +22,19 @@
       "src/index.jsx"
     ]
   },
+  "_IconComponent.js": {
+    "file": "IconComponent.js",
+    "name": "IconComponent",
+    "imports": [
+      "src/index.jsx"
+    ]
+  },
   "_MemberComponent.js": {
     "file": "MemberComponent.js",
     "name": "MemberComponent",
     "imports": [
-      "src/index.jsx"
+      "src/index.jsx",
+      "_IconComponent.js"
     ]
   },
   "_StatusBarComponent.js": {
@@ -56,6 +64,8 @@
       "src/views/Support.jsx",
       "src/views/Founders.jsx",
       "src/views/Founder.jsx",
+      "src/views/Skills.jsx",
+      "src/views/Skill.jsx",
       "src/views/Team.jsx",
       "src/views/Team-Member.jsx"
     ]
@@ -105,7 +115,8 @@
       "src/index.jsx",
       "_MemberComponent.js",
       "_ContentComponent.js",
-      "_useDispatch.js"
+      "_useDispatch.js",
+      "_IconComponent.js"
     ]
   },
   "src/views/Founders.jsx": {
@@ -117,6 +128,26 @@
       "src/index.jsx",
       "_FoundersComponent.js",
       "_GroupMembers.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Skill.jsx": {
+    "file": "Skill.js",
+    "name": "Skill",
+    "src": "src/views/Skill.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx"
+    ]
+  },
+  "src/views/Skills.jsx": {
+    "file": "Skills.js",
+    "name": "Skills",
+    "src": "src/views/Skills.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_IconComponent.js",
       "_useDispatch.js"
     ]
   },
@@ -140,7 +171,8 @@
     "imports": [
       "src/index.jsx",
       "_MemberComponent.js",
-      "_useDispatch.js"
+      "_useDispatch.js",
+      "_IconComponent.js"
     ]
   },
   "src/views/Team.jsx": {

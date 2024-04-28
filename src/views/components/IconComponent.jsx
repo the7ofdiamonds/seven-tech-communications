@@ -1,6 +1,6 @@
 function IconComponent(props) {
   const { icon } = props;
-
+console.log(icon);
   return (
     <>
       {icon instanceof Object && (

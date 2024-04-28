@@ -13,6 +13,8 @@ const Support = lazy(() => import('./views/Support.jsx'));
 
 const Founders = lazy(() => import('./views/Founders.jsx'));
 const Founder = lazy(() => import('./views/Founder.jsx'));
+const Skills = lazy(() => import('./views/Skills.jsx'));
+const Skill = lazy(() => import('./views/Skill.jsx'));
 const Team = lazy(() => import('./views/Team.jsx'));
 const TeamMember = lazy(() => import('./views/Team-Member.jsx'));
 
@@ -30,6 +32,8 @@ function App() {
               <Route path="support" element={<Support />} />
               <Route path="/founders" element={<Founders />} />
               <Route path="/founders/:founder" element={<Founder />} />
+              <Route path="/skills" element={<Skills />} />
+              <Route path="/skills/:skill" element={<Skill />} />
               <Route path="/team" element={<Team />} />
               <Route path="/team/:teammember" element={<TeamMember />} />
             </Routes>

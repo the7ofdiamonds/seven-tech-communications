@@ -4,9 +4,13 @@ namespace SEVEN_TECH\Communications\Taxonomies;
 
 use Exception;
 
+use SEVEN_TECH\Communications\Media\Media;
+
 class Taxonomies
 {
     public $taxonomies_list;
+    private $pluginDir;
+    private $media;
 
     public function __construct()
     {
@@ -20,6 +24,9 @@ class Taxonomies
                 'post_type' => 'founders'
             ]
         ];
+
+        $this->pluginDir = SEVEN_TECH_COMMUNICATIONS;
+        $this->media = new Media;
     }
 
     function custom_taxonomy()
@@ -55,12 +62,13 @@ class Taxonomies
                     'publicly_queryable' => true,
                     'query_var' => true,
                     'rewrite' => array(
+                        'with_front' => false,
                         'slug' => $taxonomy['slug']
                     ),
                     'menu_position' => $taxonomy['menu_position'],
                     'exclude_from_search' => false,
                     'show_admin_column' => true,
-                    'update_count_callback' => '_update_post_term_count'
+                    'update_count_callback' => '_update_post_term_count',
                 );
 
                 register_taxonomy($taxonomy['name'], $taxonomy['post_type'], $args);
@@ -93,7 +101,22 @@ class Taxonomies
 
                 if ($tax->name === $taxonomy) {
                     foreach ($terms as $term) {
-                        $taxonomy_data[] = $term;
+                        $faIcon = get_term_meta($term->term_id, 'fa_icon', true);
+                        $iconURL = get_term_meta($term->term_id, 'icon_url', true);
+
+                        $term_link = get_term_link($term);
+
+                        $taxonomy_data[] = [
+                            'id' => $term->term_id,
+                            'title' => $term->name,
+                            'icon' => [
+                                'name' => $term->name,
+                                'description' => $term->description,
+                                'fa_icon' => $faIcon,
+                                'icon_url' => $this->media->getURL('icons', $iconURL)
+                            ],
+                            'url' => $term_link
+                        ];
                     }
                 }
             }

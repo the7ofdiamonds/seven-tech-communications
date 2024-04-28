@@ -1,0 +1,25 @@
+@use './_message-card.scss';
+
+section {
+  min-height: 100vh;
+
+  main.skills {
+    margin: 5rem 0;
+
+    .skill {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+
+      img {
+        width: auto;
+        height: 6rem;
+      }
+
+      i {
+        font-size: 6rem;
+      }
+    }
+  }
+}

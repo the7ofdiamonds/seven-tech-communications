@@ -53,9 +53,9 @@ class Templates
 
         if (isset($custom_page['file_name'])) {
             $filename = $custom_page['file_name'];
-            $filename_css = $this->cssDir . $filename . '.css';
-            $filename_js = $this->jsDir . $filename . '.js';
-
+            $filename_css = "{$this->cssDir}{$filename}.css";
+            $filename_js = "{$this->jsDir}{$filename}.js";
+            
             if (file_exists($filename_css)) {
                 add_action('wp_head', function () use ($filename) {
                     $this->css->load_pages_css($filename);
@@ -86,8 +86,8 @@ class Templates
 
         if (file_exists($template)) {
             $filename = $protected_page['file_name'];
-            $filename_css = $this->cssDir . $filename . '.css';
-            $filename_js = $this->jsDir . $filename . '.js';
+            $filename_css = "{$this->cssDir}{$filename}.css";
+            $filename_js = "{$this->jsDir}{$filename}.js";
 
             if (file_exists($filename_css)) {
                 add_action('wp_head', function () use ($filename) {
@@ -112,8 +112,8 @@ class Templates
     function get_page_template($template_include, $page)
     {
         $filename = $page['file_name'];
-        $filename_css = $this->cssDir . $filename . '.css';
-        $filename_js = $this->jsDir . $filename . '.js';
+        $filename_css = "{$this->cssDir}{$filename}.css";
+        $filename_js = "{$this->jsDir}{$filename}.js";
 
         if (file_exists($filename_css)) {
             add_action('wp_head', function () use ($filename) {
@@ -136,16 +136,15 @@ class Templates
         return $template_include;
     }
 
-    function get_taxonomy_page_template($taxonomy_template, $taxonomy)
+    public function get_taxonomy_page_template($template_include, $taxonomy)
     {
-        if (is_tax($taxonomy['name'])) {
-            $custom_taxonomy_template = $this->pluginDir . "Taxonomies/taxonomy-{$taxonomy['file_name']}.php";
+            $taxonomy_template = "{$this->pluginDir}Taxonomies/taxonomy-{$taxonomy['name']}.php";
 
-            if (file_exists($custom_taxonomy_template)) {
+            if (file_exists($taxonomy_template)) {
                 $filename = $taxonomy['name'];
-                $filename_css = $this->cssDir . $filename . '.css';
-                $filename_js = $this->jsDir . $filename . '.js';
-    
+                $filename_css = "{$this->cssDir}{$filename}.css";
+                $filename_js = "{$this->jsDir}{$filename}.js";
+
                 if (file_exists($filename_css)) {
                     add_action('wp_head', function () use ($filename) {
                         $this->css->load_pages_css($filename);
@@ -158,13 +157,12 @@ class Templates
                     });
                 }
 
-                return $custom_taxonomy_template;
+                return $taxonomy_template;
             } else {
                 error_log('Taxonomy Page Template does not exist.');
             }
-        }
 
-        return $taxonomy_template;
+        return $template_include;
     }
 
     function get_archive_page_template($archive_template, $post_type)
@@ -174,8 +172,8 @@ class Templates
 
             if (file_exists($archive_template)) {
                 $filename = $post_type['plural'];
-                $filename_css = $this->cssDir . $filename . '.css';
-                $filename_js = $this->jsDir . $filename . '.js';
+                $filename_css = "{$this->cssDir}{$filename}.css";
+                $filename_js = "{$this->jsDir}{$filename}.js";
     
                 if (file_exists($filename_css)) {
                     add_action('wp_head', function () use ($filename) {
@@ -205,8 +203,8 @@ class Templates
 
             if (file_exists($single_template)) {
                 $filename = $post_type['singular'];
-                $filename_css = $this->cssDir . $filename . '.css';
-                $filename_js = $this->jsDir . $filename . '.js';
+                $filename_css = "{$this->cssDir}{$filename}.css";
+                $filename_js = "{$this->jsDir}{$filename}.js";
 
                 
                 if (file_exists($filename_css)) {

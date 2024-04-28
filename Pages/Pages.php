@@ -46,11 +46,11 @@ class Pages
                 'regex' => '#^/support#',
                 'file_name' => 'Support',
             ],
-            // [
-            //     'url' => 'founders/([a-zA-Z-]+)/resume',
-            //     'regex' => '#^/founders/([a-zA-Z-]+)/resume#',
-            //     'file_name' => 'Resume',
-            // ]
+            [
+                'url' => 'skills',
+                'regex' => '#^/skills#',
+                'file_name' => 'Skills',
+            ]
         ];
 
         $this->pages_list = [

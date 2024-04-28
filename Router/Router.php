@@ -110,9 +110,11 @@ class Router
 
             if (!empty($this->taxonomies_list)) {
                 foreach ($this->taxonomies_list as $taxonomy) {
-                    add_filter('taxonomy_template', function ($template_include) use ($taxonomy) {
-                        return $this->templates->get_taxonomy_page_template($template_include, $taxonomy);
-                    });
+                    if (preg_match("#^/{$taxonomy['slug']}#", $path)) {
+                        add_filter('template_include', function ($template_include) use ($taxonomy) {
+                            return $this->templates->get_taxonomy_page_template($template_include, $taxonomy);
+                        });
+                    }
                 }
             }
 
@@ -150,5 +152,7 @@ class Router
     function react_rewrite_rules()
     {
         add_rewrite_rule('^founders/([a-zA-Z\-]+)/resume?$', 'index.php', 'top');
+        add_rewrite_rule('^skills?$', "index.php?taxonomy=skills&template_path=" . SEVEN_TECH_COMMUNICATIONS . "Taxonomies/Taxonomy-Skills.php", 'top');
+        add_rewrite_rule('^skills/([a-zA-Z\-]+)?$', 'index.php', 'top');
     }
 }
