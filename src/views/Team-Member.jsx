@@ -6,7 +6,7 @@ import { getTeamMember } from '../controllers/teamSlice';
 
 import LoadingComponent from './components/LoadingComponent';
 import MemberNavigationComponent from './components/MemberNavigationComponent';
-import MemberProgrammingSkillsComponent from './components/MemberProgrammingSkillsComponent';
+import MemberKnowledgeComponent from './components/MemberKnowledgeComponent';
 import MemberComponent from './components/MemberComponent';
 
 function TeamMember() {
@@ -45,7 +45,7 @@ function TeamMember() {
         />
       </main>
 
-      <MemberProgrammingSkillsComponent skills={skills} />
+      <MemberKnowledgeComponent skills={skills} />
     </section>
   );
 }

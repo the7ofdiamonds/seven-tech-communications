@@ -48,7 +48,7 @@ class Pages
             ],
             [
                 'url' => 'skills',
-                'regex' => '#^/skills#',
+                'regex' => '#^/skills$#',
                 'file_name' => 'Skills',
             ]
         ];

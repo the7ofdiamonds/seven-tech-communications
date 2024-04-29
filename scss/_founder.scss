@@ -1,11 +1,20 @@
 @use './_author.scss';
-@use './_author_skills.scss';
+@use './_author_knowledge.scss';
 @use './_content.scss';
 
-section {
+.founder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 9rem 0;
+  width: 100%;
+  height: 100%;
   min-height: 100vh;
 
-  main.author-intro {
-    margin: 9rem 0;
+  section {
+    margin-top: 0;
+    min-height: fit-content;
   }
 }

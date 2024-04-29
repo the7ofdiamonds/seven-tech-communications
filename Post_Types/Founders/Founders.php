@@ -6,7 +6,10 @@ use Exception;
 
 use SEVEN_TECH\Communications\Resume\Resume;
 use SEVEN_TECH\Communications\User\User;
+use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
 use SEVEN_TECH\Communications\Taxonomies\Skills;
+// use SEVEN_TECH\Communications\Taxonomies\Frameworks;
+// use SEVEN_TECH\Communications\Taxonomies\Technologies;
 
 class Founders
 {
@@ -14,7 +17,10 @@ class Founders
     private $role;
     private $user;
     private $resume;
+    private $taxonomies;
     private $skills;
+    private $frameworks;
+    private $technologies;
 
     public function __construct()
     {
@@ -22,7 +28,10 @@ class Founders
         $this->post_type = 'founders';
         $this->user = new User;
         $this->resume = new Resume;
+        $this->taxonomies = new Taxonomies;
         $this->skills = new Skills;
+        // $this->frameworks = new Frameworks;
+        // $this->technologies = new Technologies;
     }
 
     function getFoundersList()
@@ -131,7 +140,10 @@ class Founders
             return '';
         }
 
-        $founder['skills'] = $this->skills->getSkills($post->ID);
+        $founder['projectTypes'] = $this->taxonomies->getPostTaxonomy($post->ID, 'project_types');
+        $founder['skills'] = $this->skills->getPostSkills($post->ID);
+        // $founder['frameworks'] = $this->frameworks->getPostFrameworks($post->ID);
+        // $founder['technologies'] = $this->technologies->getPostTechnologies($post->ID);
         $founder['social_networks'] = $this->getFounderSocialNetworks($post->ID);
         $founder['founder_resume'] = $this->resume->getResume($id);
 

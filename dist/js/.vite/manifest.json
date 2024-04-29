@@ -137,7 +137,8 @@
     "src": "src/views/Skill.jsx",
     "isDynamicEntry": true,
     "imports": [
-      "src/index.jsx"
+      "src/index.jsx",
+      "_useDispatch.js"
     ]
   },
   "src/views/Skills.jsx": {

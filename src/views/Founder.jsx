@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getFounder } from '../controllers/founderSlice.js';
 
 import LoadingComponent from './components/LoadingComponent';
-import MemberProgrammingSkillsComponent from './components/MemberProgrammingSkillsComponent';
+import MemberKnowledgeComponent from './components/MemberKnowledgeComponent.jsx';
 import MemberComponent from './components/MemberComponent.jsx';
 import ContentComponent from './components/ContentComponent';
 
@@ -33,7 +33,10 @@ function Founder() {
     avatarURL,
     fullName,
     bio,
+    projectTypes,
     skills,
+    frameworks,
+    technologies,
     founderResume,
   } = useSelector((state) => state.founder);
 
@@ -42,6 +45,11 @@ function Founder() {
   if (founderLoading) {
     return <LoadingComponent />;
   }
+  const knowledge = [
+    ...(skills || []),
+    ...(frameworks || []),
+    ...(technologies || []),
+  ];
 
   return (
     <>
@@ -56,7 +64,7 @@ function Founder() {
 
         <ContentComponent content={content} />
 
-        <MemberProgrammingSkillsComponent skills={skills} />
+        <MemberKnowledgeComponent knowledge={knowledge} />
       </main>
     </>
   );

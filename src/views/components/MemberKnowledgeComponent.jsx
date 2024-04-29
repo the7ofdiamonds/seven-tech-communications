@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import IconComponent from './IconComponent';
 
-function MemberProgrammingSkillsComponent(props) {
-  const { skills } = props;
+function MemberKnowledgeComponent(props) {
+  const { knowledge } = props;
   const skillsSlideRef = useRef(null);
-
+console.log(knowledge);
   useEffect(() => {
     const skillsSlide = skillsSlideRef.current;
 
@@ -17,23 +17,24 @@ function MemberProgrammingSkillsComponent(props) {
 
       document.documentElement.style.setProperty('--total-skills', totalSkills);
     }
-  }, [skills]);
+  }, [knowledge]);
 
   return (
     <>
-      {Array.isArray(skills) && skills.length > 0 && (
-        <div className="author-skills">
-          <div className="author-skills-slide" ref={skillsSlideRef}>
-            {skills.map((skill, index) => (
-              <div className="icon">
-                <IconComponent key={index} icon={skill} />
+      <div className="author-knowledge">
+        <div className="author-knowledge-slide" ref={skillsSlideRef}>
+          {Array.isArray(knowledge) && knowledge.length > 0 && 
+            knowledge.map((skill) => (
+              <div className="icon" key={skill.id}>
+                <IconComponent icon={skill} />
               </div>
-            ))}
-          </div>
+            ))
+          }
         </div>
-      )}
+      </div>
     </>
   );
+  
 }
 
-export default MemberProgrammingSkillsComponent;
+export default MemberKnowledgeComponent;

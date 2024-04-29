@@ -9,11 +9,12 @@ use SEVEN_TECH\Communications\Media\Media;
 class Taxonomies
 {
     public $taxonomies_list;
-    private $pluginDir;
     private $media;
 
     public function __construct()
     {
+        $post_types = ['portfolio', 'founders'];
+
         $this->taxonomies_list = [
             [
                 'name' => 'Skills',
@@ -21,11 +22,10 @@ class Taxonomies
                 'plural' => 'Skills',
                 'slug' => 'skills',
                 'menu_position' => 3,
-                'post_type' => 'founders'
+                'post_type' => $post_types
             ]
         ];
 
-        $this->pluginDir = SEVEN_TECH_COMMUNICATIONS;
         $this->media = new Media;
     }
 
@@ -78,7 +78,7 @@ class Taxonomies
         }
     }
 
-    function get_post_type_taxonomy($post_type, $taxonomy)
+    function getPostTypeTaxonomies($post_type, $taxonomy)
     {
         try {
             if (empty($post_type)) {
@@ -132,42 +132,69 @@ class Taxonomies
         }
     }
 
-    function getTaxTermLinks($post_id, $taxonomy)
+    function getPostTaxonomy($post_id, $taxonomy)
     {
         try {
             if (empty($post_id)) {
-                throw new Exception('Post ID is required.', 400);
+                throw new Exception('Post ID is required to get skills.', 400);
             }
-
-            if (empty($taxonomy)) {
-                throw new Exception('Taxonomy is required.', 400);
+    
+            $terms = get_the_terms($post_id, $taxonomy);
+    
+            if (!is_array($terms) || $terms == false || is_wp_error($terms)) {
+                return '';
             }
-
-            $terms = wp_get_post_terms($post_id, $taxonomy, array('fields' => 'all'));
-
-            $term_links = [];
-
+    
             foreach ($terms as $term) {
-                $term = get_term_by('slug', $term->slug, $taxonomy);
-
-                if ($term) {
-                    $term_link = get_term_link($term);
-
-                    $term_links[] = [
-                        'name' => $term->name,
-                        'slug' => $term_link
-                    ];
-                }
+                $faIcon = get_term_meta($term->term_id, 'fa_icon', true);
+                $iconURL = get_term_meta($term->term_id, 'icon_url', true);
+    
+                $skills[] = [
+                    'id' => $term->term_id,
+                    'name' => $term->name,
+                    'slug' => $term->slug,
+                    'fa_icon' => $faIcon,
+                    'icon_url' => $this->media->getURL('icons', $iconURL),
+                    'url' => "/skills/{$term->slug}"
+                ];
             }
-
-            return $term_links;
+    
+            return $skills;
         } catch (Exception $e) {
             $errorMessage = $e->getMessage();
             $errorCode = $e->getCode();
             $response = $errorMessage . ' ' . $errorCode;
 
-            error_log($response . ' at get_post_type_taxonomy');
+            error_log($response . ' at getPostTaxonomies');
             return $response;
         }
+    }
+
+    function getTaxonomyTerm($slug, $taxonomy)
+    {
+        $term = get_term_by('slug', $slug, $taxonomy);
+
+        if ($term == false) {
+            return '';
+        }
+
+        $faIcon = get_term_meta($term->term_id, 'fa_icon', true);
+        $iconURL = get_term_meta($term->term_id, 'icon_url', true);
+
+        $term_link = get_term_link($term);
+
+        $taxTerm = [
+            'id' => $term->term_id,
+            'title' => $term->name,
+            'description' => $term->description,
+            'icon' => [
+                'name' => $term->name,
+                'fa_icon' => $faIcon,
+                'icon_url' => $this->media->getURL('icons', $iconURL)
+            ],
+            'url' => $term_link
+        ];
+
+        return $taxTerm;
     }
 }

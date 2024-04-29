@@ -1,2 +1,2 @@
-import{j as i}from"./index.js";function t(){return i.jsx("div",{children:"Skill"})}export{t as default};
+import{h as o,u as n,r as u,m,j as r}from"./index.js";import{u as d}from"./useDispatch.js";function f(){var i=o(),a=i.skill,s=n(function(c){return c.taxonomies});s.skillsLoading,s.skillsError,s.skillsErrorMessage;var l=s.title;s.icon;var t=s.description,e=d();return u.useEffect(function(){e(m(a))},[e]),r.jsxs("main",{className:"skill",children:[r.jsx("h1",{className:"title",children:l}),r.jsx("div",{className:"card",children:r.jsx("p",{children:t})})]})}export{f as default};
 //# sourceMappingURL=Skill.js.map

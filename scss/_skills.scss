@@ -6,19 +6,38 @@ section {
   main.skills {
     margin: 5rem 0;
 
-    .skill {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1.5rem;
+    a {
+      text-decoration: none;
 
-      img {
-        width: auto;
-        height: 6rem;
+      .skill {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+
+        img {
+          width: auto;
+          height: 6rem;
+        }
+
+        i {
+          font-size: 6rem;
+        }
       }
 
-      i {
-        font-size: 6rem;
+      &:hover {
+        img {
+          width: auto;
+          height: 7rem;
+        }
+
+        i {
+          font-size: 7rem;
+        }
+
+        h3 {
+          font-size: 2.25;
+        }
       }
     }
   }

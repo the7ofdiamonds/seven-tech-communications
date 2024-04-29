@@ -171,17 +171,53 @@ class API
             'permission_callback' => '__return_true',
         ));
 
-        register_rest_route('seven-tech/communications/v1', '/taxonomies/skills', array(
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/project-types', [
             'methods' => 'GET',
-            'callback' => array($taxonomies, 'get_skills'),
+            'callback' => [$taxonomies, 'get_project_types'],
             'permission_callback' => '__return_true',
-        ));
+        ]);
 
-        register_rest_route('seven-tech/communications/v1', '/taxonomies/skills/(?P<slug>[a-zA-Z0-9-_]+)', array(
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/skills', [
             'methods' => 'GET',
-            'callback' => array($taxonomies, 'get_skill'),
+            'callback' => [$taxonomies, 'get_skills'],
             'permission_callback' => '__return_true',
-        ));
+        ]);
+
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/frameworks', [
+            'methods' => 'GET',
+            'callback' => [$taxonomies, 'get_frameworks'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/technologies', [
+            'methods' => 'GET',
+            'callback' => [$taxonomies, 'get_technologies'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/project-types/(?P<slug>[a-zA-Z0-9-_]+)', [
+            'methods' => 'GET',
+            'callback' => [$taxonomies, 'get_project_type'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/skills/(?P<slug>[a-zA-Z0-9-_]+)', [
+            'methods' => 'GET',
+            'callback' => [$taxonomies, 'get_skill'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/frameworks/(?P<slug>[a-zA-Z0-9-_]+)', [
+            'methods' => 'GET',
+            'callback' => [$taxonomies, 'get_framework'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        register_rest_route('seven-tech/communications/v1', '/taxonomies/technologies/(?P<slug>[a-zA-Z0-9-_]+)', [
+            'methods' => 'GET',
+            'callback' => [$taxonomies, 'get_technology'],
+            'permission_callback' => '__return_true',
+        ]);
     }
 
     public function allow_cors_headers()

@@ -141,7 +141,7 @@ class Templates
             $taxonomy_template = "{$this->pluginDir}Taxonomies/taxonomy-{$taxonomy['name']}.php";
 
             if (file_exists($taxonomy_template)) {
-                $filename = $taxonomy['name'];
+                $filename = $taxonomy['singular'];
                 $filename_css = "{$this->cssDir}{$filename}.css";
                 $filename_js = "{$this->jsDir}{$filename}.js";
 

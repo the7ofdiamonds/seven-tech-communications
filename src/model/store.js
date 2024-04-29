@@ -5,7 +5,7 @@ import { contactSlice } from '../controllers/contactSlice.js';
 import { contentSlice } from '../controllers/contentSlice.js';
 import { founderSlice } from '../controllers/founderSlice.js';
 import { teamSlice } from '../controllers/teamSlice.js';
-import { skillsSlice} from '../controllers/skillsSlice.js';
+import { taxonomiesSlice } from '../controllers/taxonomiesSlice';
 
 const store = configureStore({
     reducer: {
@@ -14,7 +14,7 @@ const store = configureStore({
         content: contentSlice.reducer,
         founder: founderSlice.reducer,
         team: teamSlice.reducer,
-        skills: skillsSlice.reducer
+        taxonomies: taxonomiesSlice.reducer        
     }
 });
 

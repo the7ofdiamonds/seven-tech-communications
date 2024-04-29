@@ -4,19 +4,17 @@ namespace SEVEN_TECH\Communications\Taxonomies;
 
 use Exception;
 
-use SEVEN_TECH\Communications\Media\Media;
 use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
 
 class Skills
 {
-    private $media;
     private $post_types;
     private $taxonomies;
+    private $taxonomy;
 
     public function __construct()
     {
-        $this->media = new Media;
-        $this->post_types = ['founders'];
+        $this->post_types = ['portfolio', 'founders'];
 
         add_filter('manage_edit-Skills_columns', [$this, 'edit_columns']);
         add_action('manage_Skills_custom_column', [$this, 'manage_columns'], 10, 3);
@@ -26,6 +24,7 @@ class Skills
         add_action('edited_Skills', [$this, 'save_fields']);
 
         $this->taxonomies = new Taxonomies;
+        $this->taxonomy = 'Skills';
     }
 
     function edit_columns($columns)
@@ -101,10 +100,18 @@ class Skills
         }
     }
 
-    function getSkills()
+    function getSkill($slug)
     {
-        // Could be other post types
-        return $this->taxonomies->get_post_type_taxonomy('founders', 'Skills');
+        if (empty($slug)) {
+            throw new Exception('Slug is required to get skills.', 400);
+        }
+
+        return $this->taxonomies->getTaxonomyTerm($slug, $this->taxonomy);
+    }
+
+    function getSkills($postType)
+    {
+        return $this->taxonomies->getPostTypeTaxonomies($postType, $this->taxonomy);
     }
 
     function getPostSkills($post_id)
@@ -113,37 +120,7 @@ class Skills
             throw new Exception('Post ID is required to get skills.', 400);
         }
 
-        $taxonomies = get_post_taxonomies($post_id);
-
-        if (!is_array($taxonomies)) {
-            return '';
-        }
-
-        $skills = [];
-
-        foreach ($taxonomies as $taxonomy) {
-            $terms = get_the_terms($post_id, $taxonomy);
-
-            if (!is_array($terms) || $terms == false || is_wp_error($terms)) {
-                continue;
-            }
-
-            foreach ($terms as $term) {
-                $faIcon = get_term_meta($term->term_id, 'fa_icon', true);
-                $iconURL = get_term_meta($term->term_id, 'icon_url', true);
-
-                $skills[] = [
-                    'id' => $term->term_id,
-                    'name' => $term->name,
-                    'slug' => $term->slug,
-                    'fa_icon' => $faIcon,
-                    'icon_url' => $this->media->getURL('icons', $iconURL),
-                    'url' => "/skills/{$term->slug}"
-                ];
-            }
-        }
-
-        return $skills;
+        return $this->taxonomies->getPostTaxonomy($post_id, $this->taxonomy);
     }
 
     function getPostSkillsBySlug($slug)
