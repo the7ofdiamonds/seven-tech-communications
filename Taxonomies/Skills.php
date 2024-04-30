@@ -14,17 +14,17 @@ class Skills
 
     public function __construct()
     {
-        $this->post_types = ['portfolio', 'founders'];
+        $this->taxonomy = 'Skills';
 
-        add_filter('manage_edit-Skills_columns', [$this, 'edit_columns']);
-        add_action('manage_Skills_custom_column', [$this, 'manage_columns'], 10, 3);
-        add_action('Skills_add_form_fields', [$this, 'add_fields']);
-        add_action('Skills_edit_form_fields', [$this, 'edit_fields'], 10, 2);
-        add_action('created_Skills', [$this, 'save_fields']);
-        add_action('edited_Skills', [$this, 'save_fields']);
+        add_filter("manage_edit-{$this->taxonomy}_columns", [$this, 'edit_columns']);
+        add_action("manage_{$this->taxonomy}_custom_column", [$this, 'manage_columns'], 10, 3);
+        add_action("{$this->taxonomy}_add_form_fields", [$this, 'add_fields']);
+        add_action("{$this->taxonomy}_edit_form_fields", [$this, 'edit_fields'], 10, 2);
+        add_action("created_{$this->taxonomy}", [$this, 'save_fields']);
+        add_action("edited_{$this->taxonomy}", [$this, 'save_fields']);
 
         $this->taxonomies = new Taxonomies;
-        $this->taxonomy = 'Skills';
+        $this->post_types = $this->taxonomies->getTaxonomyPostTypes($this->taxonomy);
     }
 
     function edit_columns($columns)
@@ -103,7 +103,7 @@ class Skills
     function getSkill($slug)
     {
         if (empty($slug)) {
-            throw new Exception('Slug is required to get skills.', 400);
+            throw new Exception('Slug is required to get Skills.', 400);
         }
 
         return $this->taxonomies->getTaxonomyTerm($slug, $this->taxonomy);
@@ -117,7 +117,7 @@ class Skills
     function getPostSkills($post_id)
     {
         if (empty($post_id)) {
-            throw new Exception('Post ID is required to get skills.', 400);
+            throw new Exception('Post ID is required to get Skills.', 400);
         }
 
         return $this->taxonomies->getPostTaxonomy($post_id, $this->taxonomy);

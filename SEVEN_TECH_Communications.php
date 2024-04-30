@@ -83,7 +83,7 @@ class SEVEN_TECH_Communications
 
         add_action('init', function () use ($posttypes, $taxonomies, $router) {
             $posttypes->customPostTypes();
-            $taxonomies->custom_taxonomy();
+            $taxonomies->customTaxonomy();
             $router->react_rewrite_rules();
             $router->load_page();
             new Shortcodes;

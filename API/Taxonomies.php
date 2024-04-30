@@ -7,16 +7,25 @@ use Exception;
 use WP_REST_Request;
 
 use SEVEN_TECH\Communications\Taxonomies\Taxonomies as Tax;
+use SEVEN_TECH\Communications\Taxonomies\Skills;
+use SEVEN_TECH\Communications\Taxonomies\Frameworks;
+use SEVEN_TECH\Communications\Taxonomies\Technologies;
 
 class Taxonomies
 {
     private $post_type;
     private $tax;
+    private $skills;
+    private $frameworks;
+    private $technologies;
 
     public function __construct()
     {
-        $this->post_type = 'portfolio';
+        $this->post_type = 'founders';
         $this->tax = new Tax;
+        $this->skills = new Skills;
+        $this->frameworks = new Frameworks;
+        $this->technologies = new Technologies;
     }
 
     public function get_project_types()
@@ -25,7 +34,7 @@ class Taxonomies
             $project_types = $this->tax->getPostTypeTaxonomies($this->post_type, 'project_types');
 
             if (empty($project_types)) {
-                throw new Exception('No projects found with a Project Type.', 404);
+                throw new Exception('No Project Types found.', 404);
             }
 
             return rest_ensure_response(['projectTypes' => $project_types]);
@@ -47,10 +56,10 @@ class Taxonomies
     public function get_skills()
     {
         try {
-            $skills = $this->tax->getPostTypeTaxonomies($this->post_type, 'Skills');
+            $skills = $this->skills->getSkills($this->post_type);
 
             if (empty($skills)) {
-                throw new Exception('No projects found with a Skill.', 404);
+                throw new Exception('No Skills found.', 404);
             }
 
             return rest_ensure_response(['skills' => $skills]);
@@ -72,10 +81,10 @@ class Taxonomies
     public function get_frameworks()
     {
         try {
-            $frameworks = $this->tax->getPostTypeTaxonomies($this->post_type, 'frameworks');
+            $frameworks = $this->frameworks->getFrameworks($this->post_type);
 
             if (empty($frameworks)) {
-                throw new Exception('No projects found with a Framework.', 404);
+                throw new Exception('No Frameworks found.', 404);
             }
 
             return rest_ensure_response(['frameworks' => $frameworks]);
@@ -97,10 +106,10 @@ class Taxonomies
     public function get_technologies()
     {
         try {
-            $technologies = $this->tax->getPostTypeTaxonomies($this->post_type, 'technologies');
+            $technologies = $this->technologies->getTechnologies($this->post_type);
 
             if (empty($technologies)) {
-                throw new Exception('No projects found with a Technology.', 404);
+                throw new Exception('No Technologies found.', 404);
             }
 
             return rest_ensure_response(['technologies' => $technologies]);
@@ -149,7 +158,7 @@ class Taxonomies
     {
         try {
             $slug = $request->get_param('slug');
-            $skill = $this->tax->getTaxonomyTerm($slug, 'Skills');
+            $skill = $this->skills->getSkill($slug);
 
             if (empty($skill)) {
                 throw new Exception('Skill could not be found.', 404);
@@ -175,7 +184,7 @@ class Taxonomies
     {
         try {
             $slug = $request->get_param('slug');
-            $framework = $this->tax->getTaxonomyTerm($slug, 'frameworks');
+            $framework = $this->frameworks->getFramework($slug);
 
             if (empty($framework)) {
                 throw new Exception('Framework could not be found.', 404);
@@ -201,7 +210,7 @@ class Taxonomies
     {
         try {
             $slug = $request->get_param('slug');
-            $technology = $this->tax->getTaxonomyTerm($slug, 'technologies');
+            $technology = $this->technologies->getTechnology($slug);
 
             if (empty($technology)) {
                 throw new Exception('Technology could not be found.', 404);

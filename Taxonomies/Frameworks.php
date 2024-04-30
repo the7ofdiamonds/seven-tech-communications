@@ -14,17 +14,17 @@ class Frameworks
 
     public function __construct()
     {
-        $this->post_types = ['portfolio', 'founders'];
+        $this->taxonomy = 'Frameworks';
 
-        add_filter('manage_edit-frameworks_columns', [$this, 'edit_columns']);
-        add_action('manage_frameworks_custom_column', [$this, 'manage_columns'], 10, 3);
-        add_action('frameworks_add_form_fields', [$this, 'add_fields']);
-        add_action('frameworks_edit_form_fields', [$this, 'edit_fields'], 10, 2);
-        add_action('created_frameworks', [$this, 'save_fields']);
-        add_action('edited_frameworks', [$this, 'save_fields']);
+        add_filter("manage_edit-{$this->taxonomy}_columns", [$this, 'edit_columns']);
+        add_action("manage_{$this->taxonomy}_custom_column", [$this, 'manage_columns'], 10, 3);
+        add_action("{$this->taxonomy}_add_form_fields", [$this, 'add_fields']);
+        add_action("{$this->taxonomy}_edit_form_fields", [$this, 'edit_fields'], 10, 2);
+        add_action("created_{$this->taxonomy}", [$this, 'save_fields']);
+        add_action("edited_{$this->taxonomy}", [$this, 'save_fields']);
 
         $this->taxonomies = new Taxonomies;
-        $this->taxonomy = 'frameworks';
+        $this->post_types = $this->taxonomies->getTaxonomyPostTypes($this->taxonomy);
     }
 
     function edit_columns($columns)
@@ -100,10 +100,10 @@ class Frameworks
         }
     }
 
-    function getSkill($slug)
+    function getFramework($slug)
     {
         if (empty($slug)) {
-            throw new Exception('Slug is required to get skills.', 400);
+            throw new Exception('Slug is required to get Frameworks.', 400);
         }
 
         return $this->taxonomies->getTaxonomyTerm($slug, $this->taxonomy);
@@ -117,7 +117,7 @@ class Frameworks
     function getPostFrameworks($post_id)
     {
         if (empty($post_id)) {
-            throw new Exception('Post ID is required to get skills.', 400);
+            throw new Exception('Post ID is required to get Frameworks.', 400);
         }
 
         return $this->taxonomies->getPostTaxonomy($post_id, $this->taxonomy);

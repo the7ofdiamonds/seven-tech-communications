@@ -14,17 +14,17 @@ class Technologies
 
     public function __construct()
     {
-        $this->post_types = ['portfolio', 'founders'];
+        $this->taxonomy = 'technologies';
 
-        add_filter('manage_edit-technologies_columns', [$this, 'edit_columns']);
-        add_action('manage_technologies_custom_column', [$this, 'manage_columns'], 10, 3);
-        add_action('technologies_add_form_fields', [$this, 'add_fields']);
-        add_action('technologies_edit_form_fields', [$this, 'edit_fields'], 10, 2);
-        add_action('created_technologies', [$this, 'save_fields']);
-        add_action('edited_technologies', [$this, 'save_fields']);
+        add_filter("manage_edit-{$this->taxonomy}_columns", [$this, 'edit_columns']);
+        add_action("manage_{$this->taxonomy}_custom_column", [$this, 'manage_columns'], 10, 3);
+        add_action("{$this->taxonomy}_add_form_fields", [$this, 'add_fields']);
+        add_action("{$this->taxonomy}_edit_form_fields", [$this, 'edit_fields'], 10, 2);
+        add_action("created_{$this->taxonomy}", [$this, 'save_fields']);
+        add_action("edited_{$this->taxonomy}", [$this, 'save_fields']);
 
         $this->taxonomies = new Taxonomies;
-        $this->taxonomy = 'technologies';
+        $this->post_types = $this->taxonomies->getTaxonomyPostTypes($this->taxonomy);
     }
 
     function edit_columns($columns)
@@ -100,10 +100,10 @@ class Technologies
         }
     }
 
-    function getSkill($slug)
+    function getTechnology($slug)
     {
         if (empty($slug)) {
-            throw new Exception('Slug is required to get skills.', 400);
+            throw new Exception('Slug is required to get Technologies.', 400);
         }
 
         return $this->taxonomies->getTaxonomyTerm($slug, $this->taxonomy);
@@ -117,7 +117,7 @@ class Technologies
     function getPostTechnologies($post_id)
     {
         if (empty($post_id)) {
-            throw new Exception('Post ID is required to get skills.', 400);
+            throw new Exception('Post ID is required to get Technologies.', 400);
         }
 
         return $this->taxonomies->getPostTaxonomy($post_id, $this->taxonomy);
