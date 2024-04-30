@@ -1,0 +1,16 @@
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  height: 4rem;
+
+  img {
+    width: auto;
+    height: 100%;
+  }
+
+  i {
+    font-size: 100%;
+  }
+}

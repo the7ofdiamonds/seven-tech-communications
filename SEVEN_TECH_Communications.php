@@ -49,6 +49,7 @@ class SEVEN_TECH_Communications
     private $pages;
     private $router;
     private $posttypes;
+    private $roles;
 
     public function __construct()
     {
@@ -97,6 +98,7 @@ class SEVEN_TECH_Communications
         );
         $this->pages = new Pages;
         $this->posttypes = new Post_Types;
+        $this->roles = new Roles;
 
         add_action('wp_head', function () {
             (new SocialBar)->load_css();
@@ -117,8 +119,7 @@ class SEVEN_TECH_Communications
         $this->router->react_rewrite_rules();
         $this->pages->add_pages();
         $this->posttypes->customPostTypes();
-        $this->posttypes->addRolePages();
-        $this->posttypes->checkRegisteredPostTypes();
+        $this->roles->addRolePages();
     }
 
     function deactivate()

@@ -4,6 +4,7 @@ namespace SEVEN_TECH\Communications\Post_Types\Founders;
 
 use Exception;
 
+use SEVEN_TECH\Communications\Post_Types\Post_Types;
 use SEVEN_TECH\Communications\Resume\Resume;
 use SEVEN_TECH\Communications\User\User;
 use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
@@ -21,9 +22,12 @@ class Founders
     private $skills;
     private $frameworks;
     private $technologies;
+    private $post_types;
 
     public function __construct()
     {
+        $this->post_types = new Post_Types;
+
         $this->role = 'founder';
         $this->post_type = 'founders';
         $this->user = new User;
@@ -74,6 +78,19 @@ class Founders
 
         if (!is_array($founders)) {
             return '';
+        }
+
+        return $founders;
+    }
+
+    function getFoundersWithTerm($taxonomy, $term)
+    {
+        $authors = $this->post_types->getPostTypeWithTerm($this->post_type, $taxonomy, $term);
+
+        $founders = [];
+
+        foreach ($authors as $author) {
+            $founders[] = $this->user->getUser($author->post_author);
         }
 
         return $founders;

@@ -2,7 +2,7 @@
 
 namespace SEVEN_TECH\Communications\User;
 
-use SEVEN_TECH\Communications\Role\Role;
+use SEVEN_TECH\Communications\Roles\Roles;
 
 class User
 {
@@ -10,7 +10,7 @@ class User
 
     public function __construct()
     {
-        $this->role = new Role;
+        $this->role = new Roles;
     }
 
     public function getUser($id)
@@ -60,8 +60,7 @@ class User
 
             $users[] = array(
                 'id' => $user_data->ID,
-                'first_name' => $user_data->first_name,
-                'last_name' => $user_data->last_name,
+                'full_name' => "{$user_data->first_name} {$user_data->last_name}",
                 'email' => $user_data->user_email,
                 'roles' => $roles,
                 'user_url' => $roleLink,

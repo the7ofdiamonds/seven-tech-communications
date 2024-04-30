@@ -1,12 +1,18 @@
 <?php
 
-namespace SEVEN_TECH\Communications\Role;
+namespace SEVEN_TECH\Communications\Roles;
 
 use Exception;
 
-class Role
+use WP_QUery;
+
+use SEVEN_TECH\Communications\Post_Types\Post_Types;
+
+class Roles
 {
     private $roles;
+    private $post_types_list;
+    private $roleNames;
 
     public function __construct()
     {
@@ -48,6 +54,83 @@ class Role
                 'order' => 5
             ]
         ];
+
+        $this->post_types_list = (new Post_Types)->post_types_list;
+        $this->roleNames = $this->getRoleNames();
+    }
+
+    function addRolePages()
+    {
+        $args = [
+            'role__in' => $this->roleNames
+        ];
+        $users = get_users($args);
+
+        if (!is_array($users)) {
+            return '';
+        }
+
+        foreach ($users as $user) {
+            $user_data = get_userdata($user->ID);
+
+            if ($user_data == false) {
+                continue;
+            }
+
+            $first_name = $user_data->first_name;
+            $last_name = $user_data->last_name;
+
+            $post_title = $first_name . ' ' . $last_name;
+            $post_slug = $user_data->nicename;
+
+            if (empty($post_slug)) {
+                $post_slug = preg_replace('/[^a-zA-Z]/', "", $post_title);
+            }
+
+            $roles = $this->getOrderedRoles($user_data->roles);
+            $slug = $this->getRoleSlug($roles[0]);
+
+            if ($slug == '') {
+                continue;
+            }
+
+            $postType = '';
+
+            foreach ($this->post_types_list as $post_type) {
+                if ($post_type['slug'] == $slug) {
+                    $postType = $post_type['name'];
+                    break;
+                }
+            }
+
+            if ($postType == '') {
+                continue;
+            }
+
+            $args = array(
+                'post_author'   => $user->ID,
+                'post_title'    => $post_title,
+                'post_content'  => '',
+                'post_status'   => 'publish',
+                'post_type'     => $postType,
+                'post_name'     => $post_slug,
+            );
+
+            $query = new WP_Query($args);
+
+            $existing_post = $query->posts;
+
+            if (!empty($existing_post)) {
+                continue;
+            }
+
+            $role_page = wp_insert_post($args);
+
+            if (!is_int($role_page)) {
+                error_log('There was an error creating team member page.');
+                continue;
+            }
+        }
     }
 
     public function addRoles()
@@ -107,7 +190,8 @@ class Role
         return $roles;
     }
 
-    public function getRoleSlug($name){
+    public function getRoleSlug($name)
+    {
         $displayName = '';
 
         foreach ($this->roles as $role) {

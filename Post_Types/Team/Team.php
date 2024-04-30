@@ -2,7 +2,7 @@
 
 namespace SEVEN_TECH\Communications\Post_Types\Team;
 
-use SEVEN_TECH\Communications\Role\Role;
+use SEVEN_TECH\Communications\Roles\Roles;
 use SEVEN_TECH\Communications\User\User;
 
 class Team
@@ -13,7 +13,7 @@ class Team
 
     public function __construct()
     {
-        $this->roleNames = (new Role)->getRoleNames();
+        $this->roleNames = (new Roles)->getRoleNames();
         $this->post_type = 'team';
         $this->user = new User;
     }

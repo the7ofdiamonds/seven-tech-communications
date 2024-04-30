@@ -110,7 +110,12 @@ class Router
 
             if (!empty($this->taxonomies_list)) {
                 foreach ($this->taxonomies_list as $taxonomy) {
-                    if (preg_match("#^/{$taxonomy['slug']}$#", $path)) {
+                    if (!isset($taxonomy['slug'])) {
+                        error_log('Regex is required for taxonomies at Taxonomies.');
+                        break;
+                    }
+
+                    if (preg_match("#^/{$taxonomy['slug']}#", $path) || preg_match("#^/{$taxonomy['slug']}/([a-zA-Z-]+)#", $path)) {
                         add_filter('template_include', function ($template_include) use ($taxonomy) {
                             return $this->templates->get_taxonomy_page_template($template_include, $taxonomy);
                         });
@@ -131,7 +136,7 @@ class Router
                         });
                     }
 
-                    if (preg_match("#^/{$post_type['slug']}/([a-zA-Z-]+)/#", $path)) {
+                    if (preg_match("#^/{$post_type['slug']}/([a-zA-Z-]+)#", $path)) {
                         add_filter('single_template', function ($single_template) use ($post_type) {
                             return $this->templates->get_single_page_template($single_template, $post_type);
                         });

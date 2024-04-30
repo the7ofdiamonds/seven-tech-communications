@@ -138,6 +138,8 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
+      "_IconComponent.js",
+      "_GroupMembers.js",
       "_useDispatch.js"
     ]
   },

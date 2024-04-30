@@ -63,6 +63,12 @@ class API
             'permission_callback' => '__return_true',
         ));
 
+        register_rest_route('seven-tech/v1', '/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)/founders', array(
+            'methods' => 'POST',
+            'callback' => array($founders, 'get_founders_with_term'),
+            'permission_callback' => '__return_true',
+        ));
+
         register_rest_route('seven-tech/v1', '/founders/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'GET',
             'callback' => array($founders, 'get_founder'),

@@ -99,7 +99,6 @@ class Taxonomies
     function getTaxonomyPostTypes($taxonomy)
     {
         try {
-
             if (is_array($this->taxonomies_list)) {
                 $postTypes = [];
 

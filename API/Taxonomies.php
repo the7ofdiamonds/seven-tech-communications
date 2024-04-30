@@ -138,7 +138,7 @@ class Taxonomies
                 throw new Exception('Project Type could not be found.', 404);
             }
 
-            return rest_ensure_response(['projectType' => $project_type]);
+            return rest_ensure_response($project_type);
         } catch (Exception $e) {
             $statusCode = $e->getCode();
 
@@ -164,7 +164,7 @@ class Taxonomies
                 throw new Exception('Skill could not be found.', 404);
             }
 
-            return rest_ensure_response(['skill' => $skill]);
+            return rest_ensure_response($skill);
         } catch (Exception $e) {
             $statusCode = $e->getCode();
 
@@ -190,7 +190,7 @@ class Taxonomies
                 throw new Exception('Framework could not be found.', 404);
             }
 
-            return rest_ensure_response(['framework' => $framework]);
+            return rest_ensure_response($framework);
         } catch (Exception $e) {
             $statusCode = $e->getCode();
 
@@ -216,7 +216,7 @@ class Taxonomies
                 throw new Exception('Technology could not be found.', 404);
             }
 
-            return rest_ensure_response(['technology' => $technology]);
+            return rest_ensure_response($technology);
         } catch (Exception $e) {
             $statusCode = $e->getCode();
 

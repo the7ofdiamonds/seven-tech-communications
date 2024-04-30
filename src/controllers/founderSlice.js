@@ -35,6 +35,28 @@ export const getFounders = createAsyncThunk('founder/getFounders', async () => {
     }
 });
 
+export const getFoundersWithTerm = createAsyncThunk('founder/getFoundersWithTerm', async ({taxonomy, term}) => {
+
+    try {
+        const response = await fetch(`/wp-json/seven-tech/v1/taxonomies/${taxonomy}/founders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                term: term
+            })
+        });
+
+        const responseData = await response.json();
+
+        return responseData;
+    } catch (error) {
+        console.error(error);
+        throw new Error(error.message);
+    }
+});
+
 export const getFounder = createAsyncThunk('founder/getFounder', async (founder) => {
 
     try {
@@ -59,7 +81,10 @@ export const founderSlice = createSlice({
     initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(getFounders.fulfilled, (state, action) => {
+            .addMatcher(isAnyOf(
+                getFounders.fulfilled,
+                getFoundersWithTerm.fulfilled
+            ), (state, action) => {
                 state.founderLoading = false;
                 state.founderStatusCode = action.payload.statusCode
                 state.founderErrorMessage = action.payload.errorMessage

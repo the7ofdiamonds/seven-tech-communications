@@ -16,7 +16,7 @@ function GroupMembers(props) {
 
                 <div className="author-name">
                   <h4 className="title">
-                    {group_member.first_name} {group_member.last_name}
+                    {group_member.full_name}
                   </h4>
                 </div>
 

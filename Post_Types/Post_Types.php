@@ -4,14 +4,9 @@ namespace SEVEN_TECH\Communications\Post_Types;
 
 use  WP_Query;
 
-use SEVEN_TECH\Communications\Role\Role;
-
 class Post_Types
 {
     public $post_types_list;
-    private $pluginDir;
-    private $role;
-    private $roleNames;
 
     public function __construct()
     {
@@ -43,10 +38,6 @@ class Post_Types
                 'dir' => 'Team'
             ],
         ];
-
-        $this->pluginDir = SEVEN_TECH_COMMUNICATIONS;
-        $this->role = new role;
-        $this->roleNames = (new Role)->getRoleNames();
     }
 
     function customPostTypes()
@@ -102,97 +93,26 @@ class Post_Types
         }
     }
 
-    function addRolePages()
+    function getPostTypeWithTerm($post_type, $taxonomy, $term)
     {
-        $args = [
-            'role__in' => $this->roleNames
-        ];
-        $users = get_users($args);
+        $args = array(
+            'post_type' => $post_type,
+            'tax_query' => array(
+                array(
+                    'taxonomy' => $taxonomy,
+                    'field'    => 'slug',
+                    'terms'    => $term
+                )
+            ),
+        );
 
-        if (!is_array($users)) {
+        $query = new WP_Query($args);
+        $posts = $query->posts;
+
+        if (empty($posts)) {
             return '';
         }
 
-        foreach ($users as $user) {
-            $user_data = get_userdata($user->ID);
-
-            if ($user_data == false) {
-                continue;
-            }
-
-            $first_name = $user_data->first_name;
-            $last_name = $user_data->last_name;
-
-            $post_title = $first_name . ' ' . $last_name;
-            $post_slug = $user_data->nicename;
-
-            if (empty($post_slug)) {
-                $post_slug = preg_replace('/[^a-zA-Z]/', "", $post_title);
-            }
-
-            $roles = $this->role->getOrderedRoles($user_data->roles);
-            $slug = $this->role->getRoleSlug($roles[0]);
-
-            if ($slug == '') {
-                continue;
-            }
-
-            $postType = '';
-
-            foreach ($this->post_types_list as $post_type) {
-                if ($post_type['slug'] == $slug) {
-                    $postType = $post_type['name'];
-                    break;
-                }
-            }
-
-            if ($postType == '') {
-                continue;
-            }
-
-            $args = array(
-                'post_author'   => $user->ID,
-                'post_title'    => $post_title,
-                'post_content'  => '',
-                'post_status'   => 'publish',
-                'post_type'     => $postType,
-                'post_name'     => $post_slug,
-            );
-
-            $query = new WP_Query($args);
-
-            $existing_post = $query->posts;
-
-            if (!empty($existing_post)) {
-                continue;
-            }
-
-            $role_page = wp_insert_post($args);
-
-            if (!is_int($role_page)) {
-                error_log('There was an error creating team member page.');
-                continue;
-            }
-        }
-    }
-
-    function checkRegisteredPostTypes()
-    {
-        if (is_array($this->post_types_list)) {
-            foreach ($this->post_types_list as $post_type) {
-                $archive_template = "{$this->pluginDir}Post_Types/{$post_type['dir']}/archive-{$post_type['name']}.php";
-                $single_template = "{$this->pluginDir}Post_Types/{$post_type['dir']}/single-{$post_type['name']}.php";
-
-                if (!file_exists($archive_template)) {
-                    error_log("{$post_type['name']} Archive Page needs to be created at {$archive_template}");
-                    continue;
-                }
-
-                if (!file_exists($single_template)) {
-                    error_log("{$post_type['name']} Single Page needs to be created at {$single_template}");
-                    continue;
-                }
-            }
-        }
+        return $posts;
     }
 }
