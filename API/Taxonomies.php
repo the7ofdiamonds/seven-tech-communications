@@ -22,7 +22,7 @@ class Taxonomies
     public function get_project_types()
     {
         try {
-            $project_types = $this->tax->getPostTypeTaxonomies($this->post_type, 'project_type');
+            $project_types = $this->tax->getPostTypeTaxonomies($this->post_type, 'project_types');
 
             if (empty($project_types)) {
                 throw new Exception('No projects found with a Project Type.', 404);

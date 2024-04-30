@@ -23,6 +23,22 @@ class Taxonomies
                 'slug' => 'skills',
                 'menu_position' => 3,
                 'post_type' => $post_types
+            ],
+            [
+                'name' => 'frameworks',
+                'singular' => 'Framework',
+                'plural' => 'Frameworks',
+                'slug' => 'frameworks',
+                'menu_position' => 3,
+                'post_type' => $post_types
+            ],
+            [
+                'name' => 'technologies',
+                'singular' => 'Technology',
+                'plural' => 'Technologies',
+                'slug' => 'technologies',
+                'menu_position' => 3,
+                'post_type' => $post_types
             ]
         ];
 
