@@ -21,7 +21,7 @@ function Team() {
   return (
     <>
       <main className="team">
-        <h4 className="title">Team</h4>
+        <h1 className="title">Team</h1>
 
         <GroupMembers group={team} />
       </main>

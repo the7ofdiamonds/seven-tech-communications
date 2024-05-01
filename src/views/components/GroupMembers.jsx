@@ -15,17 +15,14 @@ function GroupMembers(props) {
                 </div>
 
                 <div className="author-name">
-                  <h4 className="title">
-                    {group_member.full_name}
-                  </h4>
+                  <h4 className="title">{group_member.full_name}</h4>
                 </div>
 
-                {Array.isArray(group_member.roles) &&
-                  group_member.roles.map((role) => (
-                    <div className="role">
-                      <h5>{role}</h5>
-                    </div>
-                  ))}
+                {group_member.title && (
+                  <div className="role">
+                    <h5>{group_member.title}</h5>
+                  </div>
+                )}
 
                 <div className="author-contact">
                   <a href={`mailto:${group_member.email}`}>

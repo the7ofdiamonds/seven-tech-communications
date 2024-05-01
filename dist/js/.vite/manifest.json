@@ -62,12 +62,13 @@
       "src/views/FAQ.jsx",
       "src/views/Contact.jsx",
       "src/views/Support.jsx",
+      "src/views/Employees.jsx",
       "src/views/Founders.jsx",
       "src/views/Founder.jsx",
-      "src/views/Skills.jsx",
-      "src/views/Skill.jsx",
       "src/views/Team.jsx",
-      "src/views/Team-Member.jsx"
+      "src/views/Team-Member.jsx",
+      "src/views/Skills.jsx",
+      "src/views/Skill.jsx"
     ]
   },
   "src/views/About.jsx": {
@@ -92,6 +93,17 @@
       "src/index.jsx",
       "_ContentComponent.js",
       "_StatusBarComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Employees.jsx": {
+    "file": "Employees.js",
+    "name": "Employees",
+    "src": "src/views/Employees.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_GroupMembers.js",
       "_useDispatch.js"
     ]
   },

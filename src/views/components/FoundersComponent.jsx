@@ -28,7 +28,7 @@ function FoundersComponent() {
     <>
       {Array.isArray(founders) && (
         <>
-          <h4 className="title">Founders</h4>
+          <h1 className="title">Founders</h1>
 
           <GroupMembers group={founders} />
         </>

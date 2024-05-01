@@ -17,20 +17,22 @@ class Team
         $this->pt_team = new PT_Team;
     }
 
-    function get_team()
+    function get_team_with_term(WP_REST_Request $request)
     {
         try {
-            $team = $this->pt_team->getTeam();
+            $taxonomy = $request->get_param('slug');
+            $term = $request['term'];
 
-            if (!is_array($team)) {
-                throw new Exception('There are no Team Members to show.', 404);
+            $team = $this->pt_team->getTeamWithTerm($taxonomy, $term);
+
+            if (empty($team)) {
+                throw new Exception('There are no investors to show.', 404);
             }
 
             return rest_ensure_response(['team' => $team]);
         } catch (Exception $e) {
             $statusCode = $e->getCode();
             $response_data = [
-                'team' => '',
                 'errorMessage' => $e->getMessage(),
                 'statusCode' => $statusCode
             ];
@@ -52,6 +54,30 @@ class Team
         } catch (Exception $e) {
             $statusCode = $e->getCode();
             $response_data = [
+                'errorMessage' => $e->getMessage(),
+                'statusCode' => $statusCode
+            ];
+            $response = rest_ensure_response($response_data);
+            $response->set_status($statusCode);
+
+            return $response;
+        }
+    }
+
+    function get_team()
+    {
+        try {
+            $team = $this->pt_team->getTeam();
+
+            if (!is_array($team)) {
+                throw new Exception('There are no Team Members to show.', 404);
+            }
+
+            return rest_ensure_response(['team' => $team]);
+        } catch (Exception $e) {
+            $statusCode = $e->getCode();
+            $response_data = [
+                'team' => '',
                 'errorMessage' => $e->getMessage(),
                 'statusCode' => $statusCode
             ];

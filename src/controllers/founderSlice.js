@@ -13,7 +13,7 @@ const initialState = {
     bio: '',
     skills: '',
     socialNetworks: '',
-    founderResume: ''
+    resume: ''
 };
 
 export const getFounders = createAsyncThunk('founder/getFounders', async () => {
@@ -38,7 +38,7 @@ export const getFounders = createAsyncThunk('founder/getFounders', async () => {
 export const getFoundersWithTerm = createAsyncThunk('founder/getFoundersWithTerm', async ({taxonomy, term}) => {
 
     try {
-        const response = await fetch(`/wp-json/seven-tech/v1/taxonomies/${taxonomy}/founders`, {
+        const response = await fetch(`/wp-json/seven-tech/v1/founders/taxonomies/${taxonomy}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -100,7 +100,7 @@ export const founderSlice = createSlice({
                 state.bio = action.payload.bio
                 state.skills = action.payload.skills
                 state.socialNetworks = action.payload.social_networks
-                state.founderResume = action.payload.founder_resume
+                state.resume = action.payload.resume
             })
             .addMatcher(isAnyOf(
                 getFounders.pending,

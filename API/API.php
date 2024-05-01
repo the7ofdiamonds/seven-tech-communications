@@ -13,8 +13,12 @@ class API
         $accounts = new Accounts($mailer);
         $contact = new Contact($mailer);
         $content = new Content;
+        $employees = new Employees;
+        $executives = new Executives;
         $founders = new Founders;
+        $freelancers = new Freelancers;
         $gateway = new Gateway($mailer);
+        $investors = new Investors;
         $portfolio = new Portfolio($mailer);
         $schedule = new Schedule($mailer);
         $support = new Support($mailer);
@@ -57,13 +61,43 @@ class API
             'permission_callback' => '__return_true',
         ));
 
-        register_rest_route('seven-tech/v1', '/founders', array(
-            'methods' => 'GET',
-            'callback' => array($founders, 'get_founders'),
+        register_rest_route('seven-tech/v1', '/employees/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'POST',
+            'callback' => array($employees, 'get_employees_with_term'),
             'permission_callback' => '__return_true',
         ));
 
-        register_rest_route('seven-tech/v1', '/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)/founders', array(
+        register_rest_route('seven-tech/v1', '/employees/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'GET',
+            'callback' => array($employees, 'get_employee'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/employees', array(
+            'methods' => 'GET',
+            'callback' => array($employees, 'get_employees'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/executives/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'POST',
+            'callback' => array($executives, 'get_executives_with_term'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/executives/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'GET',
+            'callback' => array($executives, 'get_executive'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/executives', array(
+            'methods' => 'GET',
+            'callback' => array($executives, 'get_executives'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/founders/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'POST',
             'callback' => array($founders, 'get_founders_with_term'),
             'permission_callback' => '__return_true',
@@ -75,9 +109,27 @@ class API
             'permission_callback' => '__return_true',
         ));
 
-        register_rest_route('seven-tech/v1', '/email/onboarding/(?P<slug>[a-zA-Z0-9-_]+)', array(
+        register_rest_route('seven-tech/v1', '/founders', array(
+            'methods' => 'GET',
+            'callback' => array($founders, 'get_founders'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/freelancers/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'POST',
-            'callback' => array($portfolio, 'send_onboarding_email'),
+            'callback' => array($freelancers, 'get_freelancers_with_term'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/freelancers/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'GET',
+            'callback' => array($freelancers, 'get_freelancer'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/freelancers', array(
+            'methods' => 'GET',
+            'callback' => array($freelancers, 'get_foreelancer'),
             'permission_callback' => '__return_true',
         ));
 
@@ -153,6 +205,30 @@ class API
             'permission_callback' => '__return_true',
         ));
 
+        register_rest_route('seven-tech/v1', '/investors/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'POST',
+            'callback' => array($investors, 'get_investors_with_term'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/investors/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'GET',
+            'callback' => array($investors, 'get_investor'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/investors', array(
+            'methods' => 'GET',
+            'callback' => array($investors, 'get_investors'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/email/onboarding/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'POST',
+            'callback' => array($portfolio, 'send_onboarding_email'),
+            'permission_callback' => '__return_true',
+        ));
+
         register_rest_route('seven-tech/v1', '/email/schedule', array(
             'methods' => 'POST',
             'callback' => array($schedule, 'send_schedule_email'),
@@ -165,15 +241,21 @@ class API
             'permission_callback' => '__return_true',
         ));
 
-        register_rest_route('seven-tech/v1', '/team', array(
-            'methods' => 'GET',
-            'callback' => array($team, 'get_team'),
+        register_rest_route('seven-tech/v1', '/team/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'POST',
+            'callback' => array($team, 'get_team_with_term'),
             'permission_callback' => '__return_true',
         ));
 
         register_rest_route('seven-tech/v1', '/team/(?P<slug>[a-zA-Z0-9-_]+)', array(
             'methods' => 'GET',
             'callback' => array($team, 'get_team_member'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/team', array(
+            'methods' => 'GET',
+            'callback' => array($team, 'get_team'),
             'permission_callback' => '__return_true',
         ));
 

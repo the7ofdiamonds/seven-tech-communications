@@ -28,7 +28,7 @@ function Founder() {
 
   const {
     founderLoading,
-    founderError,
+    founderErrorMessage,
     title,
     avatarURL,
     fullName,
@@ -37,7 +37,7 @@ function Founder() {
     skills,
     frameworks,
     technologies,
-    founderResume,
+    resume,
   } = useSelector((state) => state.founder);
 
   const { content } = useSelector((state) => state.content);
@@ -45,7 +45,9 @@ function Founder() {
   if (founderLoading) {
     return <LoadingComponent />;
   }
+
   const knowledge = [
+    ...(projectTypes || []),
     ...(skills || []),
     ...(frameworks || []),
     ...(technologies || []),
@@ -59,7 +61,7 @@ function Founder() {
           avatarURL={avatarURL}
           fullName={fullName}
           bio={bio}
-          founder_resume={founderResume}
+          resume={resume}
         />
 
         <ContentComponent content={content} />

@@ -29,7 +29,7 @@ class User
             'id' => $id,
             'full_name' => "{$user_data->first_name} {$user_data->last_name}",
             'email' => $user_data->user_email,
-            'title' => $roles[0],
+            'title' => $roles,
             'bio' => get_the_author_meta('description', $id),
             'user_url' => $roleLink,
             'avatar_url' => $avatar_url == false ? '' : $avatar_url,
@@ -57,14 +57,15 @@ class User
 
             $roles = $this->role->getOrderedRoles($user_data->roles);
             $roleLink = $this->role->getRoleLink($roles[0], $user_data->user_nicename);
+            $avatar_url = get_avatar_url($user_data->ID, ['size' => 384]);
 
             $users[] = array(
                 'id' => $user_data->ID,
                 'full_name' => "{$user_data->first_name} {$user_data->last_name}",
                 'email' => $user_data->user_email,
-                'roles' => $roles,
+                'title' => $roles[0],
                 'user_url' => $roleLink,
-                'avatar_url' => get_avatar_url($user_data->ID, ['size' => 384])
+                'avatar_url' => $avatar_url == false ? '' : $avatar_url,
             );
         }
 

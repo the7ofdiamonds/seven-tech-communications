@@ -3,15 +3,15 @@ import React from 'react';
 import MemberNavigationComponent from './MemberNavigationComponent';
 
 function MemberIntroductionComponent(props) {
-  const { title, avatarURL, fullName, bio, founder_resume } = props;
+  const { title, avatarURL, fullName, bio, resume } = props;
 
   const portfolioElement = document.getElementById('seven_tech_portfolio');
 
   return (
     <>
-      {(founder_resume || portfolioElement) && (
+      {(resume || portfolioElement) && (
         <MemberNavigationComponent
-          resume={founder_resume}
+          resume={resume}
           portfolioElement={portfolioElement}
         />
       )}
