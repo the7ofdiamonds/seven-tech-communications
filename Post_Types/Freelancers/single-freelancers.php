@@ -20,13 +20,10 @@ $user_allowed = false;
 foreach ($roles as $role) {
     if (
         $role == 'administrator' ||
-        $role == 'employee' ||
         $role == 'executive' ||
         $role == 'founder' ||
-        $role == 'freelancer' ||
         $role == 'investor' ||
-        $role == 'managing-member' ||
-        $role == 'team'
+        $role == 'managing-member'
     ) {
         $user_allowed = true;
         break;
