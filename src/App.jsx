@@ -13,9 +13,16 @@ const Support = lazy(() => import('./views/Support.jsx'));
 
 const Employees = lazy(() => import('./views/Employees.jsx'));
 const Employee = lazy(() => import('./views/Employee.jsx'));
-
+const Executives = lazy(() => import('./views/Executives.jsx'));
+const Executive = lazy(() => import('./views/Executive.jsx'));
 const Founders = lazy(() => import('./views/Founders.jsx'));
 const Founder = lazy(() => import('./views/Founder.jsx'));
+const Freelancers = lazy(() => import('./views/Freelancers.jsx'));
+const Freelancer = lazy(() => import('./views/Freelancer.jsx'));
+const Investors = lazy(() => import('./views/Investors.jsx'));
+const Investor = lazy(() => import('./views/Investor.jsx'));
+const ManagingMembers = lazy(() => import('./views/Managing-Members.jsx'));
+const ManagingMember = lazy(() => import('./views/Managing-Member.jsx'));
 const Team = lazy(() => import('./views/Team.jsx'));
 const TeamMember = lazy(() => import('./views/Team-Member.jsx'));
 
@@ -31,12 +38,21 @@ function App() {
             <Routes>
               <Route path="/" element={<About />} />
               <Route path="/about" element={<About />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="faq" element={<FAQ />} />
-              <Route path="support" element={<Support />} />
-              <Route path="employees" element={<Employees />} />
-              <Route path="/founders" element={<Founders />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/employees/:employee" element={<Employee />} />
+              <Route path="/employees" element={<Employees />} />
+              <Route path="/executives/:executive" element={<Executive />} />
+              <Route path="/executives" element={<Executives />} />
               <Route path="/founders/:founder" element={<Founder />} />
+              <Route path="/founders" element={<Founders />} />
+              <Route path="/freelancers/:freelancer" element={<Freelancer />} />
+              <Route path="/freelancers" element={<Freelancers />} />
+              <Route path="/investors/:investor" element={<Investor />} />
+              <Route path="/investors" element={<Investors />} />
+              <Route path="/managing-members/:managingMember" element={<ManagingMember />} />
+              <Route path="/managing-members" element={<ManagingMembers />} />
               <Route path="/skills" element={<Skills />} />
               <Route path="/skills/:skill" element={<Skill />} />
               <Route path="/team" element={<Team />} />

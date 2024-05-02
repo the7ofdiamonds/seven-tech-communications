@@ -86,6 +86,7 @@ export const employeeSlice = createSlice({
                 getEmployeesWithTerm.fulfilled
             ), (state, action) => {
                 state.employeeLoading = false;
+                state.employeeError = null
                 state.employeeStatusCode = action.payload.statusCode
                 state.employeeErrorMessage = action.payload.errorMessage
                 state.employees = action.payload.employees
@@ -93,6 +94,8 @@ export const employeeSlice = createSlice({
             .addCase(getEmployee.fulfilled, (state, action) => {
                 state.employeeLoading = false
                 state.employeeError = null
+                state.employeeStatusCode = action.payload.statusCode
+                state.employeeErrorMessage = action.payload.errorMessage
                 state.title = action.payload.title
                 state.authorURL = action.payload.author_url
                 state.avatarURL = action.payload.avatar_url

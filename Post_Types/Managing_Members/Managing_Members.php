@@ -1,6 +1,6 @@
 <?php
 
-namespace SEVEN_TECH\Communications\Post_Types\Founders;
+namespace SEVEN_TECH\Communications\Post_Types\Managing_Members;
 
 use Exception;
 
@@ -13,7 +13,7 @@ use SEVEN_TECH\Communications\Taxonomies\Skills;
 use SEVEN_TECH\Communications\Taxonomies\Frameworks;
 use SEVEN_TECH\Communications\Taxonomies\Technologies;
 
-class Founders
+class Managing_Members
 {
     private $post_type;
     private $role;
@@ -28,9 +28,9 @@ class Founders
 
     public function __construct()
     {
-        $this->role = 'founder';
-        $this->post_type = 'founders';
-        
+        $this->role = 'managing-member';
+        $this->post_type = 'managing_members';
+
         $this->post_types = new Post_Types;
         $this->user = new User;
         $this->taxonomies = new Taxonomies;
@@ -41,16 +41,16 @@ class Founders
         $this->resume = new Resume;
     }
 
-    function getFoundersList()
+    function getManagingMembersList()
     {
         $args = ['role__in' => [$this->role]];
         $users = get_users($args);
 
         if (!is_array($users)) {
-            return 'There are no founders at this time.';
+            return 'There are no managing members at this time.';
         }
 
-        $founders = [];
+        $managing_members = [];
 
         foreach ($users as $user) {
             $user_data = get_userdata($user->ID);
@@ -59,33 +59,33 @@ class Founders
                 continue;
             }
 
-            $founder = array(
+            $managing_member = array(
                 'id' => $user_data->ID,
                 'first_name' => $user_data->first_name,
                 'last_name' => $user_data->last_name,
             );
 
-            $founders[] = $founder;
+            $managing_members[] = $managing_member;
         }
 
-        return $founders;
+        return $managing_members;
     }
 
-    function getFoundersWithTerm($taxonomy, $term)
+    function getManagingMembersWithTerm($taxonomy, $term)
     {
         $authors = $this->post_types->getPostTypeWithTerm($this->post_type, $taxonomy, $term);
 
-        $founders = [];
+        $managing_members = [];
 
         foreach ($authors as $author) {
-            $founders[] = $this->user->getUser($author->post_author);
+            $managing_members[] = $this->user->getUser($author->post_author);
         }
 
-        return $founders;
+        return $managing_members;
     }
 
 
-    function getFounder($slug)
+    function getManagingMember($slug)
     {
         $post = get_page_by_path($slug, OBJECT, $this->post_type);
 
@@ -95,34 +95,34 @@ class Founders
 
         $id = $post->post_author;
 
-        $founder = $this->user->getUser($id);
+        $managing_member = $this->user->getUser($id);
 
-        if (!is_array($founder)) {
+        if (!is_array($managing_member)) {
             return '';
         }
 
-        $founder['projectTypes'] = $this->taxonomies->getPostTaxonomy($post->ID, 'project_types');
-        $founder['skills'] = $this->skills->getPostSkills($post->ID);
-        $founder['frameworks'] = $this->frameworks->getPostFrameworks($post->ID);
-        $founder['technologies'] = $this->technologies->getPostTechnologies($post->ID);
-        $founder['social_networks'] = $this->social_networks->getSocialNetworks($post->ID);
-        $founder['resume'] = $this->resume->getResume($id);
+        $managing_member['projectTypes'] = $this->taxonomies->getPostTaxonomy($post->ID, 'project_types');
+        $managing_member['skills'] = $this->skills->getPostSkills($post->ID);
+        $managing_member['frameworks'] = $this->frameworks->getPostFrameworks($post->ID);
+        $managing_member['technologies'] = $this->technologies->getPostTechnologies($post->ID);
+        $managing_member['social_networks'] = $this->social_networks->getSocialNetworks($post->ID);
+        $managing_member['resume'] = $this->resume->getResume($id);
 
-        return $founder;
+        return $managing_member;
     }
 
-    function getFounders()
+    function getManagingMembers()
     {
         $args = [
             'role__in' => [$this->role]
         ];
 
-        $founders = $this->user->getUsers($args);
+        $managing_members = $this->user->getUsers($args);
 
-        if (!is_array($founders)) {
+        if (!is_array($managing_members)) {
             return '';
         }
 
-        return $founders;
+        return $managing_members;
     }
 }

@@ -6,13 +6,19 @@
       "src/index.jsx"
     ]
   },
+  "_ErrorComponent.js": {
+    "file": "ErrorComponent.js",
+    "name": "ErrorComponent",
+    "imports": [
+      "src/index.jsx"
+    ]
+  },
   "_FoundersComponent.js": {
     "file": "FoundersComponent.js",
     "name": "FoundersComponent",
     "imports": [
       "src/index.jsx",
-      "_GroupMembers.js",
-      "_useDispatch.js"
+      "_GroupMembers.js"
     ]
   },
   "_GroupMembers.js": {
@@ -63,8 +69,17 @@
       "src/views/Contact.jsx",
       "src/views/Support.jsx",
       "src/views/Employees.jsx",
+      "src/views/Employee.jsx",
+      "src/views/Executives.jsx",
+      "src/views/Executive.jsx",
       "src/views/Founders.jsx",
       "src/views/Founder.jsx",
+      "src/views/Freelancers.jsx",
+      "src/views/Freelancer.jsx",
+      "src/views/Investors.jsx",
+      "src/views/Investor.jsx",
+      "src/views/Managing-Members.jsx",
+      "src/views/Managing-Member.jsx",
       "src/views/Team.jsx",
       "src/views/Team-Member.jsx",
       "src/views/Skills.jsx",
@@ -96,6 +111,19 @@
       "_useDispatch.js"
     ]
   },
+  "src/views/Employee.jsx": {
+    "file": "Employee.js",
+    "name": "Employee",
+    "src": "src/views/Employee.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_MemberComponent.js",
+      "_ContentComponent.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
+    ]
+  },
   "src/views/Employees.jsx": {
     "file": "Employees.js",
     "name": "Employees",
@@ -103,6 +131,31 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
+      "_ErrorComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Executive.jsx": {
+    "file": "Executive.js",
+    "name": "Executive",
+    "src": "src/views/Executive.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_MemberComponent.js",
+      "_ContentComponent.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
+    ]
+  },
+  "src/views/Executives.jsx": {
+    "file": "Executives.js",
+    "name": "Executives",
+    "src": "src/views/Executives.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ErrorComponent.js",
       "_GroupMembers.js",
       "_useDispatch.js"
     ]
@@ -138,7 +191,81 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
+      "_ErrorComponent.js",
       "_FoundersComponent.js",
+      "_useDispatch.js",
+      "_GroupMembers.js"
+    ]
+  },
+  "src/views/Freelancer.jsx": {
+    "file": "Freelancer.js",
+    "name": "Freelancer",
+    "src": "src/views/Freelancer.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_MemberComponent.js",
+      "_ContentComponent.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
+    ]
+  },
+  "src/views/Freelancers.jsx": {
+    "file": "Freelancers.js",
+    "name": "Freelancers",
+    "src": "src/views/Freelancers.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ErrorComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Investor.jsx": {
+    "file": "Investor.js",
+    "name": "Investor",
+    "src": "src/views/Investor.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_MemberComponent.js",
+      "_ContentComponent.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
+    ]
+  },
+  "src/views/Investors.jsx": {
+    "file": "Investors.js",
+    "name": "Investors",
+    "src": "src/views/Investors.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ErrorComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Managing-Member.jsx": {
+    "file": "Managing-Member.js",
+    "name": "Managing-Member",
+    "src": "src/views/Managing-Member.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_MemberComponent.js",
+      "_ContentComponent.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
+    ]
+  },
+  "src/views/Managing-Members.jsx": {
+    "file": "Managing-Members.js",
+    "name": "Managing-Members",
+    "src": "src/views/Managing-Members.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ErrorComponent.js",
       "_GroupMembers.js",
       "_useDispatch.js"
     ]

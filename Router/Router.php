@@ -62,6 +62,7 @@ class Router
                         add_filter('template_include', function ($template_include) use ($custom_page) {
                             return $this->templates->get_custom_page_template($template_include, $custom_page);
                         });
+                        break;
                     }
                 }
             }
@@ -83,6 +84,7 @@ class Router
                         add_filter('template_include',  function ($template_include) use ($protected_page) {
                             return $this->templates->get_protected_page_template($template_include, $protected_page);
                         });
+                        break;
                     }
                 }
             }
@@ -104,6 +106,8 @@ class Router
                         add_filter('template_include', function ($template_include) use ($page) {
                             return $this->templates->get_page_template($template_include, $page);
                         });
+
+                        break;
                     }
                 }
             }
@@ -119,6 +123,7 @@ class Router
                         add_filter('template_include', function ($template_include) use ($taxonomy) {
                             return $this->templates->get_taxonomy_page_template($template_include, $taxonomy);
                         });
+                        break;
                     }
                 }
             }
@@ -130,16 +135,18 @@ class Router
                         break;
                     }
 
-                    if (preg_match("#^/{$post_type['slug']}#", $path)) {
-                        add_filter('archive_template', function ($archive_template) use ($post_type) {
-                            return $this->templates->get_archive_page_template($archive_template, $post_type);
-                        });
-                    }
-
                     if (preg_match("#^/{$post_type['slug']}/([a-zA-Z-]+)#", $path)) {
                         add_filter('single_template', function ($single_template) use ($post_type) {
                             return $this->templates->get_single_page_template($single_template, $post_type);
                         });
+                        break;
+                    }
+
+                    if (preg_match("#^/{$post_type['slug']}#", $path)) {
+                        add_filter('archive_template', function ($archive_template) use ($post_type) {
+                            return $this->templates->get_archive_page_template($archive_template, $post_type);
+                        });
+                        break;
                     }
                 }
             }

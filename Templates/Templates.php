@@ -55,7 +55,7 @@ class Templates
             $filename = $custom_page['file_name'];
             $filename_css = "{$this->cssDir}{$filename}.css";
             $filename_js = "{$this->jsDir}{$filename}.js";
-            
+
             if (file_exists($filename_css)) {
                 add_action('wp_head', function () use ($filename) {
                     $this->css->load_pages_css($filename);
@@ -138,29 +138,29 @@ class Templates
 
     public function get_taxonomy_page_template($template_include, $taxonomy)
     {
-            $taxonomy_template = "{$this->pluginDir}Taxonomies/taxonomy-{$taxonomy['name']}.php";
+        $taxonomy_template = "{$this->pluginDir}Taxonomies/Taxonomy-{$taxonomy['name']}.php";
 
-            if (file_exists($taxonomy_template)) {
-                $filename = $taxonomy['singular'];
-                $filename_css = "{$this->cssDir}{$filename}.css";
-                $filename_js = "{$this->jsDir}{$filename}.js";
+        if (file_exists($taxonomy_template)) {
+            $filename = $taxonomy['singular'];
+            $filename_css = "{$this->cssDir}{$filename}.css";
+            $filename_js = "{$this->jsDir}{$filename}.js";
 
-                if (file_exists($filename_css)) {
-                    add_action('wp_head', function () use ($filename) {
-                        $this->css->load_pages_css($filename);
-                    });
-                }
-    
-                if (file_exists($filename_js)) {
-                    add_action('wp_footer', function () use ($filename) {
-                        $this->js->load_pages_react($filename);
-                    });
-                }
-
-                return $taxonomy_template;
-            } else {
-                error_log('Taxonomy Page Template does not exist.');
+            if (file_exists($filename_css)) {
+                add_action('wp_head', function () use ($filename) {
+                    $this->css->load_pages_css($filename);
+                });
             }
+
+            if (file_exists($filename_js)) {
+                add_action('wp_footer', function () use ($filename) {
+                    $this->js->load_pages_react($filename);
+                });
+            }
+
+            return $taxonomy_template;
+        } else {
+            error_log('Taxonomy Page Template does not exist.');
+        }
 
         return $template_include;
     }
@@ -168,19 +168,19 @@ class Templates
     function get_archive_page_template($archive_template, $post_type)
     {
         if (is_post_type_archive($post_type['name'])) {
-            $archive_template = "{$this->pluginDir}Post_Types/{$post_type['plural']}/archive-{$post_type['name']}.php";
+            $archive_template = "{$this->pluginDir}Post_Types/{$post_type['dir']}/archive-{$post_type['slug']}.php";
 
             if (file_exists($archive_template)) {
-                $filename = $post_type['plural'];
+                $filename = $post_type['archive_page'];
                 $filename_css = "{$this->cssDir}{$filename}.css";
                 $filename_js = "{$this->jsDir}{$filename}.js";
-    
+
                 if (file_exists($filename_css)) {
                     add_action('wp_head', function () use ($filename) {
                         $this->css->load_pages_css($filename);
                     });
                 }
-    
+
                 if (file_exists($filename_js)) {
                     add_action('wp_footer', function () use ($filename) {
                         $this->js->load_pages_react($filename);
@@ -199,20 +199,19 @@ class Templates
     function get_single_page_template($single_template, $post_type)
     {
         if (is_singular($post_type['name'])) {
-            $single_template = "{$this->pluginDir}Post_Types/{$post_type['plural']}/single-{$post_type['name']}.php";
+            $single_template = "{$this->pluginDir}Post_Types/{$post_type['dir']}/single-{$post_type['slug']}.php";
 
             if (file_exists($single_template)) {
-                $filename = $post_type['singular'];
+                $filename = $post_type['single_page'];
                 $filename_css = "{$this->cssDir}{$filename}.css";
                 $filename_js = "{$this->jsDir}{$filename}.js";
 
-                
                 if (file_exists($filename_css)) {
                     add_action('wp_head', function () use ($filename) {
                         $this->css->load_pages_css($filename);
                     });
                 }
-    
+
                 if (file_exists($filename_js)) {
                     add_action('wp_footer', function () use ($filename) {
                         $this->js->load_pages_react($filename);

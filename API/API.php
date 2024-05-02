@@ -19,6 +19,7 @@ class API
         $freelancers = new Freelancers;
         $gateway = new Gateway($mailer);
         $investors = new Investors;
+        $managingMembers = new Managing_Members;
         $portfolio = new Portfolio($mailer);
         $schedule = new Schedule($mailer);
         $support = new Support($mailer);
@@ -129,7 +130,7 @@ class API
 
         register_rest_route('seven-tech/v1', '/freelancers', array(
             'methods' => 'GET',
-            'callback' => array($freelancers, 'get_foreelancer'),
+            'callback' => array($freelancers, 'get_freelancers'),
             'permission_callback' => '__return_true',
         ));
 
@@ -220,6 +221,24 @@ class API
         register_rest_route('seven-tech/v1', '/investors', array(
             'methods' => 'GET',
             'callback' => array($investors, 'get_investors'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/managing-members/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'POST',
+            'callback' => array($managingMembers, 'get_managing_members_with_term'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/managing-members/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            'methods' => 'GET',
+            'callback' => array($managingMembers, 'get_managing_member'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('seven-tech/v1', '/managing-members', array(
+            'methods' => 'GET',
+            'callback' => array($managingMembers, 'get_managing_members'),
             'permission_callback' => '__return_true',
         ));
 
