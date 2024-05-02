@@ -75,6 +75,10 @@ class Freelancers
     {
         $authors = $this->post_types->getPostTypeWithTerm($this->post_type, $taxonomy, $term);
 
+        if (empty($authors)) {
+            return '';
+        }
+        
         $freelancers = [];
 
         foreach ($authors as $author) {

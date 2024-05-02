@@ -53,10 +53,10 @@ function App() {
               <Route path="/investors" element={<Investors />} />
               <Route path="/managing-members/:managingMember" element={<ManagingMember />} />
               <Route path="/managing-members" element={<ManagingMembers />} />
-              <Route path="/skills" element={<Skills />} />
               <Route path="/skills/:skill" element={<Skill />} />
+              <Route path="/skills" element={<Skills />} />
+              <Route path="/team/:teamMember" element={<TeamMember />} />
               <Route path="/team" element={<Team />} />
-              <Route path="/team/:teammember" element={<TeamMember />} />
             </Routes>
           </Suspense>
         </Router>

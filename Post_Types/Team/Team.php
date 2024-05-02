@@ -74,6 +74,10 @@ class Team
     {
         $authors = $this->post_types->getPostTypeWithTerm($this->post_type, $taxonomy, $term);
 
+        if (empty($authors)) {
+            return '';
+        }
+        
         $team = [];
 
         foreach ($authors as $author) {

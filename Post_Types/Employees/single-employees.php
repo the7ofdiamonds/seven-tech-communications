@@ -6,10 +6,10 @@ if (!function_exists('is_plugin_active')) {
 }
 ?>
 
-<div class="founder">
+<div class="employee">
     <?php
     include SEVEN_TECH_COMMUNICATIONS . 'includes/react.php';
-
+// Make this conditional
     if (is_plugin_active('seven-tech-portfolio/SEVEN_TECH_Portfolio.php')) {
         echo do_shortcode('[seven-tech-portfolio]');
     }

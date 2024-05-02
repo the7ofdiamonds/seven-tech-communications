@@ -3,13 +3,13 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getManagingMember } from '../controllers/managingMemberSlice.js';
+import { getContent } from '../controllers/contentSlice.js';
 
 import LoadingComponent from './components/LoadingComponent.jsx';
+import ErrorComponent from './components/ErrorComponent.jsx';
 import MemberKnowledgeComponent from './components/MemberKnowledgeComponent.jsx';
 import MemberComponent from './components/MemberComponent.jsx';
 import ContentComponent from './components/ContentComponent.jsx';
-
-import { getContent } from '../controllers/contentSlice.js';
 
 function ManagingMember() {
   const url = new URL(window.location.href);
@@ -45,7 +45,11 @@ function ManagingMember() {
   if (managingMemberLoading) {
     return <LoadingComponent />;
   }
-  
+
+  if (managingMemberErrorMessage) {
+    return <ErrorComponent message={managingMemberErrorMessage} />;
+  }
+
   const knowledge = [
     ...(projectTypes || []),
     ...(skills || []),

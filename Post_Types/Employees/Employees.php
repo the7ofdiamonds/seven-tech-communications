@@ -75,6 +75,10 @@ class Employees
     {
         $authors = $this->post_types->getPostTypeWithTerm($this->post_type, $taxonomy, $term);
 
+        if (empty($authors)) {
+            return '';
+        }
+        
         $employees = [];
 
         foreach ($authors as $author) {

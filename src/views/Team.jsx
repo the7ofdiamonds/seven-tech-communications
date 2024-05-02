@@ -4,10 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getTeam } from '../controllers/teamSlice';
 
 import LoadingComponent from './components/LoadingComponent';
+import ErrorComponent from './components/ErrorComponent';
 import GroupMembers from './components/GroupMembers';
 
 function Team() {
-  const { teamLoading, teamError, team } = useSelector((state) => state.team);
+  const { teamLoading, teamErrorMessage, team } = useSelector((state) => state.team);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,6 +17,10 @@ function Team() {
 
   if (teamLoading) {
     return <LoadingComponent />;
+  }
+
+  if (teamErrorMessage) {
+    return <ErrorComponent message={teamErrorMessage} />;
   }
 
   return (

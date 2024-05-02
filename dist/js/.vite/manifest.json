@@ -252,6 +252,7 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
+      "_ErrorComponent.js",
       "_MemberComponent.js",
       "_ContentComponent.js",
       "_useDispatch.js",
@@ -289,6 +290,7 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
+      "_ErrorComponent.js",
       "_IconComponent.js",
       "_useDispatch.js"
     ]
@@ -312,6 +314,7 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
+      "_ErrorComponent.js",
       "_MemberComponent.js",
       "_useDispatch.js",
       "_IconComponent.js"
@@ -324,6 +327,7 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
+      "_ErrorComponent.js",
       "_GroupMembers.js",
       "_useDispatch.js"
     ]

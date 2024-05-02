@@ -75,6 +75,10 @@ class Founders
     {
         $authors = $this->post_types->getPostTypeWithTerm($this->post_type, $taxonomy, $term);
 
+        if (empty($authors)) {
+            return '';
+        }
+        
         $founders = [];
 
         foreach ($authors as $author) {

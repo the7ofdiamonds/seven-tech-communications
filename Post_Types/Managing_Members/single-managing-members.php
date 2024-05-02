@@ -6,7 +6,7 @@ if (!function_exists('is_plugin_active')) {
 }
 ?>
 
-<div class="founder">
+<div class="managing-member">
     <?php
     include SEVEN_TECH_COMMUNICATIONS . 'includes/react.php';
 

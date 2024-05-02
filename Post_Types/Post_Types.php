@@ -91,7 +91,7 @@ class Post_Types
                 'singular' => 'Team Member',
                 'plural' => 'Team',
                 'archive_page' => 'Team',
-                'single_page' => 'TeamMember',
+                'single_page' => 'Team-Member',
                 'slug' => 'team',
                 'dir' => 'Team'
             ],

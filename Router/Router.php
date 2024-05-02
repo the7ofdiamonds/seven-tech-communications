@@ -41,7 +41,7 @@ class Router
         try {
             $path = $_SERVER['REQUEST_URI'];
 
-            if (preg_match('#^/#', $path)) {
+            // if (preg_match('#^/#', $path)) {
                 if (!empty($this->front_page_react)) {
                     $sections = $this->front_page_react;
 
@@ -49,7 +49,7 @@ class Router
                         return $this->templates->get_front_page_template($frontpage_template, $sections);
                     });
                 }
-            }
+            // }
 
             if (!empty($this->custom_pages)) {
                 foreach ($this->custom_pages as $custom_page) {

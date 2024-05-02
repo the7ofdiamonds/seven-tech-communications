@@ -75,6 +75,10 @@ class Investors
     {
         $authors = $this->post_types->getPostTypeWithTerm($this->post_type, $taxonomy, $term);
 
+        if (empty($authors)) {
+            return '';
+        }
+        
         $investors = [];
 
         foreach ($authors as $author) {

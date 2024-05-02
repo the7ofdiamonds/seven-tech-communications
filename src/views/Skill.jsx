@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 
 import { getSkill } from '../controllers/taxonomiesSlice';
 import { getFoundersWithTerm } from '../controllers/founderSlice';
+import { getExecutivesWithTerm } from '../controllers/executiveSlice';
+import { getManagingMembersWithTerm } from '../controllers/managingMemberSlice';
+import { getFreelancersWithTerm } from '../controllers/freelancerSlice';
+import { getEmployeesWithTerm } from '../controllers/employeeSlice';
 
 import HeaderIconComponent from './components/HeaderIconComponent';
 import GroupMembers from './components/GroupMembers';
@@ -13,7 +17,6 @@ function Skill() {
 
   const {
     taxonomiesLoading,
-    taxonomiesError,
     taxonomiesErrorMessage,
     id,
     title,
@@ -22,11 +25,29 @@ function Skill() {
   } = useSelector((state) => state.taxonomies);
   const {
     founderLoading,
-    founderError,
     founderErrorMessage,
-    founderStatusCode,
     founders,
   } = useSelector((state) => state.founder);
+  const {
+    executiveLoading,
+    executiveErrorMessage,
+    executives,
+  } = useSelector((state) => state.executive);
+  const {
+    managingMemberLoading,
+    managingMemberErrorMessage,
+    managingMembers,
+  } = useSelector((state) => state.managingMember);
+  const {
+    freelancerLoading,
+    freelancerErrorMessage,
+    freelancers,
+  } = useSelector((state) => state.freelancer);
+  const {
+    employeeLoading,
+    employeeErrorMessage,
+    employees,
+  } = useSelector((state) => state.employee);
 
   const dispatch = useDispatch();
 
@@ -36,6 +57,22 @@ function Skill() {
 
   useEffect(() => {
     dispatch(getFoundersWithTerm({ taxonomy: 'Skills', term: skill }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getExecutivesWithTerm({ taxonomy: 'Skills', term: skill }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getManagingMembersWithTerm({ taxonomy: 'Skills', term: skill }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getFreelancersWithTerm({ taxonomy: 'Skills', term: skill }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(getEmployeesWithTerm({ taxonomy: 'Skills', term: skill }));
   }, [dispatch]);
 
   return (
@@ -49,6 +86,10 @@ function Skill() {
       )}
 
       <GroupMembers group={founders} />
+      <GroupMembers group={executives} />
+      <GroupMembers group={managingMembers} />
+      <GroupMembers group={freelancers} />
+      <GroupMembers group={employees} />
     </main>
   );
 }

@@ -5,21 +5,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getTeamMember } from '../controllers/teamSlice';
 
 import LoadingComponent from './components/LoadingComponent';
+import ErrorComponent from './components/ErrorComponent';
 import MemberNavigationComponent from './components/MemberNavigationComponent';
 import MemberKnowledgeComponent from './components/MemberKnowledgeComponent';
 import MemberComponent from './components/MemberComponent';
 
 function TeamMember() {
-  const { teammember } = useParams();
+  const { teamMember } = useParams();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getTeamMember(teammember));
-  }, [dispatch, teammember]);
+    dispatch(getTeamMember(teamMember));
+  }, [dispatch, teamMember]);
 
   const {
     teamLoading,
-    teamError,
+    teamErrorMessage,
     title,
     avatarURL,
     fullName,
@@ -30,6 +31,10 @@ function TeamMember() {
 
   if (teamLoading) {
     return <LoadingComponent />;
+  }
+
+  if (teamErrorMessage) {
+    return <ErrorComponent message={teamErrorMessage} />;
   }
 
   return (

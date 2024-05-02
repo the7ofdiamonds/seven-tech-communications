@@ -28,38 +28,7 @@ class Pages
             ]
         ];
 
-        $this->protected_pages = [
-            [
-                'url' => 'employees',
-                'regex' => '#^/employees#',
-                'file_name' => 'Employees',
-            ],
-            [
-                'url' => 'employee',
-                'regex' => '#^/employee#',
-                'file_name' => 'Employee',
-            ],
-            [
-                'url' => 'freelancers',
-                'regex' => '#^/freelancers#',
-                'file_name' => 'Freelancers',
-            ],
-            [
-                'url' => 'freelancer',
-                'regex' => '#^/freelancer#',
-                'file_name' => 'Freelancer',
-            ],
-            [
-                'url' => 'investors',
-                'regex' => '#^/investors#',
-                'file_name' => 'Investors',
-            ],
-            [
-                'url' => 'investor',
-                'regex' => '#^/investor#',
-                'file_name' => 'Investor',
-            ],
-        ];
+        $this->protected_pages = [];
 
         $this->pages = [
             [
@@ -76,11 +45,6 @@ class Pages
                 'url' => 'support',
                 'regex' => '#^/support#',
                 'file_name' => 'Support',
-            ],
-            [
-                'url' => 'skills',
-                'regex' => '#^/skills$#',
-                'file_name' => 'Skills',
             ]
         ];
 

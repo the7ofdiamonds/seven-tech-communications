@@ -75,6 +75,10 @@ class Managing_Members
     {
         $authors = $this->post_types->getPostTypeWithTerm($this->post_type, $taxonomy, $term);
 
+        if (empty($authors)) {
+            return '';
+        }
+
         $managing_members = [];
 
         foreach ($authors as $author) {

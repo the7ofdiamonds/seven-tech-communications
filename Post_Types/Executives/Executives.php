@@ -75,6 +75,10 @@ class Executives
     {
         $authors = $this->post_types->getPostTypeWithTerm($this->post_type, $taxonomy, $term);
 
+        if (empty($authors)) {
+            return '';
+        }
+        
         $executives = [];
 
         foreach ($authors as $author) {

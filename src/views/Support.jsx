@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
+import { getContent } from '../controllers/contentSlice';
+
+import LoadingComponent from './components/LoadingComponent';
 import ContentComponent from './components/ContentComponent';
 import MessageCardComponent from './components/MessageCardComponent';
 import StatusBarComponent from './components/StatusBarComponent';
-import LoadingComponent from './components/LoadingComponent';
 
-import { getContent } from '../controllers/contentSlice';
 
 function SupportComponent() {
 const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const dispatch = useDispatch();
   const [messageType, setMessageType] = useState('');
   const [message, setMessage] = useState('');
 
-  if (contentLoading) {
+  if (contactLoading) {
     return <LoadingComponent />;
   }
 

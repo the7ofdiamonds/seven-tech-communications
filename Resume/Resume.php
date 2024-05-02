@@ -2,6 +2,8 @@
 
 namespace SEVEN_TECH\Communications\Resume;
 
+use WP_Query;
+
 use SEVEN_TECH\Communications\User\User;
 use SEVEN_TECH\Communications\Media\Media;
 
@@ -26,7 +28,15 @@ class Resume
 
     function getResumeInfo($postType, $slug)
     {
-        $post = get_page_by_path($slug, OBJECT, $postType);
+        $post_type = str_replace('-', '_', $postType);
+        $args = [
+            'post_type' => $post_type,
+            'post_name' => $slug
+        ];
+
+        $query = new WP_Query($args);
+
+        $post = $query->posts[0];
 
         if (empty($post)) {
             return '';

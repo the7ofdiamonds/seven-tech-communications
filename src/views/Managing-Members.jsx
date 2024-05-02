@@ -11,11 +11,10 @@ function ManagingMembers() {
   const {
     managingMemberLoading,
     managingMemberErrorMessage,
-    managingMemberStatusCode,
     managingMembers,
   } = useSelector((state) => state.managingMember);
   const dispatch = useDispatch();
-console.log(managingMembers);
+
   useEffect(() => {
     dispatch(getManagingMembers());
   }, [dispatch]);
