@@ -12,19 +12,52 @@ if (session_status() === PHP_SESSION_NONE) {
 
 use SEVEN_TECH\Communications\User\User;
 
-$user = new User;
+$user = wp_get_current_user();
+$roles = $user->roles;
 
-$currentURL = $_SERVER['REQUEST_URI'];
-$urlPosition = explode('/', $currentURL);
+$user_allowed = false;
 
-$hasPosts = $user->userHasPostsOfType($urlPosition[1], $urlPosition[2]);
-
-if (!$hasPosts && !function_exists('is_plugin_active')) {
-    include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+foreach ($roles as $role) {
+    if (
+        $role == 'administrator' ||
+        $role == 'employee' ||
+        $role == 'executive' ||
+        $role == 'founder' ||
+        $role == 'freelancer' ||
+        $role == 'investor' ||
+        $role == 'managing-member' ||
+        $role == 'team'
+    ) {
+        $user_allowed = true;
+        break;
+    }
 }
 
 get_header();
 
-include SEVEN_TECH_COMMUNICATIONS . 'includes/react.php';
+if ($user_allowed) :
+    $user = new User;
+
+    $currentURL = $_SERVER['REQUEST_URI'];
+    $urlPosition = explode('/', $currentURL);
+
+    $hasPosts = $user->userHasPostsOfType($urlPosition[1], $urlPosition[2]);
+
+    if (!$hasPosts && !function_exists('is_plugin_active')) {
+        include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+    }
+?>
+    <div class="freelancer">
+        <?php
+        include_once SEVEN_TECH_COMMUNICATIONS . 'includes/react.php';
+
+        if ($hasPosts && is_plugin_active('seven-tech-portfolio/SEVEN_TECH_Portfolio.php')) {
+            echo do_shortcode('[seven-tech-portfolio]');
+        }
+        ?>
+    </div>
+<?php else :
+    include_once SEVEN_TECH_COMMUNICATIONS . 'includes/access-denied.php';
+endif;
 
 get_footer();
