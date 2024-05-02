@@ -17,7 +17,7 @@ function Employee() {
 
   const { employee } = useParams();
   const dispatch = useDispatch();
-
+console.log(employee);
   useEffect(() => {
     dispatch(getContent(pageSlug));
   }, [dispatch]);

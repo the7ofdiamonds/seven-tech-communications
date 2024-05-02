@@ -2,6 +2,10 @@
 
 namespace SEVEN_TECH\Communications\User;
 
+use Exception;
+
+use  WP_Query;
+
 use SEVEN_TECH\Communications\Roles\Roles;
 
 class User
@@ -70,5 +74,36 @@ class User
         }
 
         return $users;
+    }
+
+    public function userHasPostsOfType($nicename, $postType)
+    {
+        try {
+            $user = get_user_by('slug', $nicename);
+
+            if ($user == false) {
+                return false;
+            }
+
+            $post_type = str_replace('-', '_', $postType);
+
+            $args = array(
+                'post_type'      => $post_type,
+                'author'         => $user->ID,
+                'posts_per_page' => -1,
+            );
+
+            $query = new WP_Query($args);
+
+            $projects = $query->posts;
+
+            if (empty($projects)) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
     }
 }
