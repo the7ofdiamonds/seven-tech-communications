@@ -24,9 +24,9 @@ console.log(knowledge);
       <div className="author-knowledge">
         <div className="author-knowledge-slide" ref={skillsSlideRef}>
           {Array.isArray(knowledge) && knowledge.length > 0 && 
-            knowledge.map((skill) => (
-              <div className="icon" key={skill.id}>
-                <IconComponent icon={skill} />
+            knowledge.map((knowledge) => (
+              <div className="icon" key={knowledge.id}>
+                <IconComponent icon={knowledge} url={knowledge.url} />
               </div>
             ))
           }

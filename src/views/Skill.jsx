@@ -22,6 +22,7 @@ function Skill() {
     title,
     icon,
     description,
+    url
   } = useSelector((state) => state.taxonomies);
   const {
     founderLoading,
@@ -77,7 +78,7 @@ function Skill() {
 
   return (
     <main className="skill">
-      <HeaderIconComponent icon={icon} title={title} />
+      <HeaderIconComponent icon={icon} title={title} url={url}/>
 
       {description && (
         <div className="card">

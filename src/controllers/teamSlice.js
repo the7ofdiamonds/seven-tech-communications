@@ -85,7 +85,9 @@ export const teamSlice = createSlice({
                 state.avatarURL = action.payload.avatar_url
                 state.fullName = action.payload.full_name
                 state.bio = action.payload.bio
+                state.frameworks = action.payload.frameworks
                 state.skills = action.payload.skills
+                state.technologies = action.payload.technologies
                 state.teamResume = action.payload.teamResume
             })
             .addCase(getTeamMember.rejected, (state, action) => {

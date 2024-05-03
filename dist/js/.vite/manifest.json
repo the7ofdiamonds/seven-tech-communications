@@ -59,6 +59,14 @@
       "_useDispatch.js"
     ]
   },
+  "_TaxTableComponent.js": {
+    "file": "TaxTableComponent.js",
+    "name": "TaxTableComponent",
+    "imports": [
+      "src/index.jsx",
+      "_IconComponent.js"
+    ]
+  },
   "_useDispatch.js": {
     "file": "useDispatch.js",
     "name": "useDispatch",
@@ -230,8 +238,9 @@
     "imports": [
       "src/index.jsx",
       "_ErrorComponent.js",
-      "_IconComponent.js",
-      "_useDispatch.js"
+      "_TaxTableComponent.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
     ]
   },
   "src/views/Freelancer.jsx": {
@@ -329,8 +338,9 @@
     "imports": [
       "src/index.jsx",
       "_ErrorComponent.js",
-      "_IconComponent.js",
-      "_useDispatch.js"
+      "_TaxTableComponent.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
     ]
   },
   "src/views/Support.jsx": {
@@ -378,8 +388,9 @@
     "imports": [
       "src/index.jsx",
       "_ErrorComponent.js",
-      "_IconComponent.js",
-      "_useDispatch.js"
+      "_TaxTableComponent.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
     ]
   },
   "src/views/Technology.jsx": {

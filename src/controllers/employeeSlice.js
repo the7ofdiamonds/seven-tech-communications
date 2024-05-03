@@ -35,7 +35,7 @@ export const getEmployees = createAsyncThunk('employee/getEmployees', async () =
     }
 });
 
-export const getEmployeesWithTerm = createAsyncThunk('employee/getEmployeesWithTerm', async ({taxonomy, term}) => {
+export const getEmployeesWithTerm = createAsyncThunk('employee/getEmployeesWithTerm', async ({ taxonomy, term }) => {
 
     try {
         const response = await fetch(`/wp-json/seven-tech/v1/employees/taxonomies/${taxonomy}`, {
@@ -101,7 +101,9 @@ export const employeeSlice = createSlice({
                 state.avatarURL = action.payload.avatar_url
                 state.fullName = action.payload.full_name
                 state.bio = action.payload.bio
+                state.frameworks = action.payload.frameworks
                 state.skills = action.payload.skills
+                state.technologies = action.payload.technologies
                 state.socialNetworks = action.payload.social_networks
                 state.resume = action.payload.resume
             })

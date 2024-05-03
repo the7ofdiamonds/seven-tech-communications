@@ -5,11 +5,12 @@ import { getSkills } from '../controllers/taxonomiesSlice';
 
 import LoadingComponent from './components/LoadingComponent';
 import ErrorComponent from './components/ErrorComponent';
-import IconComponent from './components/IconComponent';
+import TaxTableComponent from './components/TaxTableComponent';
 
 function Skills() {
-  const { taxonomiesLoading, taxonomiesErrorMessage, skills } =
-    useSelector((state) => state.taxonomies);
+  const { taxonomiesLoading, taxonomiesErrorMessage, skills } = useSelector(
+    (state) => state.taxonomies
+  );
 
   const dispatch = useDispatch();
 
@@ -29,17 +30,7 @@ function Skills() {
     <main className="skills">
       <h1 className="title">skills</h1>
 
-      {Array.isArray(skills) &&
-        skills.map((skill, index) => (
-          <>
-            <a href={`${skill.url}`}>
-              <div className="skill">
-                <IconComponent key={index} icon={skill.icon} />
-                <h3 className="title">{skill.title}</h3>
-              </div>
-            </a>
-          </>
-        ))}
+      <TaxTableComponent terms={skills} />
     </main>
   );
 }

@@ -5,7 +5,7 @@ import { getTechnologies } from '../controllers/taxonomiesSlice';
 
 import LoadingComponent from './components/LoadingComponent';
 import ErrorComponent from './components/ErrorComponent';
-import IconComponent from './components/IconComponent';
+import TaxTableComponent from './components/TaxTableComponent';
 
 function Technologies() {
   const { taxonomiesLoading, taxonomiesErrorMessage, technologies } =
@@ -29,17 +29,7 @@ function Technologies() {
     <main className="technologies">
       <h1 className="title">technologies</h1>
 
-      {Array.isArray(technologies) &&
-        technologies.map((skill, index) => (
-          <>
-            <a href={`${skill.url}`}>
-              <div className="skill">
-                <IconComponent key={index} icon={skill.icon} />
-                <h3 className="title">{skill.title}</h3>
-              </div>
-            </a>
-          </>
-        ))}
+      <TaxTableComponent terms={technologies} />
     </main>
   );
 }

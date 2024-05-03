@@ -1,0 +1,2 @@
+import{j as r}from"./index.js";import{I as s}from"./IconComponent.js";function l(e){var t=e.terms;return Array.isArray(t)&&r.jsx("table",{children:r.jsx("tbody",{children:t.map(function(n,o){return r.jsxs("tr",{children:[r.jsx("td",{children:r.jsx(s,{icon:n.icon,url:n.url},o)}),r.jsx("td",{children:r.jsx("h3",{children:n.title})})]})})})})}export{l as T};
+//# sourceMappingURL=TaxTableComponent.js.map

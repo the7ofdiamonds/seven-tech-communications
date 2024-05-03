@@ -22,6 +22,7 @@ function Technology() {
     title,
     icon,
     description,
+    url
   } = useSelector((state) => state.taxonomies);
   const {
     founderLoading,
@@ -77,7 +78,7 @@ function Technology() {
 
   return (
     <main className="technology">
-      <HeaderIconComponent icon={icon} title={title} />
+      <HeaderIconComponent icon={icon} title={title} url={url}/>
 
       {description && (
         <div className="card">

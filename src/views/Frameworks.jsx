@@ -5,7 +5,7 @@ import { getFrameworks } from '../controllers/taxonomiesSlice';
 
 import LoadingComponent from './components/LoadingComponent';
 import ErrorComponent from './components/ErrorComponent';
-import IconComponent from './components/IconComponent';
+import TaxTableComponent from './components/TaxTableComponent';
 
 function Frameworks() {
   const { taxonomiesLoading, taxonomiesErrorMessage, frameworks } =
@@ -29,17 +29,7 @@ function Frameworks() {
     <main className="frameworks">
       <h1 className="title">frameworks</h1>
 
-      {Array.isArray(frameworks) &&
-        frameworks.map((skill, index) => (
-          <>
-            <a href={`${skill.url}`}>
-              <div className="skill">
-                <IconComponent key={index} icon={skill.icon} />
-                <h3 className="title">{skill.title}</h3>
-              </div>
-            </a>
-          </>
-        ))}
+      <TaxTableComponent terms={frameworks} />
     </main>
   );
 }

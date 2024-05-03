@@ -11,7 +11,9 @@ const initialState = {
     authorURL: '',
     fullName: '',
     bio: '',
+    frameworks: '',
     skills: '',
+    technologies: '',
     socialNetworks: '',
     resume: ''
 };
@@ -98,7 +100,9 @@ export const founderSlice = createSlice({
                 state.avatarURL = action.payload.avatar_url
                 state.fullName = action.payload.full_name
                 state.bio = action.payload.bio
+                state.frameworks = action.payload.frameworks
                 state.skills = action.payload.skills
+                state.technologies = action.payload.technologies
                 state.socialNetworks = action.payload.social_networks
                 state.resume = action.payload.resume
             })

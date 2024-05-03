@@ -35,7 +35,7 @@ export const getExecutives = createAsyncThunk('executive/getExecutives', async (
     }
 });
 
-export const getExecutivesWithTerm = createAsyncThunk('executive/getExecutivesWithTerm', async ({taxonomy, term}) => {
+export const getExecutivesWithTerm = createAsyncThunk('executive/getExecutivesWithTerm', async ({ taxonomy, term }) => {
 
     try {
         const response = await fetch(`/wp-json/seven-tech/v1/executives/taxonomies/${taxonomy}`, {
@@ -98,7 +98,9 @@ export const executiveSlice = createSlice({
                 state.avatarURL = action.payload.avatar_url
                 state.fullName = action.payload.full_name
                 state.bio = action.payload.bio
+                state.frameworks = action.payload.frameworks
                 state.skills = action.payload.skills
+                state.technologies = action.payload.technologies
                 state.socialNetworks = action.payload.social_networks
                 state.resume = action.payload.resume
             })

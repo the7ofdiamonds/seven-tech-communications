@@ -1,44 +1,10 @@
 @use './_message-card.scss';
+@use './_tax_table.scss';
 
 section {
   min-height: 100vh;
 
   main.skills {
     margin: 5rem 0;
-
-    a {
-      text-decoration: none;
-
-      .skill {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1.5rem;
-
-        img {
-          width: auto;
-          height: 6rem;
-        }
-
-        i {
-          font-size: 6rem;
-        }
-      }
-
-      &:hover {
-        img {
-          width: auto;
-          height: 7rem;
-        }
-
-        i {
-          font-size: 7rem;
-        }
-
-        h3 {
-          font-size: 2.25;
-        }
-      }
-    }
   }
 }

@@ -1,15 +1,23 @@
 function IconComponent(props) {
-  const { icon } = props;
+  const { icon, url } = props;
 
   return (
     <>
       {icon instanceof Object && (
         <>
-          {icon['icon_url'] ? (
-            <img src={`${icon['icon_url']}`} />
-          ) : (
-            icon['fa_icon'] && <i className={`${icon['fa_icon']}`}></i>
-          )}
+          <div className="icon">
+            {icon['icon_url'] ? (
+              <a href={`${url}`}>
+                <img src={`${icon['icon_url']}`} />
+              </a>
+            ) : (
+              icon['fa_icon'] && (
+                <a href={`${url}`}>
+                  <i className={`${icon['fa_icon']}`}></i>
+                </a>
+              )
+            )}
+          </div>
         </>
       )}
     </>

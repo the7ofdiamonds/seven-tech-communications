@@ -13,7 +13,12 @@ const initialState = {
   frameworks: '',
   framework: '',
   technologies: '',
-  technology: ''
+  technology: '',
+  description: '',
+  icon: '',
+  title: '',
+  url: '',
+  projects: ''
 };
 
 export const getProjectTypes = createAsyncThunk('taxonomies/getProjectTypes', async () => {
@@ -208,6 +213,7 @@ export const taxonomiesSlice = createSlice({
         state.description = action.payload.description;
         state.icon = action.payload.icon;
         state.title = action.payload.title;
+        state.url = action.payload.url;
         state.projects = action.payload.projects;
       })
       .addMatcher(isAnyOf(
