@@ -106,4 +106,11 @@ class User
             throw new Exception($e);
         }
     }
+
+    public function userHasAmountPosts($id, $post_type)
+    {
+        $count_posts = count_user_posts($id, $post_type);
+
+        return $count_posts;
+    }
 }

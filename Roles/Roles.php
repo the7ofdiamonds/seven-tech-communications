@@ -21,37 +21,43 @@ class Roles
                 'name' => 'investor',
                 'display_name' => 'Investor',
                 'capabilities' => [],
-                'order' => 0
+                'order' => 0,
+                'post_type' => 'investors'
             ],
             [
                 'name' => 'founder',
                 'display_name' => 'Founder',
                 'capabilities' => [],
-                'order' => 1
+                'order' => 1,
+                'post_type' => 'founders'
             ],
             [
                 'name' => 'managing-member',
                 'display_name' => 'Managing Member',
                 'capabilities' => [],
-                'order' => 2
+                'order' => 2,
+                'post_type' => 'managing_members'
             ],
             [
                 'name' => 'freelancer',
                 'display_name' => 'Freelancer',
                 'capabilities' => [],
-                'order' => 3
+                'order' => 3,
+                'post_type' => 'freelancers'
             ],
             [
                 'name' => 'executive',
                 'display_name' => 'Executive',
                 'capabilities' => [],
-                'order' => 4
+                'order' => 4,
+                'post_type' => 'executives'
             ],
             [
                 'name' => 'employee',
                 'display_name' => 'Employee',
                 'capabilities' => [],
-                'order' => 5
+                'order' => 5,
+                'post_type' => 'employees'
             ]
         ];
 
@@ -77,6 +83,16 @@ class Roles
                 continue;
             }
 
+            $roles = $this->getOrderedRoles($user_data->roles);
+
+            foreach ($roles as $role) {
+                $rolePageCount = count_user_posts($user->ID, $role);
+
+                if ($rolePageCount >= 1) {
+                    continue;
+                }
+            }
+
             $first_name = $user_data->first_name;
             $last_name = $user_data->last_name;
 
@@ -87,8 +103,7 @@ class Roles
                 $post_slug = preg_replace('/[^a-zA-Z]/', "", $post_title);
             }
 
-            $roles = $this->getOrderedRoles($user_data->roles);
-            $slug = $this->getRoleSlug($roles[0]);
+            $slug = $this->getRolePostType($roles[0]);
 
             if ($slug == '') {
                 continue;
@@ -190,18 +205,18 @@ class Roles
         return $roles;
     }
 
-    public function getRoleSlug($name)
+    public function getRolePostType($name)
     {
-        $displayName = '';
+        $post_type = '';
 
         foreach ($this->roles as $role) {
             if ($role['name'] == $name) {
-                $displayName = $role['display_name'];
+                $post_type = $role['post_type'];
                 break;
             }
         }
 
-        if ($displayName == '') {
+        if ($post_type == '') {
             return '';
         }
 
@@ -210,7 +225,7 @@ class Roles
         $slug = '';
 
         foreach ($post_types as $post_type) {
-            if ($post_type->labels->singular_name == $displayName) {
+            if ($post_type->labels->singular_name == $post_type) {
                 $slug = $post_type->rewrite['slug'];
                 break;
             }
@@ -225,7 +240,7 @@ class Roles
 
     public function getRoleLink($name, $nicename)
     {
-        $slug = $this->getRoleSlug($name);
+        $slug = $this->getRolePostType($name);
 
         if ($slug == '') {
             return '';
