@@ -1,0 +1,11 @@
+@use './_message-card.scss';
+@use './_header_icon.scss';
+@use '_group_Members.scss';
+
+section {
+  min-height: 100vh;
+
+  main.technology {
+    margin: 5rem 0;
+  }
+}

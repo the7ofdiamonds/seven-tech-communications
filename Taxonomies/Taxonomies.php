@@ -2,7 +2,10 @@
 
 namespace SEVEN_TECH\Communications\Taxonomies;
 
+use Error;
 use Exception;
+
+use WP_Query;
 
 use SEVEN_TECH\Communications\Media\Media;
 
@@ -13,7 +16,16 @@ class Taxonomies
 
     public function __construct()
     {
-        $post_types = ['portfolio', 'founders'];
+        $post_types = [
+            'portfolio',
+            'employees',
+            'executives',
+            'founders',
+            'freelancers',
+            'investors',
+            'managing_members',
+            'team'
+        ];
 
         $this->taxonomies_list = [
             [
@@ -89,10 +101,6 @@ class Taxonomies
 
                 register_taxonomy($taxonomy['name'], $taxonomy['post_types'], $args);
             }
-
-            new Skills;
-            new Frameworks;
-            new Technologies;
         }
     }
 

@@ -26,8 +26,12 @@ const ManagingMember = lazy(() => import('./views/Managing-Member.jsx'));
 const Team = lazy(() => import('./views/Team.jsx'));
 const TeamMember = lazy(() => import('./views/Team-Member.jsx'));
 
+const Framework = lazy(() => import('./views/Framework.jsx'));
+const Frameworks = lazy(() => import('./views/Frameworks.jsx'));
 const Skills = lazy(() => import('./views/Skills.jsx'));
 const Skill = lazy(() => import('./views/Skill.jsx'));
+const Technology = lazy(() => import('./views/Technology.jsx'));
+const Technologies = lazy(() => import('./views/Technologies.jsx'));
 
 function App() {
   return (
@@ -51,10 +55,17 @@ function App() {
               <Route path="/freelancers" element={<Freelancers />} />
               <Route path="/investors/:investor" element={<Investor />} />
               <Route path="/investors" element={<Investors />} />
-              <Route path="/managing-members/:managingMember" element={<ManagingMember />} />
+              <Route
+                path="/managing-members/:managingMember"
+                element={<ManagingMember />}
+              />
               <Route path="/managing-members" element={<ManagingMembers />} />
+              <Route path='/frameworks/:framework' element={<Framework />} />
+              <Route path='/frameworks' element={<Frameworks />} />
               <Route path="/skills/:skill" element={<Skill />} />
               <Route path="/skills" element={<Skills />} />
+              <Route path='/technologies/:technology' element={<Technology />}/>
+              <Route path='/technologies' element={<Technologies />}/>
               <Route path="/team/:teamMember" element={<TeamMember />} />
               <Route path="/team" element={<Team />} />
             </Routes>

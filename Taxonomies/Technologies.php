@@ -14,7 +14,7 @@ class Technologies
 
     public function __construct()
     {
-        $this->taxonomy = 'technologies';
+        $this->taxonomy = 'Technologies';
 
         add_filter("manage_edit-{$this->taxonomy}_columns", [$this, 'edit_columns']);
         add_action("manage_{$this->taxonomy}_custom_column", [$this, 'manage_columns'], 10, 3);

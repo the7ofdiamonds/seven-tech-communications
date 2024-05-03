@@ -119,9 +119,20 @@ class Router
                         break;
                     }
 
-                    if (preg_match("#^/{$taxonomy['slug']}#", $path) || preg_match("#^/{$taxonomy['slug']}/([a-zA-Z-]+)#", $path)) {
-                        add_filter('template_include', function ($template_include) use ($taxonomy) {
-                            return $this->templates->get_taxonomy_page_template($template_include, $taxonomy);
+                    if (preg_match("#^/{$taxonomy['slug']}/([a-zA-Z-]+)#", $path)) {
+                        $filename = $taxonomy['singular'];
+
+                        add_filter('template_include', function ($template_include) use ($taxonomy, $filename) {
+                            return $this->templates->get_taxonomy_page_template($template_include, $taxonomy, $filename);
+                        });
+                        break;
+                    }
+
+                    if (preg_match("#^/{$taxonomy['slug']}#", $path)) {
+                        $filename = $taxonomy['plural'];
+
+                        add_filter('template_include', function ($template_include) use ($taxonomy, $filename) {
+                            return $this->templates->get_taxonomy_page_template($template_include, $taxonomy, $filename);
                         });
                         break;
                     }

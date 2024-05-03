@@ -136,12 +136,11 @@ class Templates
         return $template_include;
     }
 
-    public function get_taxonomy_page_template($template_include, $taxonomy)
+    public function get_taxonomy_page_template($template_include, $taxonomy, $filename)
     {
         $taxonomy_template = "{$this->pluginDir}Taxonomies/Taxonomy-{$taxonomy['name']}.php";
 
         if (file_exists($taxonomy_template)) {
-            $filename = $taxonomy['singular'];
             $filename_css = "{$this->cssDir}{$filename}.css";
             $filename_js = "{$this->jsDir}{$filename}.js";
 

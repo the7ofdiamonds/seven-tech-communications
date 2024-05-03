@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getSkills } from '../controllers/taxonomiesSlice';
+import { getFrameworks } from '../controllers/taxonomiesSlice';
 
 import LoadingComponent from './components/LoadingComponent';
 import ErrorComponent from './components/ErrorComponent';
 import IconComponent from './components/IconComponent';
 
-function Skills() {
-  const { taxonomiesLoading, taxonomiesErrorMessage, skills } =
+function Frameworks() {
+  const { taxonomiesLoading, taxonomiesErrorMessage, frameworks } =
     useSelector((state) => state.taxonomies);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getSkills());
+    dispatch(getFrameworks());
   }, [dispatch]);
 
   if (taxonomiesLoading) {
@@ -26,11 +26,11 @@ function Skills() {
   }
 
   return (
-    <main className="skills">
-      <h1 className="title">skills</h1>
+    <main className="frameworks">
+      <h1 className="title">frameworks</h1>
 
-      {Array.isArray(skills) &&
-        skills.map((skill, index) => (
+      {Array.isArray(frameworks) &&
+        frameworks.map((skill, index) => (
           <>
             <a href={`${skill.url}`}>
               <div className="skill">
@@ -44,4 +44,4 @@ function Skills() {
   );
 }
 
-export default Skills;
+export default Frameworks;

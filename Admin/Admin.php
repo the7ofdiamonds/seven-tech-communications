@@ -2,7 +2,9 @@
 
 namespace SEVEN_TECH\Communications\Admin;
 
-use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
+use SEVEN_TECH\Communications\Taxonomies\Frameworks;
+use SEVEN_TECH\Communications\Taxonomies\Skills;
+use SEVEN_TECH\Communications\Taxonomies\Technologies;
 
 class Admin
 {
@@ -23,6 +25,10 @@ class Admin
         add_action('admin_menu', [new AdminEmailSchedule, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminSocialBar, 'register_custom_submenu_page']);
 
+        new Frameworks;
+        new Skills;
+        new Technologies;
+        
         // add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_styles']);
     }
 

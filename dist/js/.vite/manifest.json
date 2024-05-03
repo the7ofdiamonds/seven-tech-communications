@@ -28,6 +28,14 @@
       "src/index.jsx"
     ]
   },
+  "_HeaderIconComponent.js": {
+    "file": "HeaderIconComponent.js",
+    "name": "HeaderIconComponent",
+    "imports": [
+      "src/index.jsx",
+      "_IconComponent.js"
+    ]
+  },
   "_IconComponent.js": {
     "file": "IconComponent.js",
     "name": "IconComponent",
@@ -82,8 +90,12 @@
       "src/views/Managing-Member.jsx",
       "src/views/Team.jsx",
       "src/views/Team-Member.jsx",
+      "src/views/Framework.jsx",
+      "src/views/Frameworks.jsx",
       "src/views/Skills.jsx",
-      "src/views/Skill.jsx"
+      "src/views/Skill.jsx",
+      "src/views/Technology.jsx",
+      "src/views/Technologies.jsx"
     ]
   },
   "src/views/About.jsx": {
@@ -197,6 +209,31 @@
       "_GroupMembers.js"
     ]
   },
+  "src/views/Framework.jsx": {
+    "file": "Framework.js",
+    "name": "Framework",
+    "src": "src/views/Framework.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_HeaderIconComponent.js",
+      "_GroupMembers.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
+    ]
+  },
+  "src/views/Frameworks.jsx": {
+    "file": "Frameworks.js",
+    "name": "Frameworks",
+    "src": "src/views/Frameworks.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ErrorComponent.js",
+      "_IconComponent.js",
+      "_useDispatch.js"
+    ]
+  },
   "src/views/Freelancer.jsx": {
     "file": "Freelancer.js",
     "name": "Freelancer",
@@ -278,9 +315,10 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
-      "_IconComponent.js",
+      "_HeaderIconComponent.js",
       "_GroupMembers.js",
-      "_useDispatch.js"
+      "_useDispatch.js",
+      "_IconComponent.js"
     ]
   },
   "src/views/Skills.jsx": {
@@ -330,6 +368,31 @@
       "_ErrorComponent.js",
       "_GroupMembers.js",
       "_useDispatch.js"
+    ]
+  },
+  "src/views/Technologies.jsx": {
+    "file": "Technologies.js",
+    "name": "Technologies",
+    "src": "src/views/Technologies.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_ErrorComponent.js",
+      "_IconComponent.js",
+      "_useDispatch.js"
+    ]
+  },
+  "src/views/Technology.jsx": {
+    "file": "Technology.js",
+    "name": "Technology",
+    "src": "src/views/Technology.jsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/index.jsx",
+      "_HeaderIconComponent.js",
+      "_GroupMembers.js",
+      "_useDispatch.js",
+      "_IconComponent.js"
     ]
   }
 }

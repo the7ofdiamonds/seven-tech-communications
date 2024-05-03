@@ -5,9 +5,11 @@ function IconComponent(props) {
     <>
       {icon instanceof Object && (
         <>
-          {icon['icon_url'] && <img src={`${icon['icon_url']}`} />}
-
-          {icon['fa_icon'] && <i className={`${icon['fa_icon']}`}></i>}
+          {icon['icon_url'] ? (
+            <img src={`${icon['icon_url']}`} />
+          ) : (
+            icon['fa_icon'] && <i className={`${icon['fa_icon']}`}></i>
+          )}
         </>
       )}
     </>
