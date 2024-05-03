@@ -175,7 +175,8 @@ class Router
     function react_rewrite_rules()
     {
         add_rewrite_rule('^founders/([a-zA-Z\-]+)/resume?$', 'index.php', 'top');
-        // add_rewrite_rule('^skills?$', "index.php?taxonomy=skills&template_path=" . SEVEN_TECH_COMMUNICATIONS . "Taxonomies/Taxonomy-Skills.php", 'top');
-        // add_rewrite_rule('^skills/([a-zA-Z\-]+)?$', 'index.php', 'top');
+        add_rewrite_rule('^frameworks?$', 'index.php', 'top');
+        add_rewrite_rule('^skills?$', 'index.php', 'top');
+        add_rewrite_rule('^technologies?$', 'index.php', 'top');
     }
 }

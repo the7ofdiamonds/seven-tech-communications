@@ -76,7 +76,7 @@ class User
         return $users;
     }
 
-    public function userHasPostsOfType($nicename, $postType)
+    public function userHasPostsOfType($postType, $nicename)
     {
         try {
             $user = get_user_by('slug', $nicename);

@@ -43,7 +43,7 @@ if ($user_allowed) :
 
     $hasPosts = $user->userHasPostsOfType($urlPosition[1], $urlPosition[2]);
 
-    if (!$hasPosts && !function_exists('is_plugin_active')) {
+    if ($hasPosts && !function_exists('is_plugin_active')) {
         include_once(ABSPATH . 'wp-admin/includes/plugin.php');
     }
 ?>
