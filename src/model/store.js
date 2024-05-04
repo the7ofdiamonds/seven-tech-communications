@@ -9,7 +9,6 @@ import { founderSlice } from '../controllers/founderSlice.js';
 import { freelancerSlice } from '../controllers/freelancerSlice.js';
 import { investorSlice } from '../controllers/investorSlice.js';
 import { managingMemberSlice } from '../controllers/managingMemberSlice.js';
-import { teamSlice } from '../controllers/teamSlice.js';
 import { taxonomiesSlice } from '../controllers/taxonomiesSlice';
 
 const store = configureStore({
@@ -23,7 +22,6 @@ const store = configureStore({
         freelancer: freelancerSlice.reducer,
         investor: investorSlice.reducer,
         managingMember: managingMemberSlice.reducer,
-        team: teamSlice.reducer,
         taxonomies: taxonomiesSlice.reducer
     }
 });

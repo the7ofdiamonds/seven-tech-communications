@@ -4,37 +4,16 @@ namespace SEVEN_TECH\Communications\Post_Types;
 
 use  WP_Query;
 
+use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
+
 class Post_Types
 {
     public $post_types_list;
 
     public function __construct()
     {
+        $taxonomies = (new Taxonomies)->getTaxonomyNames();
         $this->post_types_list = [
-            [
-                'name' => 'employees',
-                'menu_icon' => '',
-                'menu_position' => 11,
-                'title' => 'EMPLOYEES',
-                'singular' => 'Employee',
-                'plural' => 'Employees',
-                'archive_page' => 'Employees',
-                'single_page' => 'Employee',
-                'slug' => 'employees',
-                'dir' => 'Employees'
-            ],
-            [
-                'name' => 'executives',
-                'menu_icon' => '',
-                'menu_position' => 11,
-                'title' => 'EXECUTIVES',
-                'singular' => 'Executive',
-                'plural' => 'Executives',
-                'archive_page' => 'Executives',
-                'single_page' => 'Executive',
-                'slug' => 'executives',
-                'dir' => 'Executives'
-            ],
             [
                 'name' => 'founders',
                 'menu_icon' => '',
@@ -45,56 +24,75 @@ class Post_Types
                 'archive_page' => 'Founders',
                 'single_page' => 'Founder',
                 'slug' => 'founders',
-                'dir' => 'Founders'
-            ],
-            [
-                'name' => 'freelancers',
-                'menu_icon' => '',
-                'menu_position' => 11,
-                'title' => 'FREELANCERS',
-                'singular' => 'Freelancer',
-                'plural' => 'Freelancers',
-                'archive_page' => 'Freelancers',
-                'single_page' => 'Freelancer',
-                'slug' => 'freelancers',
-                'dir' => 'Freelancers'
+                'dir' => 'Founders',
+                'taxonomies' => $taxonomies
             ],
             [
                 'name' => 'investors',
                 'menu_icon' => '',
-                'menu_position' => 11,
+                'menu_position' => 12,
                 'title' => 'INVESTORS',
                 'singular' => 'Investor',
                 'plural' => 'Investors',
                 'archive_page' => 'Investors',
                 'single_page' => 'Investor',
                 'slug' => 'investors',
-                'dir' => 'Investors'
+                'dir' => 'Investors',
+                'taxonomies' => $taxonomies
             ],
             [
                 'name' => 'managing_members',
                 'menu_icon' => '',
-                'menu_position' => 11,
+                'menu_position' => 13,
                 'title' => 'MANAGING MEMBERS',
                 'singular' => 'Managing Member',
                 'plural' => 'Managing Members',
                 'archive_page' => 'Managing-Members',
                 'single_page' => 'Managing-Member',
                 'slug' => 'managing-members',
-                'dir' => 'Managing_Members'
+                'dir' => 'Managing_Members',
+                'taxonomies' => $taxonomies
             ],
             [
-                'name' => 'team',
+                'name' => 'executives',
                 'menu_icon' => '',
-                'menu_position' => 12,
-                'title' => 'TEAM',
-                'singular' => 'Team Member',
-                'plural' => 'Team',
-                'archive_page' => 'Team',
-                'single_page' => 'Team-Member',
-                'slug' => 'team',
-                'dir' => 'Team'
+                'menu_position' => 14,
+                'title' => 'EXECUTIVES',
+                'singular' => 'Executive',
+                'plural' => 'Executives',
+                'archive_page' => 'Executives',
+                'single_page' => 'Executive',
+                'slug' => 'executives',
+                'dir' => 'Executives',
+                'taxonomies' => $taxonomies
             ],
+            [
+                'name' => 'freelancers',
+                'menu_icon' => '',
+                'menu_position' => 15,
+                'title' => 'FREELANCERS',
+                'singular' => 'Freelancer',
+                'plural' => 'Freelancers',
+                'archive_page' => 'Freelancers',
+                'single_page' => 'Freelancer',
+                'slug' => 'freelancers',
+                'dir' => 'Freelancers',
+                'taxonomies' => $taxonomies
+            ],
+            [
+                'name' => 'employees',
+                'menu_icon' => '',
+                'menu_position' => 16,
+                'title' => 'EMPLOYEES',
+                'singular' => 'Employee',
+                'plural' => 'Employees',
+                'archive_page' => 'Employees',
+                'single_page' => 'Employee',
+                'slug' => 'employees',
+                'dir' => 'Employees',
+                'taxonomies' => $taxonomies
+            ]
+
         ];
     }
 
@@ -141,7 +139,7 @@ class Post_Types
                         'revisions',
                         'page-attributes',
                     ],
-                    'taxonomies' => array('category', 'post_tag'),
+                    'taxonomies' => $post_type['taxonomies'],
                     'menu_position' => $post_type['menu_position'],
                     'exclude_from_search' => false
                 );

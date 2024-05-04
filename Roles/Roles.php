@@ -32,7 +32,7 @@ class Roles
                 'post_type' => 'founders'
             ],
             [
-                'name' => 'managing-member',
+                'name' => 'managing_member',
                 'display_name' => 'Managing Member',
                 'capabilities' => [],
                 'order' => 2,
@@ -66,7 +66,7 @@ class Roles
     }
 
     function addRolePages()
-    {
+    {        
         $args = [
             'role__in' => $this->roleNames
         ];
@@ -112,7 +112,7 @@ class Roles
             $postType = '';
 
             foreach ($this->post_types_list as $post_type) {
-                if ($post_type['slug'] == $slug) {
+                if ($post_type['name'] == $slug) {
                     $postType = $post_type['name'];
                     break;
                 }
@@ -207,16 +207,17 @@ class Roles
 
     public function getRolePostType($name)
     {
-        $post_type = '';
+        $postType = '';
 
         foreach ($this->roles as $role) {
+
             if ($role['name'] == $name) {
-                $post_type = $role['post_type'];
+                $postType = $role['post_type'];
                 break;
             }
         }
 
-        if ($post_type == '') {
+        if ($postType == '') {
             return '';
         }
 
@@ -224,11 +225,8 @@ class Roles
 
         $slug = '';
 
-        foreach ($post_types as $post_type) {
-            if ($post_type->labels->singular_name == $post_type) {
-                $slug = $post_type->rewrite['slug'];
-                break;
-            }
+        if (isset($post_types["{$postType}"])) {
+            $slug = $postType;
         }
 
         if ($slug == '') {

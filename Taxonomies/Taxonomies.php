@@ -2,10 +2,7 @@
 
 namespace SEVEN_TECH\Communications\Taxonomies;
 
-use Error;
 use Exception;
-
-use WP_Query;
 
 use SEVEN_TECH\Communications\Media\Media;
 
@@ -24,7 +21,6 @@ class Taxonomies
             'freelancers',
             'investors',
             'managing_members',
-            'team'
         ];
 
         $this->taxonomies_list = [
@@ -33,7 +29,7 @@ class Taxonomies
                 'singular' => 'Skill',
                 'plural' => 'Skills',
                 'slug' => 'skills',
-                'menu_position' => 3,
+                'menu_position' => 1,
                 'post_types' => $post_types
             ],
             [
@@ -41,7 +37,7 @@ class Taxonomies
                 'singular' => 'Framework',
                 'plural' => 'Frameworks',
                 'slug' => 'frameworks',
-                'menu_position' => 3,
+                'menu_position' => 2,
                 'post_types' => $post_types
             ],
             [
@@ -254,6 +250,26 @@ class Taxonomies
             $response = $errorMessage . ' ' . $errorCode;
 
             error_log($response . ' at getTaxonomyTerm');
+            return $response;
+        }
+    }
+
+    function getTaxonomyNames()
+    {
+        try {
+            $taxonomyNames = [];
+
+            foreach ($this->taxonomies_list as $taxonomy) {
+                $taxonomyNames[] = $taxonomy['name'];
+            };
+
+            return $taxonomyNames;
+        } catch (Exception $e) {
+            $errorMessage = $e->getMessage();
+            $errorCode = $e->getCode();
+            $response = $errorMessage . ' ' . $errorCode;
+
+            error_log($response . ' at getTaxonomyNames');
             return $response;
         }
     }

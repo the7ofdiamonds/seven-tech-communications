@@ -96,8 +96,6 @@
       "src/views/Investor.jsx",
       "src/views/Managing-Members.jsx",
       "src/views/Managing-Member.jsx",
-      "src/views/Team.jsx",
-      "src/views/Team-Member.jsx",
       "src/views/Framework.jsx",
       "src/views/Frameworks.jsx",
       "src/views/Skills.jsx",
@@ -352,31 +350,6 @@
       "src/index.jsx",
       "_ContentComponent.js",
       "_StatusBarComponent.js",
-      "_useDispatch.js"
-    ]
-  },
-  "src/views/Team-Member.jsx": {
-    "file": "Team-Member.js",
-    "name": "Team-Member",
-    "src": "src/views/Team-Member.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "src/index.jsx",
-      "_ErrorComponent.js",
-      "_MemberComponent.js",
-      "_useDispatch.js",
-      "_IconComponent.js"
-    ]
-  },
-  "src/views/Team.jsx": {
-    "file": "Team.js",
-    "name": "Team",
-    "src": "src/views/Team.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "src/index.jsx",
-      "_ErrorComponent.js",
-      "_GroupMembers.js",
       "_useDispatch.js"
     ]
   },

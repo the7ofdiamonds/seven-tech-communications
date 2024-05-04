@@ -23,8 +23,6 @@ const Investors = lazy(() => import('./views/Investors.jsx'));
 const Investor = lazy(() => import('./views/Investor.jsx'));
 const ManagingMembers = lazy(() => import('./views/Managing-Members.jsx'));
 const ManagingMember = lazy(() => import('./views/Managing-Member.jsx'));
-const Team = lazy(() => import('./views/Team.jsx'));
-const TeamMember = lazy(() => import('./views/Team-Member.jsx'));
 
 const Framework = lazy(() => import('./views/Framework.jsx'));
 const Frameworks = lazy(() => import('./views/Frameworks.jsx'));
@@ -66,8 +64,6 @@ function App() {
               <Route path="/skills" element={<Skills />} />
               <Route path='/technologies/:technology' element={<Technology />}/>
               <Route path='/technologies' element={<Technologies />}/>
-              <Route path="/team/:teamMember" element={<TeamMember />} />
-              <Route path="/team" element={<Team />} />
             </Routes>
           </Suspense>
         </Router>

@@ -24,7 +24,6 @@ class API
         $schedule = new Schedule($mailer);
         $support = new Support($mailer);
         $taxonomies = new Taxonomies;
-        $team = new Team;
 
         register_rest_route('seven-tech/v1', '/about/mission-statement', array(
             'methods' => 'GET',
@@ -257,24 +256,6 @@ class API
         register_rest_route('seven-tech/v1', '/email/support', array(
             'methods' => 'POST',
             'callback' => array($support, 'send_support_email'),
-            'permission_callback' => '__return_true',
-        ));
-
-        register_rest_route('seven-tech/v1', '/team/taxonomies/(?P<slug>[a-zA-Z0-9-_]+)', array(
-            'methods' => 'POST',
-            'callback' => array($team, 'get_team_with_term'),
-            'permission_callback' => '__return_true',
-        ));
-
-        register_rest_route('seven-tech/v1', '/team/(?P<slug>[a-zA-Z0-9-_]+)', array(
-            'methods' => 'GET',
-            'callback' => array($team, 'get_team_member'),
-            'permission_callback' => '__return_true',
-        ));
-
-        register_rest_route('seven-tech/v1', '/team', array(
-            'methods' => 'GET',
-            'callback' => array($team, 'get_team'),
             'permission_callback' => '__return_true',
         ));
 

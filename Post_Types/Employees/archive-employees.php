@@ -21,10 +21,8 @@ foreach ($roles as $role) {
         $role == 'employee' ||
         $role == 'executive' ||
         $role == 'founder' ||
-        $role == 'freelancer' ||
         $role == 'investor' ||
-        $role == 'managing-member' ||
-        $role == 'team'
+        $role == 'managing-member'
     ) {
         $user_allowed = true;
         break;
