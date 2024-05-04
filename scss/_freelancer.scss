@@ -1,6 +1,7 @@
 @use './_author.scss';
 @use './_author_knowledge.scss';
 @use './_content.scss';
+@use '_access-denied.scss';
 
 .freelancer {
   display: flex;
