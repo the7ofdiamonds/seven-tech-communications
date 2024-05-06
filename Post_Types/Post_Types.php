@@ -171,4 +171,21 @@ class Post_Types
 
         return $posts;
     }
+
+    function getPostTypeWithTaxonomy($post_type, $taxonomy)
+    {
+        $args = array(
+            'post_type' => $post_type,
+            'taxonomy' => $taxonomy
+        );
+
+        $query = new WP_Query($args);
+        $posts = $query->posts;
+
+        if (empty($posts)) {
+            return '';
+        }
+
+        return $posts;
+    }
 }

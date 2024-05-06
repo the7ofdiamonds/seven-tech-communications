@@ -2,10 +2,25 @@
 @use './_icon.scss';
 @use '_group_Members.scss';
 
-section {
+div.frameworks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
   min-height: 100vh;
 
-  main.framework {
-    margin: 5rem 0;
+  section#seven_tech_communications {
+    margin: 5rem 0 0;
+
+    main.framework {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+
+  section#seven_tech_portfolio {
+    margin: 0 0 5rem;
   }
 }

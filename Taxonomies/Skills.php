@@ -4,13 +4,15 @@ namespace SEVEN_TECH\Communications\Taxonomies;
 
 use Exception;
 
+use SEVEN_TECH\Communications\Post_Types\Post_Types;
 use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
 
 class Skills
 {
-    private $post_types;
-    private $taxonomies;
     private $taxonomy;
+    private $taxonomies;
+    private $postTypes;
+    private $post_types;
 
     public function __construct()
     {
@@ -24,7 +26,8 @@ class Skills
         add_action("edited_{$this->taxonomy}", [$this, 'save_fields']);
 
         $this->taxonomies = new Taxonomies;
-        $this->post_types = $this->taxonomies->getTaxonomyPostTypes($this->taxonomy);
+        $this->postTypes = $this->taxonomies->getTaxonomyPostTypes($this->taxonomy);
+        $this->post_types = new Post_Types;
     }
 
     function edit_columns($columns)
@@ -125,12 +128,21 @@ class Skills
 
     function getPostSkillsBySlug($slug)
     {
-        $post = get_page_by_path($slug, OBJECT, $this->post_types);
+        $post = get_page_by_path($slug, OBJECT, $this->postTypes);
 
         if (empty($post)) {
             return '';
         }
 
         return $this->getPostSkills($post->ID);
+    }
+
+    function getPostTypesWithSkill($postType, $term){
+        error_log($term);
+        $this->post_types->getPostTypeWithTerm($postType, $this->taxonomy, $term);
+    }
+
+    function getPostTypesWithSkills($postType){
+        return $this->post_types->getPostTypeWithTaxonomy($postType, $this->taxonomy);
     }
 }
