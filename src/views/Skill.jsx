@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -9,46 +9,13 @@ import { getManagingMembersWithTerm } from '../controllers/managingMemberSlice';
 import { getFreelancersWithTerm } from '../controllers/freelancerSlice';
 import { getEmployeesWithTerm } from '../controllers/employeeSlice';
 
+import LoadingComponent from './components/LoadingComponent';
+import ErrorComponent from './components/ErrorComponent';
 import HeaderIconComponent from './components/HeaderIconComponent';
 import GroupMembers from './components/GroupMembers';
 
 function Skill() {
   const { skill } = useParams();
-
-  const {
-    taxonomiesLoading,
-    taxonomiesErrorMessage,
-    id,
-    title,
-    icon,
-    description,
-    url
-  } = useSelector((state) => state.taxonomies);
-  const {
-    founderLoading,
-    founderErrorMessage,
-    founders,
-  } = useSelector((state) => state.founder);
-  const {
-    executiveLoading,
-    executiveErrorMessage,
-    executives,
-  } = useSelector((state) => state.executive);
-  const {
-    managingMemberLoading,
-    managingMemberErrorMessage,
-    managingMembers,
-  } = useSelector((state) => state.managingMember);
-  const {
-    freelancerLoading,
-    freelancerErrorMessage,
-    freelancers,
-  } = useSelector((state) => state.freelancer);
-  const {
-    employeeLoading,
-    employeeErrorMessage,
-    employees,
-  } = useSelector((state) => state.employee);
 
   const dispatch = useDispatch();
 
@@ -76,9 +43,32 @@ function Skill() {
     dispatch(getEmployeesWithTerm({ taxonomy: 'Skills', term: skill }));
   }, [dispatch]);
 
+  const {
+    taxonomiesLoading,
+    taxonomiesErrorMessage,
+    id,
+    title,
+    icon,
+    description,
+    url,
+  } = useSelector((state) => state.taxonomies);
+  const { founders } = useSelector((state) => state.founder);
+  const { executives } = useSelector((state) => state.executive);
+  const { managingMembers } = useSelector((state) => state.managingMember);
+  const { freelancers } = useSelector((state) => state.freelancer);
+  const { employees } = useSelector((state) => state.employee);
+
+  if (taxonomiesLoading) {
+    return <LoadingComponent />;
+  }
+
+  if (taxonomiesErrorMessage) {
+    return <ErrorComponent message={taxonomiesErrorMessage} />;
+  }
+
   return (
     <main className="skill">
-      <HeaderIconComponent icon={icon} title={title} url={url}/>
+      <HeaderIconComponent icon={icon} title={title} url={url} />
 
       {description && (
         <div className="card">

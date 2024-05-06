@@ -53,24 +53,13 @@ class User
         $users = [];
 
         foreach ($users_data as $user) {
-            $user_data = get_userdata($user->ID);
+            $user_data = $this->getUser($user->ID);
 
-            if ($user_data == false) {
+            if ($user_data == '') {
                 continue;
             }
 
-            $roles = $this->role->getOrderedRoles($user_data->roles);
-            $roleLink = $this->role->getRoleLink($roles[0], $user_data->user_nicename);
-            $avatar_url = get_avatar_url($user_data->ID, ['size' => 384]);
-
-            $users[] = array(
-                'id' => $user_data->ID,
-                'full_name' => "{$user_data->first_name} {$user_data->last_name}",
-                'email' => $user_data->user_email,
-                'title' => $roles[0],
-                'user_url' => $roleLink,
-                'avatar_url' => $avatar_url == false ? '' : $avatar_url,
-            );
+            $users[] = $user_data;
         }
 
         return $users;

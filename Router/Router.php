@@ -41,7 +41,7 @@ class Router
         try {
             $path = $_SERVER['REQUEST_URI'];
 
-            if (!empty($this->front_page_react)) {
+            if (!empty($this->front_page_react) && preg_match("#^/$#", $path)) {
                 $sections = $this->front_page_react;
 
                 add_filter('frontpage_template', function ($frontpage_template) use ($sections) {

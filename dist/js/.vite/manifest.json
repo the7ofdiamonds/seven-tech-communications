@@ -322,6 +322,7 @@
     "isDynamicEntry": true,
     "imports": [
       "src/index.jsx",
+      "_ErrorComponent.js",
       "_HeaderIconComponent.js",
       "_GroupMembers.js",
       "_useDispatch.js",

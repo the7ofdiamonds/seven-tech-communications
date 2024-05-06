@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getMissionStatement } from '../controllers/aboutSlice';
 import { getContent } from '../controllers/contentSlice';
+import { getFounders } from '../controllers/founderSlice';
 
 import ContentComponent from './components/ContentComponent';
 import LoadingComponent from './components/LoadingComponent';
@@ -11,14 +12,7 @@ import FoundersComponent from './components/FoundersComponent';
 function About() {
   const dispatch = useDispatch();
 
-  const { missionStatement } = useSelector((state) => state.about);
-  const {
-    contentLoading,
-    contentStatusCode,
-    contentErrorMessage,
-    title,
-    content,
-  } = useSelector((state) => state.content);
+  
 
   useEffect(() => {
     if (contentStatusCode && contentErrorMessage) {
@@ -35,6 +29,20 @@ function About() {
     dispatch(getContent('/about'));
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getFounders());
+  }, [dispatch]);
+
+  const { missionStatement } = useSelector((state) => state.about);
+  const {
+    contentLoading,
+    contentStatusCode,
+    contentErrorMessage,
+    title,
+    content,
+  } = useSelector((state) => state.content);
+  const { founders } = useSelector((state) => state.founder);
+
   if (contentLoading) {
     return <LoadingComponent />;
   }
@@ -42,7 +50,7 @@ function About() {
   return (
     <>
       <main>
-        <h2 className="title">{title}</h2>
+        <h1 className="title">{title}</h1>
 
         <div className="mission-statement-card card">
           <h3 className="mission-statement">
@@ -52,7 +60,7 @@ function About() {
 
         <ContentComponent content={content} />
 
-        <FoundersComponent />
+        <FoundersComponent founders={founders} />
       </main>
     </>
   );
