@@ -21,7 +21,7 @@ class Content
     {
         try {
             $page_slug = $request->get_param('slug');
-            $post_type = $request['post_type'];
+            $post_type = !empty($request['post_type']) ? $request['post_type'] : 'page';
 
             $content = $this->page_content->getPageContent($page_slug, $post_type);
 

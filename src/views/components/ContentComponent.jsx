@@ -10,7 +10,6 @@ function ContentComponent(props) {
           {content.map((content, index) => (
             <div
               key={index}
-              className="content"
               dangerouslySetInnerHTML={{ __html: content }}></div>
           ))}
         </>

@@ -55,33 +55,29 @@ class Content
         return $contentArray;
     }
 
-    function getPageContent($page_slug, $post_type = '')
+    function getPageContent($page_slug, $post_type = 'page')
     {
         try {
             $parts = explode("/", $page_slug);
             $parts = array_filter($parts, function($value) {
                 return !empty(trim($value));
             });
-            $index_end = count($parts) - 1;
+            $parts = array_values($parts);
+            $index_end = count($parts) >= 2 ? count($parts) - 1 : 0;
             $page_path = $parts[$index_end];
-error_log($page_path);
 
-            $page = get_page_by_path($page_path, '', $post_type);
-            // error_log(print_r($page_path, true));
-            // error_log(print_r($post_type, true));
+            $page = get_page_by_path($page_path, OBJECT, $post_type);
 
             if ($page == null) {
                 return '';
             }
 
-            $page_id = $page->ID;
-            $page = get_post($page_id);
-            $page_content = $page->post_content;
+            $post = get_post($page->ID);
 
             header('Content-Type: text/html; charset=UTF-8');
 
             $content = [
-                'content' => $this->filter($page_content),
+                'content' => $this->filter($post->post_content),
                 'title' => $page->post_title
             ];
 

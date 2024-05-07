@@ -107,7 +107,8 @@ class Employees
         if (!is_array($employee)) {
             return '';
         }
-        $managing_member['content'] = $this->content->filter($post->post_content);
+        
+        $employee['content'] = $this->content->filter($post->post_content);
         $employee['projectTypes'] = $this->taxonomies->getPostTaxonomy($post->ID, 'project_types');
         $employee['skills'] = $this->skills->getPostSkills($post->ID);
         $employee['frameworks'] = $this->frameworks->getPostFrameworks($post->ID);

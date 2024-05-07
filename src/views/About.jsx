@@ -49,7 +49,7 @@ function About() {
 
   return (
     <>
-      <main>
+      <main className='about'>
         <h1 className="title">{title}</h1>
 
         <div className="mission-statement-card card">
