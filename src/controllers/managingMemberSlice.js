@@ -13,7 +13,8 @@ const initialState = {
     bio: '',
     skills: '',
     socialNetworks: '',
-    resume: ''
+    resume: '',
+    content: ''
 };
 
 export const getManagingMembers = createAsyncThunk('managingMember/getManagingMembers', async () => {
@@ -103,6 +104,7 @@ export const managingMemberSlice = createSlice({
                 state.technologies = action.payload.technologies
                 state.socialNetworks = action.payload.social_networks
                 state.resume = action.payload.resume
+                state.content = action.payload.content
             })
             .addMatcher(isAnyOf(
                 getManagingMembers.pending,

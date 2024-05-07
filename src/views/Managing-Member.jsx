@@ -12,15 +12,8 @@ import MemberComponent from './components/MemberComponent.jsx';
 import ContentComponent from './components/ContentComponent.jsx';
 
 function ManagingMember() {
-  const url = new URL(window.location.href);
-  const pageSlug = url.pathname;
-
   const { managingMember } = useParams();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getContent(pageSlug));
-  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getManagingMember(managingMember));
@@ -38,9 +31,8 @@ function ManagingMember() {
     frameworks,
     technologies,
     resume,
+    content
   } = useSelector((state) => state.managingMember);
-
-  const { content } = useSelector((state) => state.content);
 
   if (managingMemberLoading) {
     return <LoadingComponent />;

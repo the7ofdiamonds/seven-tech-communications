@@ -15,6 +15,10 @@
   animation: var(--animation-duration) slide infinite linear;
 }
 
+.author-knowledge-slide:hover {
+  animation-play-state: paused;
+}
+
 .author-knowledge-slide {
   .icon {
     padding: 0;

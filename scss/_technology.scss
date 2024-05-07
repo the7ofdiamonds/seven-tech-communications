@@ -8,19 +8,14 @@ div.technologies {
   align-items: center;
   gap: 2rem;
   min-height: 100vh;
+  margin: 5rem 0;
 
   section#seven_tech_communications {
-    margin: 5rem 0 0;
-
     main.technology {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 1rem;
     }
-  }
-
-  section#seven_tech_portfolio {
-    margin: 0 0 5rem;
   }
 }

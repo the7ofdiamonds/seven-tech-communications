@@ -21,10 +21,13 @@ class Content
     {
         try {
             $page_slug = $request->get_param('slug');
+            $post_type = $request['post_type'];
 
-            header('Content-Type: text/html; charset=UTF-8');
+            $content = $this->page_content->getPageContent($page_slug, $post_type);
 
-            $content = $this->page_content->getPageContent($page_slug);
+            if (empty($content)) {
+                throw new Exception('No content available.', 404);
+            }
 
             return rest_ensure_response($content);
         } catch (Exception $e) {
@@ -33,6 +36,7 @@ class Content
                 'statusCode' => $statusCode,
                 'errorMessage' => $e->getMessage(),
             ];
+
             $response = rest_ensure_response($response_data);
             $response->set_status($statusCode);
 

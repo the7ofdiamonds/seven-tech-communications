@@ -25,8 +25,9 @@ class User
             return '';
         }
 
-        $roles = $this->role->getOrderedRoles($user_data->roles);
-        $roleLink = $this->role->getRoleLink($roles[0], $user_data->user_nicename);
+        $ordered_roles = $this->role->getOrderedRoles($user_data->roles);
+        $roles = $this->role->getRoleDisplayNames($ordered_roles);
+        $roleLink = $this->role->getRoleLink($ordered_roles[0], $user_data->user_nicename);
         $avatar_url = get_avatar_url($id, ['size' => 384]);
 
         $user = array(
@@ -77,8 +78,8 @@ class User
             $post_type = str_replace('-', '_', $postType);
 
             $args = array(
-                'post_type'      => $post_type,
-                'author'         => $user->ID,
+                'post_type' => $post_type,
+                'author' => $user->ID,
                 'posts_per_page' => -1,
             );
 

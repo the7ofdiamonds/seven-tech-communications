@@ -55,7 +55,7 @@ class API
             'permission_callback' => '__return_true',
         ));
 
-        register_rest_route('seven-tech/v1', '/content/(?P<slug>[a-zA-Z0-9-_\/]+)', array(
+        register_rest_route('seven-tech/communications/v1', '/content/(?P<slug>[a-zA-Z0-9-_\/]+)', array(
             'methods' => 'GET',
             'callback' => array($content, 'get_content'),
             'permission_callback' => '__return_true',

@@ -55,23 +55,23 @@ class Content
         return $contentArray;
     }
 
-    function getPageContent($page_slug)
+    function getPageContent($page_slug, $post_type = '')
     {
         try {
-            $pos = strpos($page_slug, "/");
-            $post_type = 'page';
-            $page = $page_slug;
+            $parts = explode("/", $page_slug);
+            $parts = array_filter($parts, function($value) {
+                return !empty(trim($value));
+            });
+            $index_end = count($parts) - 1;
+            $page_path = $parts[$index_end];
+error_log($page_path);
 
-            if ($pos !== false) {
-                $parts = explode("/", $page_slug, 2);
-                $post_type = $parts[0];
-                $page = $parts[1];
-            }
+            $page = get_page_by_path($page_path, '', $post_type);
+            // error_log(print_r($page_path, true));
+            // error_log(print_r($post_type, true));
 
-            $page = get_page_by_path($page, '', $post_type);
-
-            if (empty($page) || $page == null) {
-                throw new Exception('Page not found', 404);
+            if ($page == null) {
+                return '';
             }
 
             $page_id = $page->ID;
@@ -87,7 +87,7 @@ class Content
 
             return $content;
         } catch (Exception $e) {
-            error_log($e->getMessage(), $e->getCode());
+            throw new Exception($e);
         }
     }
 }

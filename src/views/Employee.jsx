@@ -9,18 +9,9 @@ import MemberKnowledgeComponent from './components/MemberKnowledgeComponent.jsx'
 import MemberComponent from './components/MemberComponent.jsx';
 import ContentComponent from './components/ContentComponent.jsx';
 
-import { getContent } from '../controllers/contentSlice.js';
-
 function Employee() {
-  const url = new URL(window.location.href);
-  const pageSlug = url.pathname;
-
   const { employee } = useParams();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getContent(pageSlug));
-  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getEmployee(employee));
@@ -38,14 +29,13 @@ function Employee() {
     frameworks,
     technologies,
     resume,
+    content
   } = useSelector((state) => state.employee);
-
-  const { content } = useSelector((state) => state.content);
 
   if (employeeLoading) {
     return <LoadingComponent />;
   }
-  
+
   const knowledge = [
     ...(projectTypes || []),
     ...(skills || []),

@@ -66,7 +66,7 @@ class Roles
     }
 
     function addRolePages()
-    {        
+    {
         $args = [
             'role__in' => $this->roleNames
         ];
@@ -170,17 +170,6 @@ class Roles
         return $roleNames;
     }
 
-    public function getRoleDisplayNames()
-    {
-        $roleDisplayNames = [];
-
-        foreach ($this->roles as $role) {
-            $roleDisplayNames[] = $role['display_name'];
-        };
-
-        return $roleDisplayNames;
-    }
-
     public function getRoles()
     {
         return $this->roles;
@@ -203,6 +192,21 @@ class Roles
         });
 
         return $roles;
+    }
+
+    public function getRoleDisplayNames($orderedroles)
+    {
+        $roleDisplayNames = [];
+
+        foreach ($orderedroles as $ordered_role) {
+            foreach ($this->roles as $role) {
+                if ($ordered_role == $role['name']) {
+                    $roleDisplayNames[] = $role['display_name'];
+                }
+            }
+        };
+
+        return $roleDisplayNames;
     }
 
     public function getRolePostType($name)

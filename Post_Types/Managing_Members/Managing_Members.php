@@ -8,6 +8,7 @@ use SEVEN_TECH\Communications\Post_Types\Post_Types;
 use SEVEN_TECH\Communications\Resume\Resume;
 use SEVEN_TECH\Communications\Social_Networks\Social_Networks;
 use SEVEN_TECH\Communications\User\User;
+use SEVEN_TECH\Communications\Content\Content;
 use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
 use SEVEN_TECH\Communications\Taxonomies\Skills;
 use SEVEN_TECH\Communications\Taxonomies\Frameworks;
@@ -15,9 +16,10 @@ use SEVEN_TECH\Communications\Taxonomies\Technologies;
 
 class Managing_Members
 {
-    private $post_type;
     private $role;
+    private $post_type;
     private $user;
+    private $content;
     private $resume;
     private $taxonomies;
     private $skills;
@@ -28,11 +30,12 @@ class Managing_Members
 
     public function __construct()
     {
-        $this->role = 'managing-member';
+        $this->role = 'managing_member';
         $this->post_type = 'managing_members';
 
         $this->post_types = new Post_Types;
         $this->user = new User;
+        $this->content = new Content;
         $this->taxonomies = new Taxonomies;
         $this->skills = new Skills;
         $this->frameworks = new Frameworks;
@@ -105,6 +108,7 @@ class Managing_Members
             return '';
         }
 
+        $managing_member['content'] = $this->content->filter($post->post_content);
         $managing_member['projectTypes'] = $this->taxonomies->getPostTaxonomy($post->ID, 'project_types');
         $managing_member['skills'] = $this->skills->getPostSkills($post->ID);
         $managing_member['frameworks'] = $this->frameworks->getPostFrameworks($post->ID);

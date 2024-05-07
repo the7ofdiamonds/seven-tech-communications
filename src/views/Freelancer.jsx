@@ -9,18 +9,9 @@ import MemberKnowledgeComponent from './components/MemberKnowledgeComponent.jsx'
 import MemberComponent from './components/MemberComponent.jsx';
 import ContentComponent from './components/ContentComponent.jsx';
 
-import { getContent } from '../controllers/contentSlice.js';
-
 function Freelancer() {
-  const url = new URL(window.location.href);
-  const pageSlug = url.pathname;
-
   const { freelancer } = useParams();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getContent(pageSlug));
-  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getFreelancer(freelancer));
@@ -38,9 +29,8 @@ function Freelancer() {
     frameworks,
     technologies,
     resume,
+    content
   } = useSelector((state) => state.freelancer);
-
-  const { content } = useSelector((state) => state.content);
 
   if (freelancerLoading) {
     return <LoadingComponent />;

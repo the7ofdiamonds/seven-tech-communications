@@ -9,18 +9,9 @@ import MemberKnowledgeComponent from './components/MemberKnowledgeComponent.jsx'
 import MemberComponent from './components/MemberComponent.jsx';
 import ContentComponent from './components/ContentComponent.jsx';
 
-import { getContent } from '../controllers/contentSlice.js';
-
 function Executive() {
-  const url = new URL(window.location.href);
-  const pageSlug = url.pathname;
-
   const { executive } = useParams();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getContent(pageSlug));
-  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getExecutive(executive));
@@ -38,14 +29,13 @@ function Executive() {
     frameworks,
     technologies,
     resume,
+    content
   } = useSelector((state) => state.executive);
-
-  const { content } = useSelector((state) => state.content);
 
   if (executiveLoading) {
     return <LoadingComponent />;
   }
-  
+
   const knowledge = [
     ...(projectTypes || []),
     ...(skills || []),

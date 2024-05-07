@@ -4,7 +4,7 @@ import IconComponent from './IconComponent';
 function MemberKnowledgeComponent(props) {
   const { knowledge } = props;
   const skillsSlideRef = useRef(null);
-console.log(knowledge);
+
   useEffect(() => {
     const skillsSlide = skillsSlideRef.current;
 

@@ -9,18 +9,9 @@ import MemberKnowledgeComponent from './components/MemberKnowledgeComponent.jsx'
 import MemberComponent from './components/MemberComponent.jsx';
 import ContentComponent from './components/ContentComponent';
 
-import { getContent } from '../controllers/contentSlice';
-
 function Founder() {
-  const url = new URL(window.location.href);
-  const pageSlug = url.pathname;
-
-  const { founder } = useParams();
+const { founder } = useParams();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getContent(pageSlug));
-  }, [dispatch]);
 
   useEffect(() => {
     dispatch(getFounder(founder));
@@ -38,9 +29,8 @@ function Founder() {
     frameworks,
     technologies,
     resume,
+    content
   } = useSelector((state) => state.founder);
-
-  const { content } = useSelector((state) => state.content);
 
   if (founderLoading) {
     return <LoadingComponent />;

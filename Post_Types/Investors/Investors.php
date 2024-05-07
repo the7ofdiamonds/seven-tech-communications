@@ -8,6 +8,7 @@ use SEVEN_TECH\Communications\Post_Types\Post_Types;
 use SEVEN_TECH\Communications\Resume\Resume;
 use SEVEN_TECH\Communications\Social_Networks\Social_Networks;
 use SEVEN_TECH\Communications\User\User;
+use SEVEN_TECH\Communications\Content\Content;
 use SEVEN_TECH\Communications\Taxonomies\Taxonomies;
 use SEVEN_TECH\Communications\Taxonomies\Skills;
 use SEVEN_TECH\Communications\Taxonomies\Frameworks;
@@ -15,9 +16,10 @@ use SEVEN_TECH\Communications\Taxonomies\Technologies;
 
 class Investors
 {
-    private $post_type;
     private $role;
+    private $post_type;
     private $user;
+    private $content;
     private $resume;
     private $taxonomies;
     private $skills;
@@ -33,6 +35,7 @@ class Investors
         
         $this->post_types = new Post_Types;
         $this->user = new User;
+        $this->content = new Content;
         $this->taxonomies = new Taxonomies;
         $this->skills = new Skills;
         $this->frameworks = new Frameworks;
@@ -104,7 +107,8 @@ class Investors
         if (!is_array($investor)) {
             return '';
         }
-
+        
+        $managing_member['content'] = $this->content->filter($post->post_content);
         $investor['projectTypes'] = $this->taxonomies->getPostTaxonomy($post->ID, 'project_types');
         $investor['skills'] = $this->skills->getPostSkills($post->ID);
         $investor['frameworks'] = $this->frameworks->getPostFrameworks($post->ID);

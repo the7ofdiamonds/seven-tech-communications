@@ -9,12 +9,7 @@ import MemberKnowledgeComponent from './components/MemberKnowledgeComponent.jsx'
 import MemberComponent from './components/MemberComponent.jsx';
 import ContentComponent from './components/ContentComponent.jsx';
 
-import { getContent } from '../controllers/contentSlice.js';
-
 function Investor() {
-  const url = new URL(window.location.href);
-  const pageSlug = url.pathname;
-
   const { investor } = useParams();
   const dispatch = useDispatch();
 
@@ -38,9 +33,8 @@ function Investor() {
     frameworks,
     technologies,
     resume,
+    content
   } = useSelector((state) => state.investor);
-
-  const { content } = useSelector((state) => state.content);
 
   if (investorLoading) {
     return <LoadingComponent />;

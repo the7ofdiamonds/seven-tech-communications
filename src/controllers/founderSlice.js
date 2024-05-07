@@ -15,7 +15,8 @@ const initialState = {
     skills: '',
     technologies: '',
     socialNetworks: '',
-    resume: ''
+    resume: '',
+    content: ''
 };
 
 export const getFounders = createAsyncThunk('founder/getFounders', async () => {
@@ -105,6 +106,7 @@ export const founderSlice = createSlice({
                 state.technologies = action.payload.technologies
                 state.socialNetworks = action.payload.social_networks
                 state.resume = action.payload.resume
+                state.content = action.payload.content
             })
             .addMatcher(isAnyOf(
                 getFounders.pending,
