@@ -5,6 +5,7 @@ import { getInvestors } from '../controllers/investorSlice';
 
 import LoadingComponent from '../views/components/LoadingComponent';
 import ErrorComponent from '../views/components/ErrorComponent';
+import GroupMembers from './components/GroupMembers';
 
 function Investors() {
   const {

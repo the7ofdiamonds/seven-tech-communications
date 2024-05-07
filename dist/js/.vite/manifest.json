@@ -150,6 +150,7 @@
     "imports": [
       "src/index.jsx",
       "_ErrorComponent.js",
+      "_GroupMembers.js",
       "_useDispatch.js"
     ]
   },
@@ -262,6 +263,7 @@
     "imports": [
       "src/index.jsx",
       "_ErrorComponent.js",
+      "_GroupMembers.js",
       "_useDispatch.js"
     ]
   },
@@ -286,6 +288,7 @@
     "imports": [
       "src/index.jsx",
       "_ErrorComponent.js",
+      "_GroupMembers.js",
       "_useDispatch.js"
     ]
   },

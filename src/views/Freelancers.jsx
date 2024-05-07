@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getFreelancers } from '../controllers/freelancerSlice';
 
-import LoadingComponent from '../views/components/LoadingComponent';
-import ErrorComponent from '../views/components/ErrorComponent';
+import LoadingComponent from './components/LoadingComponent';
+import ErrorComponent from './components/ErrorComponent';
+import GroupMembers from './components/GroupMembers';
 
 function Freelancers() {
   const {

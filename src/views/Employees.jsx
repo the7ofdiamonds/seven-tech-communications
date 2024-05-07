@@ -5,6 +5,7 @@ import { getEmployees } from '../controllers/employeeSlice';
 
 import LoadingComponent from './components/LoadingComponent';
 import ErrorComponent from './components/ErrorComponent';
+import GroupMembers from './components/GroupMembers';
 
 function Employees() {
   const {

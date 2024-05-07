@@ -14,10 +14,6 @@ function Investor() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getContent(pageSlug));
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch(getInvestor(investor));
   }, [dispatch]);
 

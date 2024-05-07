@@ -44,7 +44,7 @@ if ($user_allowed) :
         include_once(ABSPATH . 'wp-admin/includes/plugin.php');
     }
 ?>
-    <div class="freelancer">
+    <div class="investors">
         <?php
         include_once SEVEN_TECH_COMMUNICATIONS . 'includes/react.php';
 
