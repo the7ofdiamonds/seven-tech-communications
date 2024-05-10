@@ -1,9 +1,10 @@
 @use './_message-card.scss';
 
 section {
-    min-height: 100vh;
-  
-    main.contact {
-      margin: 5rem 0;
-    }
+  justify-content: center;
+  min-height: 100vh;
+
+  main.contact {
+    justify-content: center;
   }
+}

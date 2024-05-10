@@ -2,9 +2,9 @@
 @use '_access-denied.scss';
 
 section {
-  min-height: 100vh;
+  min-height: fit-content;
 
   main.executives {
-    margin: 5rem 0;
+    margin: 6rem 0;
   }
 }

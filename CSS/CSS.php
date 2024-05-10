@@ -77,7 +77,7 @@ class CSS
                 }
             }
 
-            $frontPageFile = 'Front-Page.css';
+            $frontPageFile = 'FrontPage.css';
             $frontPageFilePath = $this->cssFolderPath . $frontPageFile;
             $frontPageFilePathURL = $this->cssFolderPathURL . $frontPageFile;
 

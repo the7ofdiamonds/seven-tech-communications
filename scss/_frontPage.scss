@@ -1,0 +1,11 @@
+.front-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin: 6rem 0;
+
+  section {
+    margin: 0;
+  }
+}
