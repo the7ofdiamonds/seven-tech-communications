@@ -2,122 +2,83 @@
 
 namespace SEVEN_TECH\Communications\Email\Gateway;
 
-use Exception;
-
 use SEVEN_TECH\Communications\Email\Email;
 
-use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
+
+use Exception;
+
+use WP_User;
 
 class EmailGateway
 {
-    private $email;
-    private $mailer;
-    private $smtp_host;
-    private $smtp_port;
-    private $smtp_secure;
-    private $smtp_auth;
-    private $smtp_username;
-    private $smtp_password;
-    private $from_email;
-    private $from_name;
-    private $body;
+    public $site_name;
+    private string $deletionTime;
+    private string $confirmationCodeExpiration;
 
-    public function __construct(PHPMailer $mailer)
+    public function __construct()
     {
-        $this->smtp_host = get_option('quote_smtp_host');
-        $this->smtp_port = get_option('quote_smtp_port');
-        $this->smtp_secure = get_option('quote_smtp_secure');
-        $this->smtp_auth = get_option('quote_smtp_auth');
-        $this->smtp_username = get_option('quote_smtp_username');
-        $this->smtp_password = get_option('quote_smtp_password');
-        $this->from_email = get_option('quote_email');
-        $this->from_name = get_option('quote_name');
-
-        $this->email = new Email();
-        $this->mailer = $mailer;
-        $this->body = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailGateway.php';
+        $this->site_name = get_bloginfo('name');
+        $this->deletionTime = '90 Days';
+        $this->confirmationCodeExpiration = '15 minutes';
     }
 
-    function gatewayBody($message)
+    public function send(WP_User $user, string $subject, string $message, array $content): bool
     {
         try {
-            $swap_var = array(
-                "{MESSAGE}" => $message
-            );
+            $smtp_host = get_option('quote_smtp_host');
+            $smtp_port = get_option('quote_smtp_port');
+            $smtp_secure = get_option('quote_smtp_secure');
+            $smtp_auth = get_option('quote_smtp_auth');
+            $smtp_username = get_option('quote_smtp_username');
+            $smtp_password = get_option('quote_smtp_password');
+            $from_email = get_option('quote_email');
+            $from_name = get_option('quote_name');
 
-            if (!file_exists($this->body)) {
-                throw new Exception('Could not find gateway body template.');
-            }
+            $template = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailGateway.php';
 
-            $body = file_get_contents($this->body);
+            $body = (new Email)->emailBody($template, $content);
+            $altBody = '<pre>' . $message . '</pre>';
 
-            foreach (array_keys($swap_var) as $key) {
-                if (strlen($key) > 2 && trim($key) != '') {
-                    if ($swap_var[$key] != '') {
-                        $body = str_replace($key, $swap_var[$key], $body);
-                    } else {
-                        $body = str_replace($key, '', $body);
-                    }
-                }
-            }
+            (new Email())->sendEmail($user, $smtp_auth, $smtp_host, $smtp_secure, $smtp_port, $smtp_username, $smtp_password, $from_email, $from_name, $subject, $body, $altBody);
 
-            return $body;
-        } catch (Exception $e) {
-            throw new Exception($e);
-        }
-    }
-
-    function gatewayEmailBody($message)
-    {
-        try {
-            $header = $this->email->emailHeader();
-            $body = $this->gatewayBody($message);
-            $footer = $this->email->emailFooter();
-
-            $fullEmailBody = $header . $body . $footer;
-
-            return $fullEmailBody;
-        } catch (Exception $e) {
-            throw new Exception($e);
-        }
-    }
-
-    public function sendGatewayEmail($user, $subject, $message)
-    {
-        $to_email = $user->email;
-        $name =  $user->name;
-        $to_name = $name;
-
-        try {
-            $this->mailer->isSMTP();
-            $this->mailer->SMTPAuth = $this->smtp_auth;
-            $this->mailer->Host = $this->smtp_host;
-            $this->mailer->SMTPSecure = $this->smtp_secure;
-            $this->mailer->Port = $this->smtp_port;
-
-            $this->mailer->Username = $this->smtp_username;
-            $this->mailer->Password = $this->smtp_password;
-
-            $this->mailer->setFrom($this->from_email, $this->from_name);
-            $this->mailer->addAddress($to_email, $to_name);
-
-            $this->mailer->isHTML(true);
-            $this->mailer->Subject = $subject;
-            $this->mailer->Body = $this->gatewayEmailBody($message);
-            $this->mailer->AltBody = '<pre>' . $message . '</pre>';
-
-            $this->mailer->send();
-
-            if ($this->mailer->ErrorInfo) {
-                throw new PHPMailerException("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
-            }
-
-            return 'Message has been sent';
+            return true;
         } catch (PHPMailerException $e) {
             throw new PHPMailerException($e);
         } catch (Exception $e) {
             throw new Exception($e);
         }
     }
+
+    public function sendSignUpEmail(int $user_id)
+    {
+        try {
+
+            $user = new WP_User($user_id);
+
+            $subject = 'Signup Email';
+
+            $message = "Thanks for joining {$this->site_name}  {$user->first_name}";
+
+            $content = [
+                "{MESSAGE}" => $message,
+                "{GATEWAY_URL}" => "",
+                "{BUTTON_NAME}" => ""
+            ];
+
+            $this->send($user, $subject, $message, $content);
+
+            return true;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
+    }
+
+    public function sendActivateAccountEmail(int $user_id) {}
+
+    public function sendAccountLockedEmail(int $user_id) {}
+
+    public function sendAccountUnlockedEmail(int $user_id) {}
+
+    public function sendAccountRecoveredEmail(int $user_id) {}
 }

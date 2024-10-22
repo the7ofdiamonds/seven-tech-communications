@@ -2,7 +2,11 @@
 
 namespace SEVEN_TECH\Communications\Email;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
+
 use Exception;
+use WP_User;
 
 class Email
 {
@@ -71,6 +75,39 @@ class Email
         }
     }
 
+    function emailBody(string $template, array $content)
+    {
+        try {
+            $header = $this->emailHeader();
+
+            $fileExists = file_exists($template);
+
+            if (!$fileExists) {
+                throw new Exception("Could not find body template at {$template}.", 404);
+            }
+
+            $body = file_get_contents($template);
+
+            foreach (array_keys($content) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    if ($content[$key] != '') {
+                        $body = str_replace($key, $content[$key], $body);
+                    } else {
+                        $body = str_replace($key, '', $body);
+                    }
+                }
+            }
+
+            $footer = $this->emailFooter();
+
+            $fullEmailBody = $header . $body . $footer;
+
+            return $fullEmailBody;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
+    }
+
     public function emailFooter()
     {
         try {
@@ -97,6 +134,47 @@ class Email
             }
 
             return $footer;
+        } catch (Exception $e) {
+            throw new Exception($e);
+        }
+    }
+
+    public function sendEmail(WP_User $user, string $smtp_auth, string $smtp_host, string $smtp_secure, string $smtp_port, string $smtp_username, string $smtp_password, string $from_email, string $from_name, string $subject, $body, $altBody) : bool
+    {
+        try {
+            $to_email = $user->user_email;
+            $name =  $user->first_name . ' ' .$user->last_name;
+            $to_name = $name;
+
+            $mailer = new PHPMailer();
+
+            $mailer->isSMTP();
+            $mailer->SMTPAuth = $smtp_auth;
+            $mailer->Host = $smtp_host;
+            $mailer->SMTPSecure = $smtp_secure;
+            $mailer->Port = $smtp_port;
+
+            $mailer->Username = $smtp_username;
+            $mailer->Password = $smtp_password;
+
+            $mailer->setFrom($from_email, $from_name);
+            $mailer->addAddress($to_email, $to_name);
+
+            $mailer->isHTML(true);
+            $mailer->Subject = $subject;
+
+            $mailer->Body = $body;
+            $mailer->AltBody = $altBody;
+
+            $mailer->send();
+
+            if ($mailer->ErrorInfo) {
+                throw new PHPMailerException("Message could not be sent. Mailer Error: {$mailer->ErrorInfo}");
+            }
+
+            return true;
+        } catch (PHPMailerException $e) {
+            throw new PHPMailerException($e);
         } catch (Exception $e) {
             throw new Exception($e);
         }

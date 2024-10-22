@@ -12,12 +12,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Contact
 {
-    private $mailer;
-
-    public function __construct(PHPMailer $mailer)
-    {
-        $this->mailer = $mailer;
-    }
 
     public function send_contact_email(WP_REST_Request $request)
     {
@@ -54,7 +48,7 @@ class Contact
             $subject = sanitize_text_field($subject);
             $message = sanitize_textarea_field($message);
 
-            $contact_email = new EmailContact($this->mailer);
+            $contact_email = new EmailContact();
             $contactEmail = $contact_email->sendContactEmail($firstName, $lastName, $fromEmail, $subject, $message);
 
             return rest_ensure_response($contactEmail);

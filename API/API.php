@@ -2,27 +2,24 @@
 
 namespace SEVEN_TECH\Communications\API;
 
-use PHPMailer\PHPMailer\PHPMailer;
-
 class API
 {
     public function __construct()
     {
-        $mailer = new PHPMailer();
         $about = new About;
-        $accounts = new Accounts($mailer);
-        $contact = new Contact($mailer);
+        $accounts = new Accounts();
+        $contact = new Contact();
         $content = new Content;
         $employees = new Employees;
         $executives = new Executives;
         $founders = new Founders;
         $freelancers = new Freelancers;
-        $gateway = new Gateway($mailer);
+        $gateway = new Gateway();
         $investors = new Investors;
         $managingMembers = new Managing_Members;
-        $portfolio = new Portfolio($mailer);
-        $schedule = new Schedule($mailer);
-        $support = new Support($mailer);
+        $portfolio = new Portfolio();
+        $schedule = new Schedule();
+        $support = new Support();
         $taxonomies = new Taxonomies;
 
         register_rest_route('seven-tech/v1', '/about/mission-statement', array(

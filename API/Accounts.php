@@ -19,12 +19,11 @@ class Accounts
     private $invoiceEmail;
     private $receiptEmail;
 
-    public function __construct(PHPMailer $mailer)
+    public function __construct()
     {
-        $this->mailer = $mailer;
-        $this->quoteEmail = new EmailQuote($this->mailer);
-        $this->invoiceEmail = new EmailInvoice($this->mailer);
-        $this->receiptEmail = new EmailReceipt($this->mailer);
+        $this->quoteEmail = new EmailQuote();
+        $this->invoiceEmail = new EmailInvoice();
+        $this->receiptEmail = new EmailReceipt();
     }
 
     public function send_quote_email(WP_REST_Request $request)

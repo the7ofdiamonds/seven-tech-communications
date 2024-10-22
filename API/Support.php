@@ -7,17 +7,10 @@ use SEVEN_TECH\Communications\Email\Support\EmailSupport;
 use Exception;
 
 use WP_REST_Request;
-
-use PHPMailer\PHPMailer\PHPMailer;
+use WP_User;
 
 class Support
 {
-    private $mailer;
-
-    public function __construct(PHPMailer $mailer)
-    {
-        $this->mailer = $mailer;
-    }
 
     public function send_support_email(WP_REST_Request $request)
     {
@@ -54,8 +47,10 @@ class Support
             $subject = sanitize_text_field($subject);
             $message = sanitize_textarea_field($message);
 
-            $support_email = new EmailSupport($this->mailer);
-            $supportEmail = $support_email->sendSupportEmail($firstName, $lastName, $fromEmail, $subject, $message);
+            // Add User
+            $user = new WP_User();
+
+            $supportEmail = (new EmailSupport)->sendSupportEmail($firstName, $lastName, $fromEmail, $subject, $message);
 
             return rest_ensure_response($supportEmail);
         } catch (Exception $e) {

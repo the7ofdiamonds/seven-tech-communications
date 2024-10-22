@@ -7,19 +7,11 @@ use SEVEN_TECH\Communications\Email\Portfolio\EmailOnboarding;
 use Exception;
 
 use WP_REST_Request;
-
-use PHPMailer\PHPMailer\PHPMailer;
+use WP_REST_Response;
+use WP_User;
 
 class Portfolio
 {
-    private $mailer;
-    private $onboardingEmail;
-
-    public function __construct(PHPMailer $mailer)
-    {
-        $this->mailer = $mailer;
-        $this->onboardingEmail = new EmailOnboarding($this->mailer);
-    }
 
     public function send_onboarding_email(WP_REST_Request $request)
     {
@@ -28,18 +20,33 @@ class Portfolio
             $receipt = $request['receipt'];
 
             if (empty($customer)) {
-                $statusCode = 400;
-                throw new Exception('Customer is required to send receipt email.', $statusCode);
+                throw new Exception('Customer is required to send receipt email.', 400);
             }
 
             if (empty($receipt)) {
-                $statusCode = 400;
-                throw new Exception('Receipt is required to send receipt email.', $statusCode);
+                throw new Exception('Receipt is required to send receipt email.', 400);
             }
 
-            $onboardingEmail = $this->onboardingEmail->sendOnboardingEmail($customer, $receipt);
+            $user = new WP_User($customer);
+            $subject = $subject = 'Onboarding for ' . $receipt->project_name;
+            $message = (new EmailOnboarding())->message($customer, $receipt);
+            $content = array(
+                "{SUBJECT}" => $subject,
+                "{MESSAGE}" => $message,
+                "{ONBOARDING_URL}" => $receipt->onboarding_link
+            );
 
-            return rest_ensure_response($onboardingEmail);
+            (new EmailOnboarding())->send($user, $subject, $message, $content);
+
+            $onboardingEmailResponse = array(
+                'successMessage' => $message,
+                'statusCode' => 200,
+            );
+
+            $response = new WP_REST_Response($onboardingEmailResponse);
+            $response->set_status(200);
+
+            return rest_ensure_response($response);
         } catch (Exception $e) {
             $message = array(
                 'errorMessage' => $e->getMessage(),
