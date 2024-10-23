@@ -1,10 +1,14 @@
 {
-    "name": "jamelclyons/seven-tech-communications",
+    "name": "the7ofdiamonds/seven-tech-communications",
     "description": "API to email server",
-    "type": "project",
+    "version": "dev-main",
+    "type": "library",
     "authors": [
         {
-            "name": "THE7OFDIAMONDS.TECH"
+            "name": "Jamel C. Lyons",
+            "email": "jclyonsenterprises@gmail.com",
+            "homepage": "https://www.linkedin.com/in/jamelclyons/",
+            "role": "Developer"
         }
     ],
     "require": {

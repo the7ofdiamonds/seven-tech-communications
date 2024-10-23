@@ -12,14 +12,15 @@ class Email
 {
     private $web_address;
     private $logo_link;
-    private $site_name;
+    public $site_name;
     private $facebook;
     private $twitter;
     private $contact_email;
     private $linkedin;
     private $instagram;
     private $year;
-    private $company_name;
+    public $company_name;
+    public $support_email;
     private $emailTemplateHeader;
     private $emailTemplateFooter;
 
@@ -43,12 +44,13 @@ class Email
         $this->instagram = esc_attr(get_option('instagram_link'));
         $this->year = date("Y");
         $this->company_name = get_theme_mod('footer_company');
+        $this->support_email = get_option('support_email');
 
         $this->emailTemplateHeader = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailHeader.php';
         $this->emailTemplateFooter = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailFooter.php';
     }
 
-    public function emailHeader()
+    public function header()
     {
         try {
             $swap_var = array(
@@ -75,10 +77,10 @@ class Email
         }
     }
 
-    function emailBody(string $template, array $content)
+    function body(string $template, array $content)
     {
         try {
-            $header = $this->emailHeader();
+            $header = $this->header();
 
             $fileExists = file_exists($template);
 
@@ -98,7 +100,7 @@ class Email
                 }
             }
 
-            $footer = $this->emailFooter();
+            $footer = $this->footer();
 
             $fullEmailBody = $header . $body . $footer;
 
@@ -108,7 +110,7 @@ class Email
         }
     }
 
-    public function emailFooter()
+    public function footer()
     {
         try {
             $swap_var = array(
@@ -139,7 +141,7 @@ class Email
         }
     }
 
-    public function sendEmail(WP_User $user, string $smtp_auth, string $smtp_host, string $smtp_secure, string $smtp_port, string $smtp_username, string $smtp_password, string $from_email, string $from_name, string $subject, $body, $altBody) : bool
+    public function send(WP_User $user, string $smtp_auth, string $smtp_host, string $smtp_secure, string $smtp_port, string $smtp_username, string $smtp_password, string $from_email, string $from_name, string $subject, $body, $altBody) : bool
     {
         try {
             $to_email = $user->user_email;
