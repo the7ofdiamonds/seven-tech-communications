@@ -2,10 +2,15 @@
 
 namespace SEVEN_TECH\Communications\Email;
 
+use SEVEN_TECH\Communications\Exception\DestructuredException;
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
+use PHPMailer\PHPMailer\SMTP;
 
 use Exception;
+use TypeError;
+
 use WP_User;
 
 class Email
@@ -60,7 +65,7 @@ class Email
             );
 
             if (!file_exists($this->emailTemplateHeader)) {
-                throw new Exception('Unable to locate contact email template.');
+                throw new Exception('Unable to locate email header template.');
             }
 
             $header = file_get_contents($this->emailTemplateHeader);
@@ -73,7 +78,7 @@ class Email
 
             return $header;
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw new DestructuredException($e);
         }
     }
 
@@ -82,10 +87,8 @@ class Email
         try {
             $header = $this->header();
 
-            $fileExists = file_exists($template);
-
-            if (!$fileExists) {
-                throw new Exception("Could not find body template at {$template}.", 404);
+            if (!file_exists($template)) {
+                throw new Exception("Could not find email body template at {$template}.", 404);
             }
 
             $body = file_get_contents($template);
@@ -106,7 +109,7 @@ class Email
 
             return $fullEmailBody;
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw new DestructuredException($e);
         }
     }
 
@@ -123,8 +126,8 @@ class Email
                 "{COMPANY_NAME}" => $this->company_name
             );
 
-            if (file_exists($this->emailTemplateFooter)) {
-                throw new Exception('Unable to locate contact email template.');
+            if (!file_exists($this->emailTemplateFooter)) {
+                throw new Exception('Unable to locate email footer template.');
             }
 
             $footer = file_get_contents($this->emailTemplateFooter);
@@ -137,48 +140,67 @@ class Email
 
             return $footer;
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw new DestructuredException($e);
         }
     }
 
-    public function send(WP_User $user, string $smtp_auth, string $smtp_host, string $smtp_secure, string $smtp_port, string $smtp_username, string $smtp_password, string $from_email, string $from_name, string $subject, $body, $altBody) : bool
+    public function send(WP_User $user, string $smtp_auth, string $smtp_host, string $smtp_secure, string $smtp_port, string $smtp_username, string $smtp_password, string $from_email, string $from_name, string $subject, $body, $altBody): bool
     {
+        ob_start();
+
         try {
+
+            if (
+                empty($smtp_auth) ||
+                empty($smtp_host) ||
+                empty($smtp_secure) ||
+                empty($smtp_port) ||
+                empty($smtp_username) ||
+                empty($smtp_password) ||
+                empty($from_email) ||
+                empty($from_name) ||
+                empty($subject) ||
+                empty($body) ||
+                empty($altBody)
+            ) {
+                throw new Exception("Missing required parameters for sending the email.");
+            }
+
             $to_email = $user->user_email;
-            $name =  $user->first_name . ' ' .$user->last_name;
-            $to_name = $name;
+            $name = $user->first_name . ' ' . $user->last_name;
 
-            $mailer = new PHPMailer();
-
+            $mailer = new PHPMailer(true);
             $mailer->isSMTP();
+            $mailer->SMTPDebug = SMTP::DEBUG_SERVER;
             $mailer->SMTPAuth = $smtp_auth;
             $mailer->Host = $smtp_host;
             $mailer->SMTPSecure = $smtp_secure;
             $mailer->Port = $smtp_port;
-
             $mailer->Username = $smtp_username;
             $mailer->Password = $smtp_password;
 
             $mailer->setFrom($from_email, $from_name);
-            $mailer->addAddress($to_email, $to_name);
+            $mailer->addAddress($to_email, $name);
 
             $mailer->isHTML(true);
             $mailer->Subject = $subject;
-
             $mailer->Body = $body;
             $mailer->AltBody = $altBody;
 
             $mailer->send();
 
-            if ($mailer->ErrorInfo) {
-                throw new PHPMailerException("Message could not be sent. Mailer Error: {$mailer->ErrorInfo}");
-            }
-
             return true;
+        } catch (TypeError $e) {
+            error_log("Type error: " . $e->getMessage());
+            throw new DestructuredException($e);
         } catch (PHPMailerException $e) {
-            throw new PHPMailerException($e);
+            error_log("PHPMailer error: " . $e->getMessage());
+            throw new DestructuredException($e);
         } catch (Exception $e) {
-            throw new Exception($e);
+            error_log("General error: " . $e->getMessage());
+            throw new DestructuredException($e);
+        } finally {
+            ob_end_clean();
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace SEVEN_TECH\Communications\Email\Gateway;
 
 use SEVEN_TECH\Communications\Email\Email;
+use SEVEN_TECH\Communications\Exception\DestructuredException;
 
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
@@ -12,15 +13,11 @@ use WP_User;
 
 class Account
 {
-    public $site_name;
-    private string $deletionTime;
-    private string $confirmationCodeExpiration;
+    private $email;
 
     public function __construct()
     {
-        $this->site_name = get_bloginfo('name');
-        $this->deletionTime = '90 Days';
-        $this->confirmationCodeExpiration = '15 minutes';
+        $this->email = new Email;
     }
 
     public function send(WP_User $user, string $subject, string $message, array $content): bool
@@ -35,6 +32,19 @@ class Account
             $from_email = get_option('gateway_email');
             $from_name = get_option('gateway_name');
 
+            if (
+                !$smtp_auth ||
+                !$smtp_host ||
+                !$smtp_secure ||
+                !$smtp_port ||
+                !$smtp_username ||
+                !$smtp_password ||
+                !$from_email ||
+                !$from_name
+            ) {
+                throw new Exception("There one or more parameters missing in order to send this email.", 500);
+            }
+
             $template = SEVEN_TECH_COMMUNICATIONS . 'Templates/TemplatesEmailGateway.php';
 
             $body = (new Email)->body($template, $content);
@@ -45,8 +55,10 @@ class Account
             return true;
         } catch (PHPMailerException $e) {
             throw new PHPMailerException($e);
+        } catch (DestructuredException $e) {
+            throw new DestructuredException($e);
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw new DestructuredException($e);
         }
     }
 
@@ -55,7 +67,7 @@ class Account
         try {
             $user = new WP_User($user_id);
             $subject = 'Signup Email';
-            $message = "Thanks for joining {$this->site_name}  {$user->first_name}";
+            $message = "Thanks for joining {$this->email->site_name}  {$user->first_name}";
 
             $content = [
                 "{MESSAGE}" => $message,
@@ -66,8 +78,10 @@ class Account
             $this->send($user, $subject, $message, $content);
 
             return true;
+        } catch (DestructuredException $e) {
+            throw new DestructuredException($e);
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw new DestructuredException($e);
         }
     }
 
@@ -76,7 +90,7 @@ class Account
         try {
             $user = new WP_User($user_id);
             $subject = 'Signup Email';
-            $message = "Thanks for joining {$this->site_name}  {$user->first_name}";
+            $message = "Thanks for joining {$this->email->site_name}  {$user->first_name}";
 
             $content = [
                 "{MESSAGE}" => $message,
@@ -87,8 +101,10 @@ class Account
             $this->send($user, $subject, $message, $content);
 
             return true;
+        } catch (DestructuredException $e) {
+            throw new DestructuredException($e);
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw new DestructuredException($e);
         }
     }
 
@@ -97,7 +113,7 @@ class Account
         try {
             $user = new WP_User($user_id);
             $subject = 'Signup Email';
-            $message = "Thanks for joining {$this->site_name}  {$user->first_name}";
+            $message = "Thanks for joining {$this->email->site_name}  {$user->first_name}";
 
             $content = [
                 "{MESSAGE}" => $message,
@@ -108,8 +124,10 @@ class Account
             $this->send($user, $subject, $message, $content);
 
             return true;
+        } catch (DestructuredException $e) {
+            throw new DestructuredException($e);
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw new DestructuredException($e);
         }
     }
 
@@ -118,7 +136,7 @@ class Account
         try {
             $user = new WP_User($user_id);
             $subject = 'Signup Email';
-            $message = "Thanks for joining {$this->site_name}  {$user->first_name}";
+            $message = "Thanks for joining {$this->email->site_name}  {$user->first_name}";
 
             $content = [
                 "{MESSAGE}" => $message,
@@ -129,8 +147,10 @@ class Account
             $this->send($user, $subject, $message, $content);
 
             return true;
+        } catch (DestructuredException $e) {
+            throw new DestructuredException($e);
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw new DestructuredException($e);
         }
     }
 
@@ -139,7 +159,7 @@ class Account
         try {
             $user = new WP_User($user_id);
             $subject = 'Signup Email';
-            $message = "Thanks for joining {$this->site_name}  {$user->first_name}";
+            $message = "Thanks for joining {$this->email->site_name}  {$user->first_name}";
 
             $content = [
                 "{MESSAGE}" => $message,
@@ -150,8 +170,10 @@ class Account
             $this->send($user, $subject, $message, $content);
 
             return true;
+        } catch (DestructuredException $e) {
+            throw new DestructuredException($e);
         } catch (Exception $e) {
-            throw new Exception($e);
+            throw new DestructuredException($e);
         }
     }
 }

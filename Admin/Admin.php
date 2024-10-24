@@ -19,6 +19,7 @@ class Admin
         add_action('admin_menu', [$this, 'register_custom_menu_page']);
         add_action('admin_menu', [new AdminAbout, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminEmail, 'register_custom_submenu_page']);
+        add_action('admin_menu', [new Gateway, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminEmailInvoice, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminEmailQuote, 'register_custom_submenu_page']);
         add_action('admin_menu', [new AdminEmailReceipt, 'register_custom_submenu_page']);

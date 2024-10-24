@@ -1,46 +1,46 @@
 <?php
 
-namespace SEVEN_TECH\Communications\API;
+// namespace SEVEN_TECH\Communications\API;
 
-use SEVEN_TECH\Communications\Email\Gateway\EmailGateway;
+// use SEVEN_TECH\Communications\Email\Gateway\EmailGateway;
 
-use Exception;
+// use Exception;
 
-use WP_REST_Request;
+// use WP_REST_Request;
 
-class Gateway
-{
-    private $emailGateway;
+// class Gateway
+// {
+//     private $emailGateway;
 
-    public function __construct()
-    {
-        $this->emailGateway = new EmailGateway();
-    }
+//     public function __construct()
+//     {
+//         $this->emailGateway = new EmailGateway();
+//     }
 
-    public function signup(WP_REST_Request $request)
-    {
-        try {
+//     public function signup(WP_REST_Request $request)
+//     {
+//         try {
 
-            if (empty($request['user_id']) || !is_int($request['user_id'])) {
-                throw new Exception('User ID is required to send signup email.', 400);
-            }
+//             if (empty($request['user_id']) || !is_int($request['user_id'])) {
+//                 throw new Exception('User ID is required to send signup email.', 400);
+//             }
 
-            $user_id = $request['user_id'];
+//             $user_id = $request['user_id'];
 
-            $signupEmailResponse = $this->emailGateway->sendSignUpEmail($user_id);
+//             $signupEmailResponse = $this->emailGateway->sendSignUpEmail($user_id);
 
-            return rest_ensure_response($signupEmailResponse);
-        } catch (Exception $e) {
-            $message = array(
-                'errorMessage' => $e->getMessage(),
-                'statusCode' => $e->getCode()
-            );
-            $response = rest_ensure_response($message);
-            $response->set_status($e->getCode());
+//             return rest_ensure_response($signupEmailResponse);
+//         } catch (Exception $e) {
+//             $message = array(
+//                 'errorMessage' => $e->getMessage(),
+//                 'statusCode' => $e->getCode()
+//             );
+//             $response = rest_ensure_response($message);
+//             $response->set_status($e->getCode());
 
-            return $response;
-        }
-    }
+//             return $response;
+//         }
+//     }
 
     // public function activateAccount(WP_REST_Request $request)
     // {
@@ -405,4 +405,4 @@ class Gateway
     //         return $response;
     //     }
     // }
-}
+// }
